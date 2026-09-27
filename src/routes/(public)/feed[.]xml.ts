@@ -34,7 +34,7 @@ export const Route = createFileRoute("/(public)/feed.xml")({
 <channel>
   <title>TOMO BLOG</title>
   <link>${escapeXml(`${siteUrl}/blog`)}</link>
-  <description>TOMOの日々の制作、デザイン、コードについてのブログです。</description>
+  <description>フロントエンドエンジニア・WEBデザイナーTOMOのブログ。日々の制作で学んだことと、デザイン、コード、好きなものについてのブログです。</description>
   <language>ja</language>
   ${items}
 </channel>

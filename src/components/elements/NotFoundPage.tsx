@@ -14,7 +14,7 @@ export function NotFoundPage() {
           URLが変更されたか、ページが削除された可能性があります。
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
-          <ButtonLink to="/">トップへ戻る</ButtonLink>
+          <ButtonLink to="/">トップページに戻る</ButtonLink>
         </div>
       </div>
     </main>

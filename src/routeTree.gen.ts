@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as publicIndexRouteImport } from './routes/(public)/index'
+import { Route as publicAboutRouteImport } from './routes/(public)/about'
 import { Route as publicBlogRouteRouteImport } from './routes/(public)/blog/route'
 import { Route as publicFeedDotxmlRouteImport } from './routes/(public)/feed[.]xml'
 import { Route as publicRobotsDottxtRouteImport } from './routes/(public)/robots[.]txt'
@@ -23,6 +24,11 @@ import { Route as publicOgBlogSlugRouteImport } from './routes/(public)/og.blog.
 const publicIndexRoute = publicIndexRouteImport.update({
   id: '/(public)/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const publicAboutRoute = publicAboutRouteImport.update({
+  id: '/(public)/about',
+  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const publicBlogRouteRoute = publicBlogRouteRouteImport.update({
@@ -74,6 +80,7 @@ const publicOgBlogSlugRoute = publicOgBlogSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/blog': typeof publicBlogRouteRouteWithChildren
+  '/about': typeof publicAboutRoute
   '/feed.xml': typeof publicFeedDotxmlRoute
   '/robots.txt': typeof publicRobotsDottxtRoute
   '/sitemap.xml': typeof publicSitemapDotxmlRoute
@@ -85,6 +92,7 @@ export interface FileRoutesByFullPath {
   '/og/blog/$slug': typeof publicOgBlogSlugRoute
 }
 export interface FileRoutesByTo {
+  '/about': typeof publicAboutRoute
   '/feed.xml': typeof publicFeedDotxmlRoute
   '/robots.txt': typeof publicRobotsDottxtRoute
   '/sitemap.xml': typeof publicSitemapDotxmlRoute
@@ -98,6 +106,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/(public)/blog': typeof publicBlogRouteRouteWithChildren
+  '/(public)/about': typeof publicAboutRoute
   '/(public)/feed.xml': typeof publicFeedDotxmlRoute
   '/(public)/robots.txt': typeof publicRobotsDottxtRoute
   '/(public)/sitemap.xml': typeof publicSitemapDotxmlRoute
@@ -112,6 +121,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/blog'
+    | '/about'
     | '/feed.xml'
     | '/robots.txt'
     | '/sitemap.xml'
@@ -123,6 +133,7 @@ export interface FileRouteTypes {
     | '/og/blog/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/about'
     | '/feed.xml'
     | '/robots.txt'
     | '/sitemap.xml'
@@ -135,6 +146,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/(public)/blog'
+    | '/(public)/about'
     | '/(public)/feed.xml'
     | '/(public)/robots.txt'
     | '/(public)/sitemap.xml'
@@ -148,6 +160,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   publicBlogRouteRoute: typeof publicBlogRouteRouteWithChildren
+  publicAboutRoute: typeof publicAboutRoute
   publicFeedDotxmlRoute: typeof publicFeedDotxmlRoute
   publicRobotsDottxtRoute: typeof publicRobotsDottxtRoute
   publicSitemapDotxmlRoute: typeof publicSitemapDotxmlRoute
@@ -163,6 +176,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof publicIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(public)/about': {
+      id: '/(public)/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof publicAboutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(public)/blog': {
@@ -249,6 +269,7 @@ const publicBlogRouteRouteWithChildren = publicBlogRouteRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   publicBlogRouteRoute: publicBlogRouteRouteWithChildren,
+  publicAboutRoute: publicAboutRoute,
   publicFeedDotxmlRoute: publicFeedDotxmlRoute,
   publicRobotsDottxtRoute: publicRobotsDottxtRoute,
   publicSitemapDotxmlRoute: publicSitemapDotxmlRoute,

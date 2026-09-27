@@ -111,8 +111,7 @@ export function BlogArticlePage({ post }: { post: PostDetail }) {
                     <div className="flex flex-wrap items-center justify-between gap-3">
                       <p className="font-black">TOMO</p>
                       <ButtonLink
-                        to="/"
-                        hash="about"
+                        to="/about"
                         size="sm"
                         className="shrink-0"
                       >
@@ -120,7 +119,7 @@ export function BlogArticlePage({ post }: { post: PostDetail }) {
                       </ButtonLink>
                     </div>
                     <p className="mt-2 text-xs text-muted">
-                      Web制作会社で、フロントエンドエンジニア・WEBデザイナーとして働いています。
+                      Web制作・開発会社で、フロントエンドエンジニア・WEBデザイナーとして働いています。
                     </p>
                   </div>
                 </div>
