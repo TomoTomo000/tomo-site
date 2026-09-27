@@ -26,7 +26,7 @@ export function BlogErrorPage() {
             search={{ page: 1, query: "", tag: "" }}
             variant="secondary"
           >
-            ブログ一覧へ
+            記事一覧を見る
           </ButtonLink>
         </div>
       </div>

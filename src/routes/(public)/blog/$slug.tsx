@@ -14,7 +14,7 @@ export const Route = createFileRoute("/(public)/blog/$slug")({
     const seo = createSeoHead({
       siteUrl,
       path: `/blog/${encodeURIComponent(post.slug)}`,
-      title: `${post.title} | TOMO`,
+      title: post.title,
       description: post.excerpt,
       type: "article",
       image: {
@@ -33,7 +33,7 @@ export const Route = createFileRoute("/(public)/blog/$slug")({
       datePublished: post.publishedAt ?? undefined,
       dateModified: post.updatedAt,
       mainEntityOfPage: pageUrl,
-      author: { "@type": "Person", name: "TOMO", url: `${siteUrl}/` },
+      author: { "@type": "Person", name: "TOMO", url: `${siteUrl}/about` },
       publisher: { "@type": "Person", name: "TOMO" },
       inLanguage: "ja",
     });

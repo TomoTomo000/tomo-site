@@ -72,8 +72,8 @@ export const Route = createFileRoute("/(public)/blog/")({
     return createSeoHead({
       siteUrl: loaderData.siteUrl,
       path: `/blog${canonicalSearchString(match.search)}`,
-      title: `${query ? `「${query}」の検索結果 | ` : tag ? `${loaderData.tags.find((item) => item.slug === tag)?.name ?? tag} | ` : ""}BLOG${page > 1 ? ` - ${page}ページ目` : ""} | TOMO`,
-      description: `TOMOの日々の制作、デザイン、コードについてのブログです。${page > 1 ? `一覧の${page}ページ目です。` : ""}`,
+      title: `${query ? `「${query}」の検索結果 | ` : tag ? `${loaderData.tags.find((item) => item.slug === tag)?.name ?? tag} | ` : ""}TOMO | フロントエンドエンジニア・WEBデザイナー | BLOG${page > 1 ? ` - ${page}ページ目` : ""}`,
+      description: `フロントエンドエンジニア・WEBデザイナーTOMOのブログ。日々の制作で学んだことと、デザイン、コード、好きなものについてのブログです。${page > 1 ? `一覧の${page}ページ目です。` : ""}`,
       noindex: Boolean(query || tag),
     });
   },

@@ -242,12 +242,17 @@ export function PortfolioPage({ blogPosts }: { blogPosts: PostSummary[] }) {
             className="scroll-mt-2 rounded-3xl bg-background px-6 py-20 sm:px-8 sm:py-24"
             aria-labelledby="about-title"
           >
-            <h2
-              id="about-title"
-              className="text-center text-5xl font-black leading-none sm:text-6xl"
-            >
-              ABOUT
-            </h2>
+            <div className="text-center">
+              <h2
+                id="about-title"
+                className="text-center text-5xl font-black leading-none sm:text-6xl"
+              >
+                ABOUT
+              </h2>
+              <p className="mx-auto mt-7 max-w-lg text-sm leading-7 text-ink sm:text-base">
+                私について
+              </p>
+            </div>
 
             <div className="mt-14 grid items-center gap-10 md:grid-cols-2">
               <div className="relative aspect-square overflow-hidden rounded-2xl bg-canvas">
@@ -259,23 +264,17 @@ export function PortfolioPage({ blogPosts }: { blogPosts: PostSummary[] }) {
                   className="absolute inset-0 size-full object-contain object-bottom"
                 />
               </div>
-
               <div>
-                <p className="text-3xl font-black sm:text-4xl">
-                  TOMO
-                </p>
+                <p className="text-3xl font-black sm:text-4xl">TOMO</p>
                 <div className="mt-7 space-y-5 text-sm leading-8 text-ink sm:text-base">
-                  <p>
-                    約3年半フレンチレストランに勤務したのち、Web業界へ転職。
-                  </p>
-                  <p>
-                    現在はWeb制作会社で、フロントエンドエンジニア・WEBデザイナーとして働いています。
-                  </p>
-                  <p>
-                    実装するだけではなく、長く運用できる設計や、全体を見据えたスケジューリング、クライアントの想いを整理するデザインを大切にしながら制作しています。
-                  </p>
+                  <p>約3年半フレンチレストランに勤務したのち、Web業界へ転職。</p>
+                  <p>現在はWeb制作・開発会社で、フロントエンドエンジニア・WEBデザイナーとして働いています。</p>
+                  <p>実装するだけではなく、長く運用できる設計や、全体を見据えたスケジューリング、クライアントの想いを整理するデザインを大切にしながら制作しています。</p>
                 </div>
               </div>
+            </div>
+            <div className="mt-10 text-center">
+              <ButtonLink to="/about">詳しく見る</ButtonLink>
             </div>
           </section>
 
