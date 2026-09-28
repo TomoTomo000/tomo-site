@@ -12,7 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as publicIndexRouteImport } from './routes/(public)/index'
 import { Route as publicAboutRouteImport } from './routes/(public)/about'
 import { Route as publicBlogRouteRouteImport } from './routes/(public)/blog/route'
+import { Route as publicContactRouteImport } from './routes/(public)/contact'
 import { Route as publicFeedDotxmlRouteImport } from './routes/(public)/feed[.]xml'
+import { Route as publicPrivacyRouteImport } from './routes/(public)/privacy'
 import { Route as publicRobotsDottxtRouteImport } from './routes/(public)/robots[.]txt'
 import { Route as publicSitemapDotxmlRouteImport } from './routes/(public)/sitemap[.]xml'
 import { Route as publicApiContactRouteImport } from './routes/(public)/api.contact'
@@ -36,9 +38,19 @@ const publicBlogRouteRoute = publicBlogRouteRouteImport.update({
   path: '/blog',
   getParentRoute: () => rootRouteImport,
 } as any)
+const publicContactRoute = publicContactRouteImport.update({
+  id: '/(public)/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const publicFeedDotxmlRoute = publicFeedDotxmlRouteImport.update({
   id: '/(public)/feed.xml',
   path: '/feed.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const publicPrivacyRoute = publicPrivacyRouteImport.update({
+  id: '/(public)/privacy',
+  path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const publicRobotsDottxtRoute = publicRobotsDottxtRouteImport.update({
@@ -81,7 +93,9 @@ const publicOgBlogSlugRoute = publicOgBlogSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/blog': typeof publicBlogRouteRouteWithChildren
   '/about': typeof publicAboutRoute
+  '/contact': typeof publicContactRoute
   '/feed.xml': typeof publicFeedDotxmlRoute
+  '/privacy': typeof publicPrivacyRoute
   '/robots.txt': typeof publicRobotsDottxtRoute
   '/sitemap.xml': typeof publicSitemapDotxmlRoute
   '/': typeof publicIndexRoute
@@ -93,7 +107,9 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/about': typeof publicAboutRoute
+  '/contact': typeof publicContactRoute
   '/feed.xml': typeof publicFeedDotxmlRoute
+  '/privacy': typeof publicPrivacyRoute
   '/robots.txt': typeof publicRobotsDottxtRoute
   '/sitemap.xml': typeof publicSitemapDotxmlRoute
   '/': typeof publicIndexRoute
@@ -107,7 +123,9 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/(public)/blog': typeof publicBlogRouteRouteWithChildren
   '/(public)/about': typeof publicAboutRoute
+  '/(public)/contact': typeof publicContactRoute
   '/(public)/feed.xml': typeof publicFeedDotxmlRoute
+  '/(public)/privacy': typeof publicPrivacyRoute
   '/(public)/robots.txt': typeof publicRobotsDottxtRoute
   '/(public)/sitemap.xml': typeof publicSitemapDotxmlRoute
   '/(public)/': typeof publicIndexRoute
@@ -122,7 +140,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/blog'
     | '/about'
+    | '/contact'
     | '/feed.xml'
+    | '/privacy'
     | '/robots.txt'
     | '/sitemap.xml'
     | '/'
@@ -134,7 +154,9 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/about'
+    | '/contact'
     | '/feed.xml'
+    | '/privacy'
     | '/robots.txt'
     | '/sitemap.xml'
     | '/'
@@ -147,7 +169,9 @@ export interface FileRouteTypes {
     | '__root__'
     | '/(public)/blog'
     | '/(public)/about'
+    | '/(public)/contact'
     | '/(public)/feed.xml'
+    | '/(public)/privacy'
     | '/(public)/robots.txt'
     | '/(public)/sitemap.xml'
     | '/(public)/'
@@ -161,7 +185,9 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   publicBlogRouteRoute: typeof publicBlogRouteRouteWithChildren
   publicAboutRoute: typeof publicAboutRoute
+  publicContactRoute: typeof publicContactRoute
   publicFeedDotxmlRoute: typeof publicFeedDotxmlRoute
+  publicPrivacyRoute: typeof publicPrivacyRoute
   publicRobotsDottxtRoute: typeof publicRobotsDottxtRoute
   publicSitemapDotxmlRoute: typeof publicSitemapDotxmlRoute
   publicIndexRoute: typeof publicIndexRoute
@@ -192,11 +218,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof publicBlogRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/(public)/contact': {
+      id: '/(public)/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof publicContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/(public)/feed.xml': {
       id: '/(public)/feed.xml'
       path: '/feed.xml'
       fullPath: '/feed.xml'
       preLoaderRoute: typeof publicFeedDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(public)/privacy': {
+      id: '/(public)/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof publicPrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(public)/robots.txt': {
@@ -270,7 +310,9 @@ const publicBlogRouteRouteWithChildren = publicBlogRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   publicBlogRouteRoute: publicBlogRouteRouteWithChildren,
   publicAboutRoute: publicAboutRoute,
+  publicContactRoute: publicContactRoute,
   publicFeedDotxmlRoute: publicFeedDotxmlRoute,
+  publicPrivacyRoute: publicPrivacyRoute,
   publicRobotsDottxtRoute: publicRobotsDottxtRoute,
   publicSitemapDotxmlRoute: publicSitemapDotxmlRoute,
   publicIndexRoute: publicIndexRoute,

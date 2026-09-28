@@ -67,7 +67,27 @@ type SharedFieldProps = {
   id: string;
   label: string;
   error?: ReactNode;
+  info?: ReactNode;
+  layout?: "vertical" | "responsive";
 };
+
+function FieldLayout({
+  id,
+  label,
+  required,
+  layout,
+  children,
+}: SharedFieldProps & { required?: boolean; children: ReactNode }) {
+  return (
+    <div className={layout === "responsive"
+      ? "grid gap-2 md:grid-cols-[12rem_minmax(0,1fr)] md:gap-x-8"
+      : "grid gap-2"}
+    >
+      <FieldLabel htmlFor={id} label={label} required={required} />
+      <div className="min-w-0">{children}</div>
+    </div>
+  );
+}
 
 export type TextFieldProps = Omit<
   ComponentPropsWithRef<"input">,
@@ -79,6 +99,8 @@ export function TextField({
   id,
   label,
   error,
+  info,
+  layout = "vertical",
   required,
   className,
   ref,
@@ -91,8 +113,7 @@ export function TextField({
     undefined;
 
   return (
-    <div>
-      <FieldLabel htmlFor={id} label={label} required={required} />
+    <FieldLayout id={id} label={label} required={required} layout={layout}>
       <input
         {...props}
         ref={ref}
@@ -100,10 +121,11 @@ export function TextField({
         required={required}
         aria-invalid={error ? true : undefined}
         aria-describedby={describedBy}
-        className={`${fieldClassName} mt-2 ${className ?? ""}`}
+        className={`${fieldClassName} ${className ?? ""}`}
       />
       <FieldError id={errorId}>{error}</FieldError>
-    </div>
+      {info}
+    </FieldLayout>
   );
 }
 
@@ -117,6 +139,8 @@ export function SelectField({
   id,
   label,
   error,
+  info,
+  layout = "vertical",
   required,
   className,
   children,
@@ -130,9 +154,8 @@ export function SelectField({
     undefined;
 
   return (
-    <div>
-      <FieldLabel htmlFor={id} label={label} required={required} />
-      <div className="relative mt-2">
+    <FieldLayout id={id} label={label} required={required} layout={layout}>
+      <div className="relative">
         <select
           {...props}
           ref={ref}
@@ -149,7 +172,8 @@ export function SelectField({
         />
       </div>
       <FieldError id={errorId}>{error}</FieldError>
-    </div>
+      {info}
+    </FieldLayout>
   );
 }
 
@@ -163,6 +187,8 @@ export function TextareaField({
   id,
   label,
   error,
+  info,
+  layout = "vertical",
   required,
   className,
   ref,
@@ -175,8 +201,7 @@ export function TextareaField({
     undefined;
 
   return (
-    <div>
-      <FieldLabel htmlFor={id} label={label} required={required} />
+    <FieldLayout id={id} label={label} required={required} layout={layout}>
       <textarea
         {...props}
         ref={ref}
@@ -184,9 +209,10 @@ export function TextareaField({
         required={required}
         aria-invalid={error ? true : undefined}
         aria-describedby={describedBy}
-        className={`${fieldClassName} mt-2 min-h-32 resize-y leading-7 ${className ?? ""}`}
+        className={`${fieldClassName} min-h-32 resize-y leading-7 ${className ?? ""}`}
       />
       <FieldError id={errorId}>{error}</FieldError>
-    </div>
+      {info}
+    </FieldLayout>
   );
 }

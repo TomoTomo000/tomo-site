@@ -25,7 +25,7 @@ export function useContactTurnstile(sitekey: string) {
         widgetRef.current = turnstile.render(container, {
           sitekey,
           action: "contact_submit",
-          size: "compact",
+          size: "normal",
           callback: () => {
             if (disposed) return;
             window.clearTimeout(timeout);
