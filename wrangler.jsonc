@@ -4,12 +4,13 @@
   "compatibility_date": "2026-08-29",
   "compatibility_flags": ["nodejs_compat"],
   "main": "src/server.ts",
+  "workers_dev": false,
   "assets": { "binding": "ASSETS" },
   "vars": {
     "APP_ENV": "production",
-    "SITE_URL": "https://tomo-site.tomopage.workers.dev",
+    "SITE_URL": "https://tomo-site.page",
     "MICROCMS_SERVICE_DOMAIN": "tomo-site",
-    "CONTACT_FROM_EMAIL": "TOMO Website <onboarding@resend.dev>"
+    "CONTACT_FROM_EMAIL": "TOMO Website <contact@tomo-site.page>"
   },
   "ratelimits": [
     {
