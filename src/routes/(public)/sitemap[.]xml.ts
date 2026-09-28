@@ -31,6 +31,8 @@ export const Route = createFileRoute("/(public)/sitemap.xml")({
           `<url><loc>${escapeXml(`${siteUrl}/`)}</loc></url>`,
           `<url><loc>${escapeXml(`${siteUrl}/about`)}</loc></url>`,
           `<url><loc>${escapeXml(`${siteUrl}/blog`)}</loc></url>`,
+          `<url><loc>${escapeXml(`${siteUrl}/privacy`)}</loc></url>`,
+          `<url><loc>${escapeXml(`${siteUrl}/contact`)}</loc></url>`,
           ...items.map(
             (post) =>
               `<url><loc>${escapeXml(`${siteUrl}/blog/${encodeURIComponent(post.slug)}`)}</loc><lastmod>${escapeXml(post.updatedAt)}</lastmod></url>`,

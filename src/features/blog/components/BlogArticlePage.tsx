@@ -119,7 +119,7 @@ export function BlogArticlePage({ post }: { post: PostDetail }) {
                       </ButtonLink>
                     </div>
                     <p className="mt-2 text-xs text-muted">
-                      Web制作・開発会社で、フロントエンドエンジニア・WEBデザイナーとして働いています。
+                      WEB制作・開発会社で、フロントエンドエンジニア・WEBデザイナーとして働いています。
                     </p>
                   </div>
                 </div>

@@ -5,12 +5,12 @@ const careers = [
   {
     label: "約3年半",
     title: "大阪のフレンチレストランで勤務",
-    description: "Web業界に入る前は、約3年半フレンチレストランで働いていました。",
+    description: "WEB業界に入る前は、約3年半フレンチレストランで働いていました。",
   },
   {
     label: "現在",
-    title: "Web制作・開発会社へ",
-    description: "Web業界へ転職し、現在はWeb制作・開発会社で、フロントエンドエンジニア・WEBデザイナーとして開発・デザインに携わっています。",
+    title: "WEB制作・開発会社へ",
+    description: "WEB業界へ転職し、現在はWEB制作・開発会社で、フロントエンドエンジニア・WEBデザイナーとして開発・デザインに携わっています。",
   },
 ];
 
@@ -44,7 +44,7 @@ export function AboutPage() {
       <main className="pb-20 pt-12 sm:pb-28">
         <PageContainer>
           <div className="text-center">
-            <h1 className="text-5xl font-black sm:text-6xl">ABOUT</h1>
+            <h1 className="text-3xl font-black sm:text-5xl">ABOUT</h1>
             <p className="mt-7 text-sm leading-7 sm:text-base">私について</p>
           </div>
 
@@ -61,8 +61,8 @@ export function AboutPage() {
             <div>
               <h2 id="profile-title" className="text-3xl font-black sm:text-4xl">TOMO</h2>
               <div className="mt-7 space-y-5 text-sm leading-8 text-ink sm:text-base">
-                <p>約3年半フレンチレストランに勤務したのち、Web業界へ転職。</p>
-                <p>現在はWeb制作・開発会社で、フロントエンドエンジニア・WEBデザイナーとして働いています。</p>
+                <p>約3年半フレンチレストランに勤務したのち、WEB業界へ転職。</p>
+                <p>現在はWEB制作・開発会社で、フロントエンドエンジニア・WEBデザイナーとして働いています。</p>
                 <p>実装するだけではなく、長く運用できる設計や、全体を見据えたスケジューリング、クライアントの想いを整理するデザインを大切にしながら制作しています。</p>
               </div>
             </div>
@@ -71,13 +71,18 @@ export function AboutPage() {
           <section className="mt-20 border-t border-ink/10 pt-14 sm:mt-28 sm:pt-20" aria-labelledby="career-title">
             <h2 id="career-title" className="text-3xl font-black sm:text-4xl">CAREER</h2>
             <p className="mt-3 text-sm text-muted">これまでのこと</p>
-            <ol className="mt-10 space-y-8 border-l border-ink/20 pl-6 sm:pl-10">
-              {careers.map((career) => (
-                <li key={career.title} className="relative">
-                  <span aria-hidden="true" className="absolute -left-[1.8125rem] top-1 size-2.5 rounded-full bg-canvas sm:-left-[2.8125rem]" />
-                  <p className="text-sm font-bold text-muted">{career.label}</p>
-                  <h3 className="mt-3 text-xl font-bold">{career.title}</h3>
-                  <p className="mt-4 max-w-2xl text-sm leading-8 sm:text-base">{career.description}</p>
+            <ol className="mt-10">
+              {careers.map((career, index) => (
+                <li key={career.title} className="flex gap-4 sm:gap-8">
+                  <div aria-hidden="true" className="relative flex w-2.5 shrink-0 justify-center">
+                    <span className="absolute inset-y-0 w-px bg-ink/20" />
+                    <span className="relative mt-1 size-2.5 rounded-full bg-canvas" />
+                  </div>
+                  <div className={index < careers.length - 1 ? "min-w-0 pb-8" : "min-w-0"}>
+                    <p className="text-sm font-bold text-muted">{career.label}</p>
+                    <h3 className="mt-3 text-xl font-bold">{career.title}</h3>
+                    <p className="mt-4 max-w-2xl text-sm leading-8 sm:text-base">{career.description}</p>
+                  </div>
                 </li>
               ))}
             </ol>

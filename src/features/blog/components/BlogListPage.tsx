@@ -30,7 +30,7 @@ export function BlogListPage({
     <main className="py-12">
       <BlogContainer>
         <div className="text-center">
-          <h1 className="text-5xl font-black sm:text-6xl">BLOG</h1>
+          <h1 className="text-3xl font-black sm:text-5xl">BLOG</h1>
           <p className="mx-auto mt-7 max-w-lg text-sm leading-7 text-ink sm:text-base">
             日々の制作で学んだことと、デザイン、コード、好きなものについてのブログです。
           </p>

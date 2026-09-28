@@ -7,7 +7,7 @@ import { PageContainer } from "./PageContainer";
 const navItems = [
   { section: "about", label: "ABOUT", to: "/about" },
   { section: "blog", label: "BLOG", to: "/blog" },
-  { section: "contact", label: "CONTACT", to: "/" },
+  { section: "contact", label: "CONTACT", to: "/contact" },
 ] as const;
 
 export function DetailLayout({ children }: { children: ReactNode }) {
@@ -78,7 +78,6 @@ export function DetailLayout({ children }: { children: ReactNode }) {
               <li key={item.section}>
                 <Link
                   to={item.to}
-                  hash={item.section === "contact" ? "contact" : undefined}
                   search={item.section === "blog" ? { page: 1, query: "", tag: "" } : undefined}
                   activeOptions={{ includeSearch: false }}
                   className="block rounded-2xl px-4 py-3 text-lg font-black uppercase text-ink transition-colors hover:bg-canvas hover:text-background"
@@ -109,7 +108,6 @@ export function DetailLayout({ children }: { children: ReactNode }) {
                 <li key={item.section}>
                   <Link
                     to={item.to}
-                    hash={item.section === "contact" ? "contact" : undefined}
                     search={item.section === "blog" ? { page: 1, query: "", tag: "" } : undefined}
                     activeOptions={{ includeSearch: false }}
                     className="pointer-events-auto inline-flex h-12 items-center rounded-full bg-background px-5 text-sm font-black uppercase transition-colors hover:bg-canvas hover:text-background"

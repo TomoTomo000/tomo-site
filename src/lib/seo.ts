@@ -1,7 +1,7 @@
 export const SITE_NAME = "TOMO";
 export const SITE_TITLE = "TOMO | フロントエンドエンジニア・WEBデザイナー";
 export const SITE_DESCRIPTION =
-  "フロントエンドエンジニア・WEBデザイナーTOMOのwebサイトです。制作実績や日々の学び、コーディング・デザインについての備忘録をまとめています。";
+  "フロントエンドエンジニア・WEBデザイナーTOMOのWEBサイトです。制作実績や日々の学び、コーディング・デザインについての備忘録をまとめています。";
 
 type SeoImage = { url: string; alt: string; width?: number; height?: number };
 
