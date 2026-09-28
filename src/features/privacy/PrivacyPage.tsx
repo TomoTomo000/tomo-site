@@ -113,7 +113,7 @@ export function PrivacyPage() {
               </p>
             </section>
 
-            <p className="text-xs text-muted sm:text-sm">制定日：<time dateTime="2026-09-27">2026年9月27日</time></p>
+            <p className="text-xs text-muted sm:text-sm">制定日：<time dateTime="2026-09-29">2026年9月29日</time></p>
           </div>
         </PageContainer>
       </main>
