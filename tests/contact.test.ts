@@ -18,8 +18,8 @@ const validInput = {
 function createEnvironment(rateLimitSuccess = true): ContactEnvironment {
   return {
     APP_ENV: "production",
-    SITE_URL: "https://tomo-site.tomopage.workers.dev",
-    CONTACT_FROM_EMAIL: "TOMO Website <onboarding@resend.dev>",
+    SITE_URL: "https://tomo-site.page",
+    CONTACT_FROM_EMAIL: "TOMO Website <contact@tomo-site.page>",
     CONTACT_TO_EMAIL: "owner@example.com",
     RESEND_API_KEY: "resend-secret",
     TURNSTILE_SECRET_KEY: "turnstile-secret",
@@ -30,7 +30,7 @@ function createEnvironment(rateLimitSuccess = true): ContactEnvironment {
 }
 
 function createRequest(body: unknown = validInput): Request {
-  return new Request("https://tomo-site.tomopage.workers.dev/api/contact", {
+  return new Request("https://tomo-site.page/api/contact", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -67,8 +67,8 @@ describe("contact API", () => {
 
   test.each([
     { hostname: "other.example.com", action: "contact_submit" },
-    { hostname: "tomo-site.tomopage.workers.dev", action: "other_action" },
-    { hostname: "tomo-site.tomopage.workers.dev" },
+    { hostname: "tomo-site.page", action: "other_action" },
+    { hostname: "tomo-site.page" },
   ])("rejects invalid production verification: %j", async (result) => {
     let fetchCount = 0;
     const response = await handleContactRequest(createRequest(), createEnvironment(), async () => {
@@ -88,7 +88,7 @@ describe("contact API", () => {
       if (url.includes("siteverify")) {
         return Response.json({
           success: true,
-          hostname: "tomo-site.tomopage.workers.dev",
+          hostname: "tomo-site.page",
           action: "contact_submit",
         });
       }
@@ -105,7 +105,7 @@ describe("contact API", () => {
     expect(calls).toHaveLength(2);
     expect(calls[1]?.url).toBe("https://api.resend.com/emails");
     expect(JSON.parse(String(calls[1]?.init?.body))).toEqual({
-      from: "TOMO Website <onboarding@resend.dev>",
+      from: "TOMO Website <contact@tomo-site.page>",
       to: ["owner@example.com"],
       reply_to: "taro@example.com",
       subject: "[TOMO] 新しいお問い合わせ",
@@ -121,7 +121,7 @@ describe("contact API", () => {
         tokens.push(new URLSearchParams(String(init?.body)).get("response"));
         return Response.json({
           success: true,
-          hostname: "tomo-site.tomopage.workers.dev",
+          hostname: "tomo-site.page",
           action: "contact_submit",
         });
       }
@@ -203,7 +203,7 @@ describe("contact API", () => {
       if (String(input).includes("siteverify")) {
         return Response.json({
           success: true,
-          hostname: "tomo-site.tomopage.workers.dev",
+          hostname: "tomo-site.page",
           action: "contact_submit",
         });
       }
