@@ -140,6 +140,10 @@ textarea {
   font-size: 1.1rem;
 }
 
+.article-body > :first-child {
+  margin-top: 0;
+}
+
 .article-body strong,
 .article-body b {
   font-weight: 800;
