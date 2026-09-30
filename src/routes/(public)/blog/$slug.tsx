@@ -15,7 +15,7 @@ export const Route = createFileRoute("/(public)/blog/$slug")({
       siteUrl,
       path: `/blog/${encodeURIComponent(post.slug)}`,
       title: post.title,
-      description: post.excerpt,
+      description: post.description,
       type: "article",
       image: {
         url: imageUrl,
@@ -28,7 +28,7 @@ export const Route = createFileRoute("/(public)/blog/$slug")({
       "@context": "https://schema.org",
       "@type": "BlogPosting",
       headline: post.title,
-      description: post.excerpt || SITE_DESCRIPTION,
+      description: post.description || SITE_DESCRIPTION,
       image: imageUrl,
       datePublished: post.publishedAt ?? undefined,
       dateModified: post.updatedAt,
