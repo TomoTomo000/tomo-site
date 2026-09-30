@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { listLatestMicroCmsPosts } from "@/features/blog/server/microcms.repository.server";
+import { listMicroCmsFeedPosts } from "@/features/blog/server/microcms.repository.server";
 import { getSiteUrl } from "@/lib/site-url.server";
 
 function escapeXml(value: string): string {
@@ -16,7 +16,7 @@ export const Route = createFileRoute("/(public)/feed.xml")({
     handlers: {
       GET: async ({ request }) => {
         const siteUrl = getSiteUrl(request);
-        const posts = await listLatestMicroCmsPosts(20);
+        const posts = await listMicroCmsFeedPosts();
         const items = posts
           .map((post) => {
             const url = `${siteUrl}/blog/${encodeURIComponent(post.slug)}`;
@@ -24,7 +24,7 @@ export const Route = createFileRoute("/(public)/feed.xml")({
   <title>${escapeXml(post.title)}</title>
   <link>${escapeXml(url)}</link>
   <guid isPermaLink="true">${escapeXml(url)}</guid>
-  <description>${escapeXml(post.excerpt)}</description>
+  <description>${escapeXml(post.description)}</description>
   ${post.publishedAt ? `<pubDate>${new Date(post.publishedAt).toUTCString()}</pubDate>` : ""}
 </item>`;
           })

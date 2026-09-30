@@ -16,7 +16,6 @@ export type PostSummary = {
   id: string;
   slug: string;
   title: string;
-  excerpt: string;
   tags: Taxonomy[];
   cover: Asset | null;
   publishedAt: string | null;
@@ -25,6 +24,7 @@ export type PostSummary = {
 };
 
 export type PostDetail = PostSummary & {
+  description: string;
   contentHtml: string;
   tableOfContents: Array<{
     id: string;

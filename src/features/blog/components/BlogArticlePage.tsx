@@ -44,9 +44,6 @@ export function BlogArticlePage({ post }: { post: PostDetail }) {
             <h1 className="text-4xl font-black leading-tight sm:text-5xl">
               {post.title}
             </h1>
-            {post.excerpt ? (
-              <p className="mt-6 leading-8 text-muted">{post.excerpt}</p>
-            ) : null}
             <div className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-xs text-muted">
               <time dateTime={post.publishedAt ?? undefined}>
                 公開 {formatPostDate(post.publishedAt)}

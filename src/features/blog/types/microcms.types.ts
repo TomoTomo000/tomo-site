@@ -17,7 +17,7 @@ export type MicroCmsPost = {
   publishedAt?: string;
   revisedAt?: string;
   title: string;
-  excerpt: string;
+  description?: string | null;
   content: string;
   coverImage?: MicroCmsImage | null;
   tags: MicroCmsTaxonomy[];

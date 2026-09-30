@@ -27,6 +27,11 @@ function plainText(value: string): string {
     allowedTags: [],
     allowedAttributes: {},
   })
+    // sanitize-html re-escapes these characters; React expects plain text.
+    // Decode once so literal entity examples such as &amp; stay intact.
+    .replace(/&(amp|lt|gt);/g, (_, entity: string) =>
+      ({ amp: "&", lt: "<", gt: ">" })[entity]!,
+    )
     .replace(/\s+/g, " ")
     .trim();
 }

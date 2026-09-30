@@ -2,6 +2,24 @@ import { describe, expect, test } from "bun:test";
 import { sanitizeMicroCmsArticle } from "../src/features/blog/server/microcms-content.server";
 
 describe("sanitizeMicroCmsArticle", () => {
+  test("decodes heading entities into text without interpreting code as HTML", () => {
+    const article = sanitizeMicroCmsArticle(
+      '<h2>React &amp; TypeScript &#x1F600;</h2><h3><code>&lt;div&gt;</code>&nbsp;&quot;属性&quot; &#26085;&#26412;&#35486;</h3>',
+    );
+    expect(article.tableOfContents.map((item) => item.text)).toEqual([
+      "React & TypeScript 😀",
+      '<div> "属性" 日本語',
+    ]);
+    expect(article.html).toContain("&lt;div&gt;");
+    expect(article.text).toContain("React & TypeScript 😀");
+  });
+
+  test("preserves literal entity examples without decoding twice", () => {
+    const article = sanitizeMicroCmsArticle("<h2>&amp;amp; と &amp;lt; の説明</h2>");
+    expect(article.tableOfContents[0].text).toBe("&amp; と &lt; の説明");
+    expect(article.text).toBe("&amp; と &lt; の説明");
+  });
+
   test("removes scripts and event attributes while creating a table of contents", () => {
     const article = sanitizeMicroCmsArticle(
       '<h2 onclick="alert(1)">安全な見出し</h2><script>alert(1)</script><p>本文</p>',

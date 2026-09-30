@@ -10,39 +10,13 @@ import type {
   PostSummary,
   Taxonomy,
 } from "../types/post.types";
-import type { PostListInput } from "./post.schema";
+import { postSchema, taxonomySchema, type PostListInput } from "./post.schema";
 import { getCloudflareEnv } from "@/lib/cloudflare/env.server";
 import { throwBlogDataError } from "./blog-data.error";
 import { sanitizeMicroCmsArticle } from "./microcms-content.server";
+import { createPostDescription } from "./post-description";
 
 const contentIdPattern = /^[a-z0-9][a-z0-9-]{1,48}[a-z0-9]$/;
-
-const imageSchema = z.object({
-  url: z.url(),
-  width: z.number().int().positive().optional(),
-  height: z.number().int().positive().optional(),
-  alt: z.string().max(1_000).optional(),
-});
-
-const taxonomySchema = z.object({
-  id: z.string().min(1).max(100),
-  name: z.string().min(1).max(60),
-});
-
-const taxonomyListSchema = z.array(taxonomySchema).max(5);
-
-const postSchema = z.object({
-  id: z.string().min(1).max(100),
-  createdAt: z.string().min(1),
-  updatedAt: z.string().min(1),
-  publishedAt: z.string().min(1).optional(),
-  revisedAt: z.string().min(1).optional(),
-  title: z.string().min(1).max(160),
-  excerpt: z.string().max(320),
-  content: z.string().default(""),
-  coverImage: imageSchema.nullable().optional(),
-  tags: taxonomyListSchema,
-});
 
 const listResponseSchema = <T extends z.ZodType>(itemSchema: T) =>
   z.object({
@@ -141,7 +115,6 @@ function toSummary(value: MicroCmsPost): PostSummary {
     id: value.id,
     slug: value.id,
     title: value.title,
-    excerpt: value.excerpt,
     tags: value.tags.map(toTaxonomy),
     cover: toCover(value.coverImage),
     publishedAt: value.publishedAt ?? null,
@@ -154,13 +127,14 @@ function toDetail(value: MicroCmsPost): PostDetail {
   const article = sanitizeMicroCmsArticle(value.content);
   return {
     ...toSummary(value),
+    description: createPostDescription(value.description, article.text),
     contentHtml: article.html,
     readingMinutes: Math.max(1, Math.ceil(article.text.length / 500)),
     tableOfContents: article.tableOfContents,
   };
 }
 
-function listFields(includeContent: boolean): string {
+function listFields(): string {
   return [
     "id",
     "createdAt",
@@ -168,8 +142,6 @@ function listFields(includeContent: boolean): string {
     "publishedAt",
     "revisedAt",
     "title",
-    "excerpt",
-    ...(includeContent ? ["content"] : []),
     "coverImage",
     "tags",
   ].join(",");
@@ -179,7 +151,7 @@ export async function listLatestMicroCmsPosts(limit = 4): Promise<PostSummary[]>
   const query = new URLSearchParams({
     limit: String(Math.min(Math.max(limit, 1), 50)),
     orders: "-publishedAt",
-    fields: listFields(false),
+    fields: listFields(),
     depth: "1",
   });
   const response = (await requestMicroCms({
@@ -196,7 +168,7 @@ export async function listMicroCmsPosts(input: PostListInput): Promise<Paginated
     limit: String(pageSize),
     offset: String((input.page - 1) * pageSize),
     orders: "-publishedAt",
-    fields: listFields(false),
+    fields: listFields(),
     depth: "1",
   });
   if (input.query) query.set("q", input.query);
@@ -226,7 +198,7 @@ export async function findMicroCmsPostSummaryById(contentId: string): Promise<Po
   const response = await requestMicroCms({
     endpoint: "blog",
     contentId,
-    query: new URLSearchParams({ depth: "1", fields: listFields(false) }),
+    query: new URLSearchParams({ depth: "1", fields: listFields() }),
     schema: postSchema,
   });
   return response ? toSummary(response) : null;
@@ -246,6 +218,15 @@ export async function findMicroCmsPostById(input: {
     schema: postSchema,
   });
   return response ? toDetail(response) : null;
+}
+
+export async function listMicroCmsFeedPosts(): Promise<PostDetail[]> {
+  const response = await requestMicroCms({
+    endpoint: "blog",
+    query: new URLSearchParams({ limit: "20", orders: "-publishedAt", depth: "1" }),
+    schema: listResponseSchema(postSchema),
+  });
+  return response?.contents.map(toDetail) ?? [];
 }
 
 async function listTaxonomyEndpoint(endpoint: "tag"): Promise<Taxonomy[]> {

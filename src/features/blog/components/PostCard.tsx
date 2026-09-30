@@ -32,9 +32,6 @@ export function PostCard({ post }: { post: PostSummary }) {
           </div>
           <div className="mt-8 flex flex-1 flex-col">
             <h3 className="text-lg font-bold leading-8">{post.title}</h3>
-            {post.excerpt ? (
-              <p className="mt-4 text-sm leading-7 text-muted">{post.excerpt}</p>
-            ) : null}
             {post.tags.length ? (
               <ul className="mt-5 flex flex-wrap gap-x-3 gap-y-1 text-xs font-bold text-ink">
                 {post.tags.map((tag) => (
