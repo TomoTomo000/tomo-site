@@ -115,7 +115,6 @@ textarea {
 .article-body h2,
 .article-body h3,
 .article-body h4 {
-  scroll-margin-top: 2rem;
   font-weight: 900;
   line-height: 1.5;
 }
