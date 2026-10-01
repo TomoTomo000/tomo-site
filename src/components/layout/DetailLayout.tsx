@@ -15,7 +15,7 @@ export function DetailLayout({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen bg-background text-ink">
-      <header className="pointer-events-none sticky top-0 z-50 px-4 pt-4 lg:hidden">
+      <header data-page-header className="pointer-events-none sticky top-0 z-50 px-4 pt-4 lg:hidden">
         <div className="flex items-start justify-between gap-4">
           <AppLink
             to="/"
@@ -91,7 +91,7 @@ export function DetailLayout({ children }: { children: ReactNode }) {
         </nav>
       </div>
 
-      <header className="pointer-events-none sticky top-0 z-50 hidden px-9 pt-9 lg:block">
+      <header data-page-header className="pointer-events-none sticky top-0 z-50 hidden px-9 pt-9 lg:block">
         <div className="flex items-start justify-between gap-4">
           <AppLink
             to="/"

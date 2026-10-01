@@ -5,12 +5,14 @@ import type { PostDetail } from "../types/post.types";
 import { ArticleBody } from "./ArticleBody";
 import { BlogContainer } from "./BlogContainer";
 import { formatPostDate } from "./date";
+import { useArticleHashScroll } from "./useArticleHashScroll";
 
 export function BlogArticlePage({ post }: { post: PostDetail }) {
+  const { articleRef, scrollToHeading } = useArticleHashScroll(post.id);
   const hasTableOfContents = post.tableOfContents.length >= 2;
 
   return (
-    <main className="py-12">
+    <main ref={articleRef} className="py-12">
       <BlogContainer>
         <nav
           className="mb-8 text-xs text-muted"
@@ -124,7 +126,7 @@ export function BlogArticlePage({ post }: { post: PostDetail }) {
             </div>
 
             {hasTableOfContents ? (
-              <aside className="order-first lg:order-last lg:sticky lg:top-24">
+              <aside className="order-first lg:order-last lg:sticky lg:top-[calc(var(--article-header-height)+1rem)] lg:max-h-[calc(100dvh-var(--article-header-height)-2rem)] lg:overflow-y-auto">
                 <details
                   className="group rounded-2xl bg-surface p-5"
                   open
@@ -146,6 +148,11 @@ export function BlogArticlePage({ post }: { post: PostDetail }) {
                       >
                         <AnchorLink
                           href={`#${item.id}`}
+                          onClick={(event) => {
+                            if (event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+                              scrollToHeading();
+                            }
+                          }}
                           className={
                             item.level === 2
                               ? "font-bold text-ink"
