@@ -1,9 +1,19 @@
 import { DetailLayout } from "@/components/layout/DetailLayout";
 import { PageContainer } from "@/components/layout/PageContainer";
-import { ButtonLink } from "@/components/ui/Button";
+import { AnchorLink } from "@/components/ui/Link";
 import type { Work } from "./works";
 
 export function WorkDetailPage({ work }: { work: Work }) {
+  const screenshot = (
+    <img
+      src={work.image.src}
+      alt={work.image.alt}
+      width={work.image.width}
+      height={work.image.height}
+      className="w-full rounded-2xl border border-ink/10"
+    />
+  );
+
   return (
     <DetailLayout>
       <main className="pb-20 pt-12 sm:pb-28">
@@ -15,13 +25,11 @@ export function WorkDetailPage({ work }: { work: Work }) {
           </header>
 
           <figure className="mt-12 sm:mt-16">
-            <img
-              src={work.image.src}
-              alt={work.image.alt}
-              width={work.image.width}
-              height={work.image.height}
-              className="w-full rounded-2xl border border-ink/10"
-            />
+            {work.siteUrl ? (
+              <AnchorLink href={work.siteUrl} className="block rounded-2xl" aria-label={`${work.title}のサイトを見る`}>
+                {screenshot}
+              </AnchorLink>
+            ) : screenshot}
           </figure>
 
           <div className="mx-auto max-w-3xl">
@@ -51,12 +59,6 @@ export function WorkDetailPage({ work }: { work: Work }) {
               </ul>
             </section>
 
-            <div className="mt-16 flex flex-wrap justify-center gap-4">
-              {work.siteUrl ? (
-                <a href={work.siteUrl} className="inline-flex items-center justify-center rounded-full bg-canvas px-6 py-3 text-center text-sm font-bold text-background transition-transform duration-300 ease-pop hover:scale-105">サイトを見る</a>
-              ) : null}
-              <ButtonLink to="/works" variant="secondary">WORKS一覧へ戻る</ButtonLink>
-            </div>
           </div>
         </PageContainer>
       </main>
