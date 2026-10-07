@@ -21,6 +21,8 @@ const skills = [
   { name: "TypeScript", logo: "typescript" },
   { name: "Next.js", logo: "nextjs" },
   { name: "React", logo: "react" },
+  { name: "Astro", logo: "astro" },
+  { name: "TanStack Start", logo: "tanstack-start" },
 ];
 
 const likes = [

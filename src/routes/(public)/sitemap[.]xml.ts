@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { listMicroCmsPosts } from "@/features/blog/server/microcms.repository.server";
 import { getSiteUrl } from "@/lib/site-url.server";
+import { works, getWorkPath } from "@/features/works/works";
 
 function escapeXml(value: string): string {
   return value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
@@ -30,6 +31,8 @@ export const Route = createFileRoute("/(public)/sitemap.xml")({
         const entries = [
           `<url><loc>${escapeXml(`${siteUrl}/`)}</loc></url>`,
           `<url><loc>${escapeXml(`${siteUrl}/about`)}</loc></url>`,
+          `<url><loc>${escapeXml(`${siteUrl}/works`)}</loc></url>`,
+          ...works.map((work) => `<url><loc>${escapeXml(`${siteUrl}${getWorkPath(work.slug)}`)}</loc></url>`),
           `<url><loc>${escapeXml(`${siteUrl}/blog`)}</loc></url>`,
           `<url><loc>${escapeXml(`${siteUrl}/privacy`)}</loc></url>`,
           `<url><loc>${escapeXml(`${siteUrl}/contact`)}</loc></url>`,

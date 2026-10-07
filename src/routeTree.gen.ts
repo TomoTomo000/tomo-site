@@ -20,6 +20,8 @@ import { Route as publicSitemapDotxmlRouteImport } from './routes/(public)/sitem
 import { Route as publicApiContactRouteImport } from './routes/(public)/api.contact'
 import { Route as publicBlogIndexRouteImport } from './routes/(public)/blog/index'
 import { Route as publicBlogSlugRouteImport } from './routes/(public)/blog/$slug'
+import { Route as publicWorksIndexRouteImport } from './routes/(public)/works/index'
+import { Route as publicWorksSlugRouteImport } from './routes/(public)/works/$slug'
 import { Route as publicBlogPreviewContentIdRouteImport } from './routes/(public)/blog/preview/$contentId'
 import { Route as publicOgBlogSlugRouteImport } from './routes/(public)/og.blog.$slug'
 
@@ -78,6 +80,16 @@ const publicBlogSlugRoute = publicBlogSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => publicBlogRouteRoute,
 } as any)
+const publicWorksIndexRoute = publicWorksIndexRouteImport.update({
+  id: '/(public)/works/',
+  path: '/works/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const publicWorksSlugRoute = publicWorksSlugRouteImport.update({
+  id: '/(public)/works/$slug',
+  path: '/works/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const publicBlogPreviewContentIdRoute =
   publicBlogPreviewContentIdRouteImport.update({
     id: '/preview/$contentId',
@@ -101,7 +113,9 @@ export interface FileRoutesByFullPath {
   '/': typeof publicIndexRoute
   '/api/contact': typeof publicApiContactRoute
   '/blog/$slug': typeof publicBlogSlugRoute
+  '/works/$slug': typeof publicWorksSlugRoute
   '/blog/': typeof publicBlogIndexRoute
+  '/works/': typeof publicWorksIndexRoute
   '/blog/preview/$contentId': typeof publicBlogPreviewContentIdRoute
   '/og/blog/$slug': typeof publicOgBlogSlugRoute
 }
@@ -115,7 +129,9 @@ export interface FileRoutesByTo {
   '/': typeof publicIndexRoute
   '/api/contact': typeof publicApiContactRoute
   '/blog/$slug': typeof publicBlogSlugRoute
+  '/works/$slug': typeof publicWorksSlugRoute
   '/blog': typeof publicBlogIndexRoute
+  '/works': typeof publicWorksIndexRoute
   '/blog/preview/$contentId': typeof publicBlogPreviewContentIdRoute
   '/og/blog/$slug': typeof publicOgBlogSlugRoute
 }
@@ -131,7 +147,9 @@ export interface FileRoutesById {
   '/(public)/': typeof publicIndexRoute
   '/(public)/api/contact': typeof publicApiContactRoute
   '/(public)/blog/$slug': typeof publicBlogSlugRoute
+  '/(public)/works/$slug': typeof publicWorksSlugRoute
   '/(public)/blog/': typeof publicBlogIndexRoute
+  '/(public)/works/': typeof publicWorksIndexRoute
   '/(public)/blog/preview/$contentId': typeof publicBlogPreviewContentIdRoute
   '/(public)/og/blog/$slug': typeof publicOgBlogSlugRoute
 }
@@ -148,7 +166,9 @@ export interface FileRouteTypes {
     | '/'
     | '/api/contact'
     | '/blog/$slug'
+    | '/works/$slug'
     | '/blog/'
+    | '/works/'
     | '/blog/preview/$contentId'
     | '/og/blog/$slug'
   fileRoutesByTo: FileRoutesByTo
@@ -162,7 +182,9 @@ export interface FileRouteTypes {
     | '/'
     | '/api/contact'
     | '/blog/$slug'
+    | '/works/$slug'
     | '/blog'
+    | '/works'
     | '/blog/preview/$contentId'
     | '/og/blog/$slug'
   id:
@@ -177,7 +199,9 @@ export interface FileRouteTypes {
     | '/(public)/'
     | '/(public)/api/contact'
     | '/(public)/blog/$slug'
+    | '/(public)/works/$slug'
     | '/(public)/blog/'
+    | '/(public)/works/'
     | '/(public)/blog/preview/$contentId'
     | '/(public)/og/blog/$slug'
   fileRoutesById: FileRoutesById
@@ -192,6 +216,8 @@ export interface RootRouteChildren {
   publicSitemapDotxmlRoute: typeof publicSitemapDotxmlRoute
   publicIndexRoute: typeof publicIndexRoute
   publicApiContactRoute: typeof publicApiContactRoute
+  publicWorksSlugRoute: typeof publicWorksSlugRoute
+  publicWorksIndexRoute: typeof publicWorksIndexRoute
   publicOgBlogSlugRoute: typeof publicOgBlogSlugRoute
 }
 
@@ -274,6 +300,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof publicBlogSlugRouteImport
       parentRoute: typeof publicBlogRouteRoute
     }
+    '/(public)/works/': {
+      id: '/(public)/works/'
+      path: '/works'
+      fullPath: '/works/'
+      preLoaderRoute: typeof publicWorksIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(public)/works/$slug': {
+      id: '/(public)/works/$slug'
+      path: '/works/$slug'
+      fullPath: '/works/$slug'
+      preLoaderRoute: typeof publicWorksSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/(public)/blog/preview/$contentId': {
       id: '/(public)/blog/preview/$contentId'
       path: '/preview/$contentId'
@@ -317,6 +357,8 @@ const rootRouteChildren: RootRouteChildren = {
   publicSitemapDotxmlRoute: publicSitemapDotxmlRoute,
   publicIndexRoute: publicIndexRoute,
   publicApiContactRoute: publicApiContactRoute,
+  publicWorksSlugRoute: publicWorksSlugRoute,
+  publicWorksIndexRoute: publicWorksIndexRoute,
   publicOgBlogSlugRoute: publicOgBlogSlugRoute,
 }
 export const routeTree = rootRouteImport
