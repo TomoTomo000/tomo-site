@@ -24,7 +24,7 @@ export function PageLoader() {
       <div className="text-center">
         <p className="text-background font-black leading-none">
           <span
-            className="block whitespace-nowrap text-5xl sm:text-6xl 2xl:text-7xl"
+            className="block whitespace-nowrap text-5xl sm:text-6xl"
             aria-hidden="true"
           >
             {loadingCharacters.map((character, index) => (

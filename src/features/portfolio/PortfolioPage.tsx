@@ -7,9 +7,12 @@ import type { PostSummary } from "@/features/blog/types/post.types";
 import { PostCard } from "@/features/blog/components/PostCard";
 import { useState } from "react";
 import { usePageLoader } from "@/features/page-loader/usePageLoader";
+import { WorkCard } from "@/features/works/WorkCard";
+import { works } from "@/features/works/works";
 
 const navItems = [
   { label: "About", href: "#about" },
+  { label: "Works", href: "#works" },
   { label: "Blog", href: "#blog" },
   { label: "Contact", href: "#contact" },
 ];
@@ -20,9 +23,9 @@ export function PortfolioPage({ blogPosts }: { blogPosts: PostSummary[] }) {
 
   return (
     <div
-      className="min-h-screen overflow-x-clip bg-canvas text-ink lg:h-svh lg:overflow-hidden"
+      className="min-h-screen overflow-x-clip bg-canvas text-ink"
     >
-      <header className="pointer-events-none sticky top-0 z-50 px-4 pt-4 lg:hidden">
+      <header className="pointer-events-none sticky top-0 z-50 px-4 pt-4 min-[621px]:hidden">
         <div className="flex items-start justify-between gap-4">
           <AppLink
             to="/"
@@ -60,7 +63,7 @@ export function PortfolioPage({ blogPosts }: { blogPosts: PostSummary[] }) {
       </header>
 
       <div
-        className={`fixed inset-0 z-40 lg:hidden ${
+        className={`fixed inset-0 z-40 min-[621px]:hidden ${
           isMenuOpen ? "pointer-events-auto" : "pointer-events-none"
         }`}
         aria-hidden={!isMenuOpen}
@@ -99,19 +102,15 @@ export function PortfolioPage({ blogPosts }: { blogPosts: PostSummary[] }) {
         </nav>
       </div>
 
-      <div
-        className={`mx-auto w-full max-w-[2400px] transform-gpu transition-transform duration-[750ms] ease-[cubic-bezier(0.76,0,0.24,1)] lg:grid lg:h-svh lg:grid-cols-site lg:gap-2 lg:p-2 min-[112.5rem]:grid-cols-[minmax(0,1fr)_57.5rem_20rem] ${
-          loaderState === "entering" ? "translate-y-[7svh]" : "translate-y-0"
-        }`}
-      >
+      <div className="relative mx-auto w-full">
         <aside
-          className="relative h-hero-mobile overflow-hidden bg-canvas lg:h-full lg:rounded-3xl"
+          className="relative h-hero-mobile overflow-hidden bg-canvas min-[621px]:hidden min-[1101px]:fixed min-[1101px]:inset-y-2 min-[1101px]:left-2 min-[1101px]:block min-[1101px]:h-auto min-[1101px]:w-[calc((100%-440px)/2-16px)] min-[1101px]:rounded-3xl"
         >
           <AppLink
             to="/"
             reloadDocument
             variant="control"
-            className="absolute left-7 top-7 z-10 hidden h-12 items-center rounded-full bg-background px-5 text-xl font-black text-ink lg:inline-flex"
+            className="absolute left-7 top-7 z-10 hidden h-12 items-center rounded-full bg-background px-5 text-xl font-black text-ink min-[1101px]:inline-flex"
             aria-label="TOMO ホーム"
           >
             TOMO.
@@ -132,11 +131,13 @@ export function PortfolioPage({ blogPosts }: { blogPosts: PostSummary[] }) {
         </aside>
 
         <main
-          className="min-w-0 space-y-2 p-2 pt-0 lg:h-full lg:overflow-y-auto lg:overscroll-contain lg:p-0 lg:[scrollbar-color:#F7F0E7_transparent] lg:[scrollbar-width:auto] lg:[&::-webkit-scrollbar]:w-3.5 lg:[&::-webkit-scrollbar-track]:bg-transparent lg:[&::-webkit-scrollbar-thumb]:rounded-full lg:[&::-webkit-scrollbar-thumb]:border-[3px] lg:[&::-webkit-scrollbar-thumb]:border-solid lg:[&::-webkit-scrollbar-thumb]:border-transparent lg:[&::-webkit-scrollbar-thumb]:bg-background lg:[&::-webkit-scrollbar-thumb]:bg-clip-content lg:[&::-webkit-scrollbar-thumb:hover]:bg-background/70"
+          className={`@container mx-auto min-w-0 space-y-2 p-2 pt-0 transition-transform duration-[750ms] ease-[cubic-bezier(0.76,0,0.24,1)] min-[621px]:ml-4 min-[621px]:mr-0 min-[621px]:w-[440px] min-[621px]:px-0 min-[621px]:pt-2 min-[831px]:ml-20 min-[1101px]:mx-auto ${
+            loaderState === "entering" ? "translate-y-[7svh]" : "translate-y-0"
+          }`}
           aria-label="メインコンテンツ"
         >
           <section
-            className="relative flex min-h-svh scroll-mt-2 items-center justify-center rounded-3xl bg-background px-6 py-28 text-center sm:px-10"
+            className="relative flex min-h-svh scroll-mt-2 items-center justify-center rounded-3xl bg-background px-6 py-28 text-center min-[621px]:min-h-[calc(100svh-1rem)] sm:px-10"
             aria-labelledby="hero-title"
           >
             <div>
@@ -144,7 +145,7 @@ export function PortfolioPage({ blogPosts }: { blogPosts: PostSummary[] }) {
                 id="hero-title"
                 className="font-black leading-none"
               >
-                <span className="block text-5xl sm:text-6xl 2xl:text-7xl">
+                <span className="block text-5xl sm:text-6xl">
                   TOMO.
                 </span>
                 <span className="mt-4 block text-sm sm:text-base">
@@ -176,7 +177,7 @@ export function PortfolioPage({ blogPosts }: { blogPosts: PostSummary[] }) {
               </p>
             </div>
 
-            <div className="mt-14 grid items-center gap-10 md:grid-cols-2">
+            <div className="mt-14 grid items-center gap-10 @min-[600px]:grid-cols-2">
               <div className="relative aspect-square overflow-hidden rounded-2xl bg-canvas">
                 <img
                   src="/img/about-profile.svg"
@@ -197,6 +198,25 @@ export function PortfolioPage({ blogPosts }: { blogPosts: PostSummary[] }) {
             </div>
             <div className="mt-10 text-center">
               <ButtonLink to="/about">詳しく見る</ButtonLink>
+            </div>
+          </section>
+
+          <section
+            id="works"
+            className="scroll-mt-2 rounded-3xl bg-background px-6 py-20 sm:px-8 sm:py-24"
+            aria-labelledby="works-title"
+          >
+            <div className="text-center">
+              <h2 id="works-title" className="text-3xl font-black leading-none sm:text-5xl">WORKS</h2>
+              <p className="mx-auto mt-7 max-w-lg text-sm leading-7 text-ink sm:text-base">これまでに制作したもの</p>
+            </div>
+            <div className="mt-12 grid gap-6 @min-[600px]:grid-cols-2">
+              {works.slice(0, 3).map((work) => (
+                <WorkCard key={work.slug} work={work} />
+              ))}
+            </div>
+            <div className="mt-10 text-center">
+              <ButtonLink to="/works">制作実績一覧を見る</ButtonLink>
             </div>
           </section>
 
@@ -223,7 +243,7 @@ export function PortfolioPage({ blogPosts }: { blogPosts: PostSummary[] }) {
               </div>
             ) : (
               <>
-                <div className="mt-12 grid gap-6 sm:grid-cols-2">
+                <div className="mt-12 grid gap-6 @min-[600px]:grid-cols-2">
                   {blogPosts.map((post) => (
                     <PostCard key={post.id} post={post} />
                   ))}
@@ -277,16 +297,25 @@ export function PortfolioPage({ blogPosts }: { blogPosts: PostSummary[] }) {
         </main>
 
         <aside
-          className="hidden h-full flex-col rounded-3xl bg-background p-6 lg:flex"
+          className="fixed inset-y-2 right-2 hidden w-[calc(100%-472px)] flex-col items-center justify-center p-2 min-[621px]:flex min-[831px]:w-[calc(100%-536px)] min-[831px]:p-6 min-[1101px]:w-[calc((100%-440px)/2-16px)]"
         >
+          <AppLink
+            to="/"
+            reloadDocument
+            variant="control"
+            className="mb-8 inline-flex h-12 shrink-0 items-center text-4xl font-black text-background"
+            aria-label="TOMO ホーム"
+          >
+            TOMO.
+          </AppLink>
           <nav aria-label="メインナビゲーション">
-            <ul className="space-y-2">
+            <ul className="space-y-5 text-center">
               {navItems.map((item) => (
                 <li key={item.href}>
                   <Link
                     to="/"
                     hash={item.href.slice(1)}
-                    className="block rounded-2xl px-4 py-3 text-lg font-black uppercase text-ink transition-colors hover:bg-canvas hover:text-background"
+                    className="block rounded-2xl px-2 py-3 text-lg font-black uppercase text-background transition-colors hover:bg-background/10 min-[831px]:px-4"
                   >
                     {item.label}
                   </Link>

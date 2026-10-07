@@ -6,6 +6,7 @@ import { PageContainer } from "./PageContainer";
 
 const navItems = [
   { section: "about", label: "ABOUT", to: "/about" },
+  { section: "works", label: "WORKS", to: "/works" },
   { section: "blog", label: "BLOG", to: "/blog" },
   { section: "contact", label: "CONTACT", to: "/contact" },
 ] as const;
