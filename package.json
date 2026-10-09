@@ -12,6 +12,7 @@
     "build": "bun run --filter @tomo/web build",
     "preview": "bun run --filter @tomo/web preview",
     "deploy": "bun run --filter @tomo/web deploy",
+    "deploy:preview": "bun run --filter @tomo/web deploy:preview",
     "cf-typegen": "bun run --filter @tomo/web cf-typegen",
     "lint": "eslint .",
     "test": "bun run --filter @tomo/web test",
