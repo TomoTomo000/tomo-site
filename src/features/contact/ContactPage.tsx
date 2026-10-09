@@ -3,7 +3,12 @@ import { toast } from "sonner";
 import { DetailLayout } from "@/components/layout/DetailLayout";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { Button } from "@/components/ui/Button";
-import { FieldCount, SelectField, TextareaField, TextField } from "@/components/ui/FormField";
+import {
+  FieldCount,
+  SelectField,
+  TextareaField,
+  TextField,
+} from "@/components/ui/FormField";
 import { AppLink } from "@/components/ui/Link";
 import { useContactTurnstile } from "./useContactTurnstile";
 import { contactSchema } from "./contact.schema";
@@ -21,7 +26,9 @@ export function ContactPage() {
   const [contactMessage, setContactMessage] = useState("");
   const [contactName, setContactName] = useState("");
   const [contactEmail, setContactEmail] = useState("");
-  const contactSubmission = useRef<{ content: string; id: string } | null>(null);
+  const contactSubmission = useRef<{ content: string; id: string } | null>(
+    null,
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
   const {
     containerRef: turnstileContainerRef,
@@ -68,11 +75,17 @@ export function ContactPage() {
       setContactMessage("");
       setContactName("");
       setContactEmail("");
-      toast.success("お問い合わせを受け付けました。2〜3営業日以内にご返信します。", { id: "contact-submit" });
+      toast.success(
+        "お問い合わせを受け付けました。2〜3営業日以内にご返信します。",
+        { id: "contact-submit" },
+      );
     } catch {
-      toast.error("送信できませんでした。時間をおいてもう一度お試しください。", {
-        id: "contact-submit",
-      });
+      toast.error(
+        "送信できませんでした。時間をおいてもう一度お試しください。",
+        {
+          id: "contact-submit",
+        },
+      );
     } finally {
       setIsSubmitting(false);
       resetTurnstile();
@@ -81,25 +94,29 @@ export function ContactPage() {
 
   return (
     <DetailLayout>
-      <main className="pb-20 pt-12 sm:pb-28">
+      <main className="l-contact">
         <PageContainer>
-          <div className="text-center">
-            <h1 className="text-3xl font-black sm:text-5xl">CONTACT</h1>
-            <p className="mx-auto mt-7 max-w-lg text-sm leading-7 text-ink sm:text-base">
+          <div className="m-page-heading">
+            <h1 className="m-page-heading__title">CONTACT</h1>
+            <p className="m-page-heading__description m-page-heading__description--constrained">
               ご相談・お仕事のご依頼など、お気軽にお問い合わせください。内容を確認後、2〜3営業日以内にご返信します。
             </p>
           </div>
 
-          <form
-            onSubmit={handleContactSubmit}
-            className="mt-12 rounded-2xl bg-surface p-6 sm:p-8"
-          >
-            <div className="grid gap-y-8">
+          <form onSubmit={handleContactSubmit} className="m-contact-form">
+            <div className="m-contact-form__fields">
               <div>
                 <TextField
                   id="name"
                   layout="responsive"
-                  info={<FieldCount id="name-count" value={contactName} min={nameSchema.minLength ?? 0} max={nameSchema.maxLength ?? Infinity} />}
+                  info={
+                    <FieldCount
+                      id="name-count"
+                      value={contactName}
+                      min={nameSchema.minLength ?? 0}
+                      max={nameSchema.maxLength ?? Infinity}
+                    />
+                  }
                   name="name"
                   label="お名前"
                   type="text"
@@ -114,7 +131,7 @@ export function ContactPage() {
                       length < (nameSchema.minLength ?? 0)
                         ? "お名前を入力してください"
                         : length > (nameSchema.maxLength ?? Infinity)
-                          ? `お名前は${(nameSchema.maxLength ?? Infinity)}文字以内で入力してください`
+                          ? `お名前は${nameSchema.maxLength ?? Infinity}文字以内で入力してください`
                           : "",
                     );
                   }}
@@ -126,7 +143,14 @@ export function ContactPage() {
                 <TextField
                   id="email"
                   layout="responsive"
-                  info={<FieldCount id="email-count" value={contactEmail} min={emailInputSchema.minLength ?? 0} max={emailInputSchema.maxLength ?? Infinity} />}
+                  info={
+                    <FieldCount
+                      id="email-count"
+                      value={contactEmail}
+                      min={emailInputSchema.minLength ?? 0}
+                      max={emailInputSchema.maxLength ?? Infinity}
+                    />
+                  }
                   name="email"
                   label="メールアドレス"
                   type="email"
@@ -141,7 +165,7 @@ export function ContactPage() {
                       length < (emailInputSchema.minLength ?? 0)
                         ? "メールアドレスを入力してください"
                         : length > (emailInputSchema.maxLength ?? Infinity)
-                          ? `メールアドレスは${(emailInputSchema.maxLength ?? Infinity)}文字以内で入力してください`
+                          ? `メールアドレスは${emailInputSchema.maxLength ?? Infinity}文字以内で入力してください`
                           : "",
                     );
                   }}
@@ -157,9 +181,7 @@ export function ContactPage() {
                 defaultValue=""
                 required
               >
-                <option value="">
-                  選択してください
-                </option>
+                <option value="">選択してください</option>
                 {contactSchema.shape.budget.options.map((value) => (
                   <option key={value} value={value}>
                     {budgetLabels[value]}
@@ -170,7 +192,14 @@ export function ContactPage() {
                 <TextareaField
                   id="message"
                   layout="responsive"
-                  info={<FieldCount id="message-count" value={contactMessage} min={messageSchema.minLength ?? 0} max={messageSchema.maxLength ?? Infinity} />}
+                  info={
+                    <FieldCount
+                      id="message-count"
+                      value={contactMessage}
+                      min={messageSchema.minLength ?? 0}
+                      max={messageSchema.maxLength ?? Infinity}
+                    />
+                  }
                   name="message"
                   label="お問い合わせ内容"
                   placeholder="ご相談内容やご依頼の概要をご記入ください"
@@ -181,13 +210,13 @@ export function ContactPage() {
                     setContactMessage(value);
                     event.currentTarget.setCustomValidity(
                       length < (messageSchema.minLength ?? 0)
-                        ? `お問い合わせ内容は${(messageSchema.minLength ?? 0)}文字以上で入力してください`
+                        ? `お問い合わせ内容は${messageSchema.minLength ?? 0}文字以上で入力してください`
                         : length > (messageSchema.maxLength ?? Infinity)
-                          ? `お問い合わせ内容は${(messageSchema.maxLength ?? Infinity)}文字以内で入力してください`
+                          ? `お問い合わせ内容は${messageSchema.maxLength ?? Infinity}文字以内で入力してください`
                           : "",
                     );
                   }}
-                  minLength={(messageSchema.minLength ?? 0)}
+                  minLength={messageSchema.minLength ?? 0}
                   aria-describedby="message-count"
                   required
                 />
@@ -195,10 +224,10 @@ export function ContactPage() {
 
               <div
                 ref={turnstileContainerRef}
-                className="flex w-full min-w-0 justify-center empty:hidden"
+                className="m-contact-form__verification"
               />
               {turnstileError ? (
-                <p role="alert" className="text-center text-sm leading-7 text-ink">
+                <p role="alert" className="m-contact-form__error">
                   {turnstileError === "unsupported"
                     ? "お使いのブラウザーでは認証できません。ブラウザーを最新版に更新するか、別のブラウザーでお試しください。"
                     : "認証を読み込めませんでした。通信環境を確認してページを再読み込みしてください。"}
@@ -206,25 +235,27 @@ export function ContactPage() {
               ) : null}
             </div>
 
-            <p className="mt-10 text-center text-sm leading-7">
+            <p className="m-contact-form__privacy">
               個人情報の取り扱いについては、
               <AppLink
                 to="/privacy"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="underline underline-offset-4"
+                className="c-link--underline"
               >
                 プライバシーポリシー
-                <span className="sr-only">（新しいタブで開きます）</span>
+                <span className="m-contact-form__new-tab">
+                  （新しいタブで開きます）
+                </span>
               </AppLink>
               をご確認ください。
             </p>
 
-            <div className="mt-6 mx-auto max-w-56">
+            <div className="m-contact-form__action">
               <Button
                 type="submit"
                 size="lg"
-                className="w-full"
+                className="m-contact-form__submit"
                 disabled={isSubmitting || !turnstileVerified}
               >
                 {isSubmitting ? "送信中…" : "送信する"}

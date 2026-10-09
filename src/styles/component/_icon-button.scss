@@ -1,0 +1,36 @@
+@use "../base/mixin";
+@use "../base/setting";
+
+.c-icon-button {
+  display: grid;
+  cursor: pointer;
+  place-items: center;
+  border-radius: 9999px;
+
+  &--surface {
+    background: var(--color-background);
+    color: var(--color-ink);
+    transition: transform 300ms setting.$ease-pop;
+    @include mixin.hover {
+      transform: scale(1.05);
+    }
+  }
+  &--ghost {
+    color: var(--color-muted);
+    transition:
+      color 150ms setting.$ease-default,
+      background-color 150ms setting.$ease-default;
+    @include mixin.hover {
+      background: color-mix(in oklab, var(--color-ink) 5%, transparent);
+      color: var(--color-ink);
+    }
+  }
+  &--sm {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+  &--md {
+    width: 3rem;
+    height: 3rem;
+  }
+}

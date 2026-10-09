@@ -2,118 +2,173 @@ import { DetailLayout } from "@/components/layout/DetailLayout";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { AnchorLink, AppLink } from "@/components/ui/Link";
 
-const linkClassName = "underline underline-offset-4";
+const linkClassName = "c-link--underline";
 
 export function PrivacyPage() {
   return (
     <DetailLayout>
-      <main className="pb-20 pt-12 sm:pb-28">
+      <main className="l-privacy">
         <PageContainer>
-          <div className="text-center">
-            <h1 className="text-3xl font-black sm:text-5xl">PRIVACY POLICY</h1>
-            <p className="mt-7 text-sm leading-7 sm:text-base">プライバシーポリシー</p>
+          <div className="m-page-heading">
+            <h1 className="m-page-heading__title">PRIVACY POLICY</h1>
+            <p className="m-page-heading__description">プライバシーポリシー</p>
           </div>
 
-          <div className="mx-auto mt-14 max-w-3xl space-y-10 text-sm leading-8 sm:text-base">
+          <div className="l-privacy__body">
             <p>
               TOMO（以下「運営者」）は、本サイトで取り扱う個人情報について、個人情報保護法その他の関係法令を遵守し、以下の方針に基づいて適切に取り扱います。
             </p>
 
             <section aria-labelledby="privacy-purpose">
-              <h2 id="privacy-purpose" className="text-xl font-bold sm:text-2xl">取得する情報と利用目的</h2>
-              <p className="mt-4">
+              <h2 id="privacy-purpose" className="l-privacy__heading">
+                取得する情報と利用目的
+              </h2>
+              <p className="l-privacy__paragraph">
                 お問い合わせフォームから、お名前、メールアドレス、ご予算、お問い合わせ内容を取得します。これらの情報は、お問い合わせへの回答、制作のご相談・お見積もり、ご依頼に関する連絡や取引への対応に利用します。
               </p>
-              <p className="mt-4">
+              <p className="l-privacy__paragraph">
                 また、サイトの配信や安全な運営、不正アクセス・迷惑送信の防止のため、IPアドレス、ブラウザー・端末に関する情報、アクセス日時などの通信情報を取り扱います。
               </p>
             </section>
 
             <section aria-labelledby="privacy-services">
-              <h2 id="privacy-services" className="text-xl font-bold sm:text-2xl">利用する外部サービス</h2>
-              <p className="mt-4">本サイトでは、以下の外部サービスを利用しています。</p>
-              <ul className="mt-4 list-disc space-y-4 pl-5">
+              <h2 id="privacy-services" className="l-privacy__heading">
+                利用する外部サービス
+              </h2>
+              <p className="l-privacy__paragraph">
+                本サイトでは、以下の外部サービスを利用しています。
+              </p>
+              <ul className="l-privacy__services">
                 <li>
-                  <span className="font-bold">Cloudflare：</span>
-                  サイトの配信と保護に利用しています。また、不正送信の防止にCloudflare Turnstileを利用しており、フォームのあるページを表示すると、送信前でもIPアドレスやブラウザーに関する情報などがCloudflareへ送信されます。
-                  <span className="block">
-                    <AnchorLink href="https://www.cloudflare.com/ja-jp/privacypolicy/" className={linkClassName}>Cloudflareのプライバシーポリシー</AnchorLink>
+                  <span className="l-privacy__service-name">Cloudflare：</span>
+                  サイトの配信と保護に利用しています。また、不正送信の防止にCloudflare
+                  Turnstileを利用しており、フォームのあるページを表示すると、送信前でもIPアドレスやブラウザーに関する情報などがCloudflareへ送信されます。
+                  <span className="l-privacy__service-links">
+                    <AnchorLink
+                      href="https://www.cloudflare.com/ja-jp/privacypolicy/"
+                      className={linkClassName}
+                    >
+                      Cloudflareのプライバシーポリシー
+                    </AnchorLink>
                     {" / "}
-                    <AnchorLink href="https://www.cloudflare.com/turnstile-privacy-policy/" className={linkClassName}>Turnstileのプライバシーポリシー</AnchorLink>
+                    <AnchorLink
+                      href="https://www.cloudflare.com/turnstile-privacy-policy/"
+                      className={linkClassName}
+                    >
+                      Turnstileのプライバシーポリシー
+                    </AnchorLink>
                   </span>
                 </li>
                 <li>
-                  <span className="font-bold">Resend：</span>
+                  <span className="l-privacy__service-name">Resend：</span>
                   お問い合わせ内容を運営者へメールで送信するために利用しています。フォームに入力された情報はResendを通じて処理され、メール本文や配信記録は米国で保管されます。
-                  <span className="block">
-                    <AnchorLink href="https://resend.com/legal/privacy-policy" className={linkClassName}>Resendのプライバシーポリシー</AnchorLink>
+                  <span className="l-privacy__service-links">
+                    <AnchorLink
+                      href="https://resend.com/legal/privacy-policy"
+                      className={linkClassName}
+                    >
+                      Resendのプライバシーポリシー
+                    </AnchorLink>
                     {" / "}
-                    <AnchorLink href="https://resend.com/security/gdpr" className={linkClassName}>データの保管・保護について</AnchorLink>
+                    <AnchorLink
+                      href="https://resend.com/security/gdpr"
+                      className={linkClassName}
+                    >
+                      データの保管・保護について
+                    </AnchorLink>
                   </span>
                 </li>
                 <li>
-                  <span className="font-bold">Gmail（Google）：</span>
+                  <span className="l-privacy__service-name">
+                    Gmail（Google）：
+                  </span>
                   お問い合わせメールの受信・保管と返信に利用しています。お名前、メールアドレス、お問い合わせ内容などがGoogleのサービス上で処理・保管されます。
-                  <span className="block">
-                    <AnchorLink href="https://policies.google.com/privacy?hl=ja" className={linkClassName}>Googleのプライバシーポリシー</AnchorLink>
+                  <span className="l-privacy__service-links">
+                    <AnchorLink
+                      href="https://policies.google.com/privacy?hl=ja"
+                      className={linkClassName}
+                    >
+                      Googleのプライバシーポリシー
+                    </AnchorLink>
                   </span>
                 </li>
                 <li>
-                  <span className="font-bold">microCMS：</span>
+                  <span className="l-privacy__service-name">microCMS：</span>
                   ブログのコンテンツ管理と画像配信に利用しています。画像の読み込み時に、IPアドレスやブラウザーに関する情報などが配信サービスへ送信されます。
-                  <span className="block">
-                    <AnchorLink href="https://microcms.io/policy" className={linkClassName}>microCMSのプライバシーポリシー</AnchorLink>
+                  <span className="l-privacy__service-links">
+                    <AnchorLink
+                      href="https://microcms.io/policy"
+                      className={linkClassName}
+                    >
+                      microCMSのプライバシーポリシー
+                    </AnchorLink>
                   </span>
                 </li>
               </ul>
-              <p className="mt-4">
+              <p className="l-privacy__paragraph">
                 外部サービスでは、日本国外で情報が処理・保管される場合があります。各サービスの取扱方針や安全管理措置を確認し、法令に従って必要な対応を行います。
               </p>
-              <p className="mt-4">本サイトでは、アクセス解析ツールや広告配信サービスは利用していません。</p>
+              <p className="l-privacy__paragraph">
+                本サイトでは、アクセス解析ツールや広告配信サービスは利用していません。
+              </p>
             </section>
 
             <section aria-labelledby="privacy-sharing">
-              <h2 id="privacy-sharing" className="text-xl font-bold sm:text-2xl">第三者提供・委託</h2>
-              <p className="mt-4">
+              <h2 id="privacy-sharing" className="l-privacy__heading">
+                第三者提供・委託
+              </h2>
+              <p className="l-privacy__paragraph">
                 法令で認められる場合を除き、ご本人の同意なく個人情報を第三者へ提供しません。利用目的の達成に必要な範囲で、上記の外部サービスなどに個人情報の取扱いを委託する場合は、委託先を適切に選定し、必要な監督を行います。
               </p>
             </section>
 
             <section aria-labelledby="privacy-retention">
-              <h2 id="privacy-retention" className="text-xl font-bold sm:text-2xl">安全管理と保管期間</h2>
-              <p className="mt-4">
+              <h2 id="privacy-retention" className="l-privacy__heading">
+                安全管理と保管期間
+              </h2>
+              <p className="l-privacy__paragraph">
                 個人情報の漏えい、滅失、毀損を防ぐため、通信の暗号化、アクセス制限、不正送信対策など、必要かつ適切な安全管理措置を講じます。
               </p>
-              <p className="mt-4">
+              <p className="l-privacy__paragraph">
                 お問い合わせ情報は、対応や取引に必要な期間保管し、不要になった情報は適切に削除します。ただし、法令により保存が必要な場合は、その期間保管します。外部サービス上の記録やバックアップは、各サービスの保存・削除の仕組みに従って取り扱われます。
               </p>
             </section>
 
             <section aria-labelledby="privacy-requests">
-              <h2 id="privacy-requests" className="text-xl font-bold sm:text-2xl">開示・訂正・利用停止などのご請求</h2>
-              <p className="mt-4">
+              <h2 id="privacy-requests" className="l-privacy__heading">
+                開示・訂正・利用停止などのご請求
+              </h2>
+              <p className="l-privacy__paragraph">
                 ご自身の個人情報について、利用目的の通知、開示、訂正・追加・削除、利用停止・消去、第三者提供の停止などをご希望の場合は、お問い合わせフォームからご連絡ください。ご本人であることを確認したうえで、法令に従って遅滞なく対応します。
               </p>
             </section>
 
             <section aria-labelledby="privacy-contact">
-              <h2 id="privacy-contact" className="text-xl font-bold sm:text-2xl">運営者・お問い合わせ窓口</h2>
-              <p className="mt-4">運営者：TOMO</p>
-              <p className="mt-4">
+              <h2 id="privacy-contact" className="l-privacy__heading">
+                運営者・お問い合わせ窓口
+              </h2>
+              <p className="l-privacy__paragraph">運営者：TOMO</p>
+              <p className="l-privacy__paragraph">
                 個人情報の取扱いに関するご質問・苦情・ご請求は、
-                <AppLink to="/contact" className={linkClassName}>お問い合わせフォーム</AppLink>
+                <AppLink to="/contact" className={linkClassName}>
+                  お問い合わせフォーム
+                </AppLink>
                 からご連絡ください。運営者の氏名・住所および安全管理措置の詳細についても、ご本人の求めに応じて遅滞なく回答します。
               </p>
             </section>
 
             <section aria-labelledby="privacy-changes">
-              <h2 id="privacy-changes" className="text-xl font-bold sm:text-2xl">本ポリシーの変更</h2>
-              <p className="mt-4">
+              <h2 id="privacy-changes" className="l-privacy__heading">
+                本ポリシーの変更
+              </h2>
+              <p className="l-privacy__paragraph">
                 法令やサービスの変更に応じて、本ポリシーを見直すことがあります。変更した内容は本ページに掲載し、法令上ご本人への通知や同意が必要な場合は、適切な手続きを行います。
               </p>
             </section>
 
-            <p className="text-xs text-muted sm:text-sm">制定日：<time dateTime="2026-09-29">2026年9月29日</time></p>
+            <p className="l-privacy__date">
+              制定日：<time dateTime="2026-09-29">2026年9月29日</time>
+            </p>
           </div>
         </PageContainer>
       </main>

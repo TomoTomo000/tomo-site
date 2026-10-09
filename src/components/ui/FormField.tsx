@@ -1,8 +1,7 @@
 import type { ComponentPropsWithRef, ReactNode } from "react";
 import { ChevronDownIcon } from "@/components/ui/Icons";
 
-const fieldClassName =
-  "w-full rounded-xl border-0 bg-background px-5 py-3.5 text-sm text-ink outline-none transition-shadow placeholder:text-muted/50 focus:ring-2 focus:ring-ink";
+const fieldClassName = "c-form-field__control";
 
 type FieldLabelProps = {
   htmlFor: string;
@@ -12,10 +11,10 @@ type FieldLabelProps = {
 
 function FieldLabel({ htmlFor, label, required }: FieldLabelProps) {
   return (
-    <label className="text-sm font-bold" htmlFor={htmlFor}>
+    <label className="c-form-field__label" htmlFor={htmlFor}>
       {label}
       {required ? (
-        <span className="ml-1 text-important" aria-hidden="true">
+        <span className="c-form-field__required" aria-hidden="true">
           *
         </span>
       ) : null}
@@ -34,7 +33,7 @@ function FieldError({ id, children }: FieldErrorProps) {
   }
 
   return (
-    <p id={id} className="mt-2 text-xs text-ink" role="alert">
+    <p id={id} className="c-form-field__error" role="alert">
       {children}
     </p>
   );
@@ -54,8 +53,8 @@ export function FieldCount({ id, value, min, max }: FieldCountProps) {
   return (
     <p
       id={id}
-      className={`mt-2 text-left text-xs tabular-nums ${
-        invalid ? "text-important" : "text-muted"
+      className={`c-form-field__count ${
+        invalid ? "c-form-field__count--invalid" : ""
       }`}
     >
       {count} / {max}文字{min > 1 ? `（${min}文字以上）` : ""}
@@ -79,20 +78,20 @@ function FieldLayout({
   children,
 }: SharedFieldProps & { required?: boolean; children: ReactNode }) {
   return (
-    <div className={layout === "responsive"
-      ? "grid gap-2 md:grid-cols-[12rem_minmax(0,1fr)] md:gap-x-8"
-      : "grid gap-2"}
+    <div
+      className={
+        layout === "responsive"
+          ? "c-form-field c-form-field--responsive"
+          : "c-form-field"
+      }
     >
       <FieldLabel htmlFor={id} label={label} required={required} />
-      <div className="min-w-0">{children}</div>
+      <div className="c-form-field__body">{children}</div>
     </div>
   );
 }
 
-export type TextFieldProps = Omit<
-  ComponentPropsWithRef<"input">,
-  "id"
-> &
+export type TextFieldProps = Omit<ComponentPropsWithRef<"input">, "id"> &
   SharedFieldProps;
 
 export function TextField({
@@ -129,10 +128,7 @@ export function TextField({
   );
 }
 
-export type SelectFieldProps = Omit<
-  ComponentPropsWithRef<"select">,
-  "id"
-> &
+export type SelectFieldProps = Omit<ComponentPropsWithRef<"select">, "id"> &
   SharedFieldProps;
 
 export function SelectField({
@@ -155,7 +151,7 @@ export function SelectField({
 
   return (
     <FieldLayout id={id} label={label} required={required} layout={layout}>
-      <div className="relative">
+      <div className="c-form-field__select">
         <select
           {...props}
           ref={ref}
@@ -163,13 +159,11 @@ export function SelectField({
           required={required}
           aria-invalid={error ? true : undefined}
           aria-describedby={describedBy}
-          className={`${fieldClassName} appearance-none pr-12 ${className ?? ""}`}
+          className={`${fieldClassName} c-form-field__control--select ${className ?? ""}`}
         >
           {children}
         </select>
-        <ChevronDownIcon
-          className="pointer-events-none absolute right-5 top-1/2 size-4 -translate-y-1/2 text-muted"
-        />
+        <ChevronDownIcon className="c-form-field__chevron" />
       </div>
       <FieldError id={errorId}>{error}</FieldError>
       {info}
@@ -177,10 +171,7 @@ export function SelectField({
   );
 }
 
-export type TextareaFieldProps = Omit<
-  ComponentPropsWithRef<"textarea">,
-  "id"
-> &
+export type TextareaFieldProps = Omit<ComponentPropsWithRef<"textarea">, "id"> &
   SharedFieldProps;
 
 export function TextareaField({
@@ -209,7 +200,7 @@ export function TextareaField({
         required={required}
         aria-invalid={error ? true : undefined}
         aria-describedby={describedBy}
-        className={`${fieldClassName} min-h-32 resize-y leading-7 ${className ?? ""}`}
+        className={`${fieldClassName} c-form-field__control--textarea ${className ?? ""}`}
       />
       <FieldError id={errorId}>{error}</FieldError>
       {info}

@@ -13,18 +13,17 @@ type ButtonStyleProps = {
   size?: ButtonSize;
 };
 
-const baseClassName =
-  "inline-flex cursor-pointer items-center justify-center rounded-full text-center font-bold transition-transform duration-300 ease-pop hover:scale-105 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100";
+const baseClassName = "c-button";
 
 const variantClassNames: Record<ButtonVariant, string> = {
-  primary: "bg-canvas text-background",
-  secondary: "border border-ink/15 text-ink",
+  primary: "c-button--primary",
+  secondary: "c-button--secondary",
 };
 
 const sizeClassNames: Record<ButtonSize, string> = {
-  sm: "px-4 py-2 text-xs",
-  md: "px-6 py-3 text-sm",
-  lg: "px-8 py-3.5 text-sm",
+  sm: "c-button--sm",
+  md: "c-button--md",
+  lg: "c-button--lg",
 };
 
 function getButtonClassName({

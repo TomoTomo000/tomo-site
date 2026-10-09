@@ -1,0 +1,49 @@
+@use "../base/mixin";
+@use "../component/button";
+@use "../component/form-field";
+@use "../component/link";
+
+.m-contact-form {
+  margin-top: 3rem;
+  border-radius: 1rem;
+  background: var(--color-surface);
+  padding: 1.5rem;
+  @include mixin.mq(sm) {
+    padding: 2rem;
+  }
+  &__fields {
+    display: grid;
+    row-gap: 2rem;
+  }
+  &__verification {
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    justify-content: center;
+    &:empty {
+      display: none;
+    }
+  }
+  &__error {
+    text-align: center;
+    font-size: 0.875rem;
+    line-height: 1.75rem;
+    color: var(--color-ink);
+  }
+  &__privacy {
+    margin-top: 2.5rem;
+    text-align: center;
+    font-size: 0.875rem;
+    line-height: 1.75rem;
+  }
+  &__new-tab {
+    @include mixin.visually-hidden;
+  }
+  &__action {
+    margin: 1.5rem auto 0;
+    max-width: 14rem;
+  }
+  &__submit {
+    width: 100%;
+  }
+}

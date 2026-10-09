@@ -1,0 +1,51 @@
+@use "../base/mixin";
+@use "../base/setting";
+@use "../component/icon-button";
+
+.m-blog-search {
+  margin-top: 3rem;
+  display: flex;
+  gap: 0.75rem;
+  &__label {
+    @include mixin.visually-hidden;
+  }
+  &__field {
+    position: relative;
+    min-width: 0;
+    flex: 1;
+  }
+  &__input {
+    width: 100%;
+    border-radius: 9999px;
+    background: var(--color-surface);
+    padding: 0.875rem 3.5rem 0.875rem 1.25rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    outline: none;
+    transition: box-shadow 150ms setting.$ease-default;
+    &:focus {
+      box-shadow: 0 0 0 2px var(--color-ink);
+    }
+    &::-webkit-search-cancel-button,
+    &::-webkit-search-decoration {
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    &::-ms-clear {
+      display: none;
+    }
+    &:placeholder-shown ~ .m-blog-search__clear {
+      display: none;
+    }
+  }
+  &__clear {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  &__icon {
+    width: 1rem;
+    height: 1rem;
+  }
+}

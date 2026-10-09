@@ -1,0 +1,60 @@
+@use "../base/mixin";
+
+.m-career {
+  margin-top: 2.5rem;
+  &__item {
+    display: flex;
+    gap: 1rem;
+    @include mixin.mq(sm) {
+      gap: 2rem;
+    }
+  }
+  &__marker {
+    position: relative;
+    display: flex;
+    width: 0.625rem;
+    flex-shrink: 0;
+    justify-content: center;
+  }
+  &__line {
+    position: absolute;
+    inset-block: 0;
+    width: 1px;
+    background: color-mix(in oklab, var(--color-ink) 20%, transparent);
+  }
+  &__dot {
+    position: relative;
+    margin-top: 0.25rem;
+    width: 0.625rem;
+    height: 0.625rem;
+    border-radius: 9999px;
+    background: var(--color-canvas);
+  }
+  &__body {
+    min-width: 0;
+    &--spaced {
+      padding-bottom: 2rem;
+    }
+  }
+  &__label {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 700;
+    color: var(--color-muted);
+  }
+  &__title {
+    margin-top: 0.75rem;
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    font-weight: 700;
+  }
+  &__description {
+    margin-top: 1rem;
+    max-width: 42rem;
+    font-size: 0.875rem;
+    line-height: 2rem;
+    @include mixin.mq(sm) {
+      font-size: 1rem;
+    }
+  }
+}

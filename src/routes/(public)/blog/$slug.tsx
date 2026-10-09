@@ -2,15 +2,25 @@ import { createFileRoute } from "@tanstack/react-router";
 import { BlogArticlePage } from "@/features/blog/components/BlogArticlePage";
 import { getPublicPostPageData } from "@/features/blog/server/post.functions";
 import { createSeoHead, serializeJsonLd, SITE_DESCRIPTION } from "@/lib/seo";
-import { BLOG_OG_HEIGHT, BLOG_OG_WIDTH, getBlogOgImagePath } from "@/features/blog/og-image";
+import {
+  BLOG_OG_HEIGHT,
+  BLOG_OG_WIDTH,
+  getBlogOgImagePath,
+} from "@/features/blog/og-image";
+import pageCss from "@/styles/pages/blog-detail.scss?url";
 
 export const Route = createFileRoute("/(public)/blog/$slug")({
-  loader: ({ params }) => getPublicPostPageData({ data: { slug: params.slug } }),
+  staticData: { pageStylesheet: pageCss },
+  loader: ({ params }) =>
+    getPublicPostPageData({ data: { slug: params.slug } }),
   head: ({ loaderData }) => {
     if (!loaderData) return {};
     const { post, siteUrl } = loaderData;
     const pageUrl = `${siteUrl}/blog/${encodeURIComponent(post.slug)}`;
-    const imageUrl = new URL(getBlogOgImagePath(post.slug, post.updatedAt), siteUrl).href;
+    const imageUrl = new URL(
+      getBlogOgImagePath(post.slug, post.updatedAt),
+      siteUrl,
+    ).href;
     const seo = createSeoHead({
       siteUrl,
       path: `/blog/${encodeURIComponent(post.slug)}`,

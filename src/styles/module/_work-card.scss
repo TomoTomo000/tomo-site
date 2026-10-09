@@ -1,0 +1,19 @@
+@use "../base/mixin";
+@use "card";
+
+.m-work-card {
+  @include card.styles;
+  &__description {
+    margin-top: 1.25rem;
+    font-size: 0.875rem;
+    line-height: 1.75rem;
+  }
+  &__label {
+    @include mixin.visually-hidden;
+  }
+  @include mixin.hover {
+    .m-work-card__arrow {
+      transform: scale(1.05);
+    }
+  }
+}

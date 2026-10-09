@@ -13,15 +13,13 @@ export type IconButtonProps = Omit<
 };
 
 const variantClassNames: Record<IconButtonVariant, string> = {
-  surface:
-    "bg-background text-ink transition-transform duration-300 ease-pop hover:scale-105",
-  ghost:
-    "text-muted transition-colors duration-150 hover:bg-ink/5 hover:text-ink",
+  surface: "c-icon-button--surface",
+  ghost: "c-icon-button--ghost",
 };
 
 const sizeClassNames: Record<IconButtonSize, string> = {
-  sm: "size-9",
-  md: "size-12",
+  sm: "c-icon-button--sm",
+  md: "c-icon-button--md",
 };
 
 export function IconButton({
@@ -38,7 +36,7 @@ export function IconButton({
       type={type}
       aria-label={ariaLabel}
       className={[
-        "grid cursor-pointer place-items-center rounded-full",
+        "c-icon-button",
         variantClassNames[variant],
         sizeClassNames[size],
         className,

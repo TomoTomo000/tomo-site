@@ -1,0 +1,233 @@
+@use "../base/reset";
+@use "../base/base";
+@use "../module/page-loader";
+@use "../layout/error";
+@use "../base/mixin";
+@use "../base/setting";
+@use "../component/button";
+@use "../component/icon-button";
+@use "../component/link";
+@use "../module/navigation";
+@use "../module/profile";
+@use "../module/post-card";
+@use "../module/work-card";
+@use "../module/empty-state";
+@use "../layout/footer";
+@use "../module/portfolio-hero";
+
+.l-portfolio {
+  min-height: 100vh;
+  overflow-x: clip;
+  background: var(--color-canvas);
+  color: var(--color-ink);
+
+  &__header {
+    pointer-events: none;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    padding: 1rem 1rem 0;
+    @include mixin.mq(sm) {
+      display: none;
+    }
+  }
+  &__header-inner {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  &__menu {
+    @include mixin.mq(sm) {
+      display: none;
+    }
+  }
+  &__body {
+    position: relative;
+    margin-inline: auto;
+    width: 100%;
+  }
+  &__illustration {
+    position: relative;
+    height: 60svh;
+    overflow: hidden;
+    background: var(--color-canvas);
+    @include mixin.mq(sm) {
+      display: none;
+    }
+    @include mixin.mq(lg) {
+      position: fixed;
+      inset-block: 0.5rem;
+      left: 0.5rem;
+      display: block;
+      height: auto;
+      width: calc((100% - 440px) / 2 - 16px);
+      border-radius: 1.5rem;
+    }
+  }
+  &__illustration-logo {
+    position: absolute;
+    left: 1.75rem;
+    top: 1.75rem;
+    z-index: 10;
+    display: none;
+    height: 3rem;
+    align-items: center;
+    border-radius: 9999px;
+    background: var(--color-background);
+    padding-inline: 1.25rem;
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    font-weight: 900;
+    color: var(--color-ink);
+    @include mixin.mq(lg) {
+      display: inline-flex;
+    }
+  }
+  &__picture {
+    position: absolute;
+    inset: 0;
+  }
+  &__image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    @include mixin.mq(lg) {
+      margin-inline: auto;
+      max-width: calc((100svh - 1rem) * 1.5);
+    }
+  }
+  &__main {
+    margin-inline: auto;
+    min-width: 0;
+    padding: 0 0.5rem 0.5rem;
+    transform: translateY(0);
+    transition: transform 750ms setting.$ease-loader;
+    > :not(:last-child) {
+      margin-bottom: 0.5rem;
+    }
+    &--entering {
+      transform: translateY(7svh);
+    }
+    @include mixin.mq(sm) {
+      margin-left: 1rem;
+      margin-right: 0;
+      width: 440px;
+      padding-inline: 0;
+      padding-top: 0.5rem;
+    }
+    @include mixin.mq(lg) {
+      margin-inline: auto;
+    }
+  }
+  &__section {
+    scroll-margin-top: 0.5rem;
+    border-radius: 1.5rem;
+    background: var(--color-background);
+    padding: 5rem 1.5rem;
+    @include mixin.mq(sm) {
+      padding: 6rem 2rem;
+    }
+  }
+  &__section-heading {
+    text-align: center;
+  }
+  &__section-title {
+    font-size: 1.875rem;
+    font-weight: 900;
+    line-height: 1;
+    @include mixin.mq(sm) {
+      font-size: 3rem;
+    }
+  }
+  &__section-description {
+    margin: 1.75rem auto 0;
+    max-width: 32rem;
+    font-size: 0.875rem;
+    line-height: 1.75rem;
+    color: var(--color-ink);
+    @include mixin.mq(sm) {
+      font-size: 1rem;
+    }
+  }
+  &__profile {
+    margin-top: 3.5rem;
+    display: grid;
+    align-items: center;
+    gap: 2.5rem;
+  }
+  &__section-action {
+    margin-top: 2.5rem;
+    text-align: center;
+  }
+  &__cards {
+    margin-top: 3rem;
+    display: grid;
+    gap: 1.5rem;
+  }
+  &__footer {
+    padding: 3.5rem 1.5rem;
+    color: var(--color-background);
+    @include mixin.mq(sm) {
+      padding-inline: 2rem;
+    }
+  }
+  &__copyright {
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: var(--color-footer-muted);
+  }
+  &__sidebar {
+    position: fixed;
+    inset-block: 0.5rem;
+    right: 0.5rem;
+    display: none;
+    width: calc(100% - 472px);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    @include mixin.mq(sm) {
+      display: flex;
+    }
+    @include mixin.mq(lg) {
+      width: calc((100% - 440px) / 2 - 16px);
+    }
+  }
+  &__sidebar-logo {
+    margin-bottom: 2rem;
+    display: inline-flex;
+    height: 3rem;
+    flex-shrink: 0;
+    align-items: center;
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+    font-weight: 900;
+    color: var(--color-background);
+  }
+  &__sidebar-list {
+    text-align: center;
+    > :not(:last-child) {
+      margin-bottom: 1.25rem;
+    }
+  }
+  &__sidebar-link {
+    display: block;
+    border-radius: 1rem;
+    padding: 0.75rem 0.5rem;
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: var(--color-background);
+    transition:
+      color 150ms setting.$ease-default,
+      background-color 150ms setting.$ease-default;
+    @include mixin.hover {
+      background: color-mix(in oklab, var(--color-background) 10%, transparent);
+    }
+  }
+}

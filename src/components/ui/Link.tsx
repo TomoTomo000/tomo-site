@@ -12,10 +12,9 @@ type LinkStyleProps = {
 };
 
 const variantClassNames: Record<LinkVariant, string> = {
-  text: "transition-opacity duration-150 hover:opacity-60",
-  surface:
-    "transition-colors duration-150 hover:bg-ink/5 data-[selected=true]:hover:bg-canvas",
-  control: "transition-transform duration-300 ease-pop hover:scale-105",
+  text: "c-link c-link--text",
+  surface: "c-link c-link--surface",
+  control: "c-link c-link--control",
 };
 
 function getLinkClassName({
@@ -47,15 +46,6 @@ export const AppLink: LinkComponent<typeof AppLinkBase> = (props) => (
 
 export type AnchorLinkProps = ComponentPropsWithRef<"a"> & LinkStyleProps;
 
-export function AnchorLink({
-  variant,
-  className,
-  ...props
-}: AnchorLinkProps) {
-  return (
-    <a
-      {...props}
-      className={getLinkClassName({ variant, className })}
-    />
-  );
+export function AnchorLink({ variant, className, ...props }: AnchorLinkProps) {
+  return <a {...props} className={getLinkClassName({ variant, className })} />;
 }

@@ -14,7 +14,8 @@ export const works: Work[] = [
   {
     slug: "tomo-site",
     title: "TOMO.（当サイト）",
-    description: "プロフィールや制作実績、日々の学びをまとめた個人ポートフォリオサイトです。",
+    description:
+      "プロフィールや制作実績、日々の学びをまとめた個人ポートフォリオサイトです。",
     image: {
       src: "/img/works/tomo-site-desktop.webp",
       alt: "サイトイメージ",
@@ -29,9 +30,19 @@ export const works: Work[] = [
     details: [
       { label: "制作種別", value: "個人制作 / ポートフォリオサイト" },
       { label: "担当範囲", value: "サイト設計・デザイン・フロントエンド実装" },
-      { label: "主な機能", value: "ブログ・記事検索・タグによる絞り込み・お問い合わせ" },
+      {
+        label: "主な機能",
+        value: "ブログ・記事検索・タグによる絞り込み・お問い合わせ",
+      },
     ],
-    technologies: ["TanStack Start", "React", "TypeScript", "Tailwind CSS", "microCMS", "Cloudflare Workers"],
+    technologies: [
+      "TanStack Start",
+      "React",
+      "TypeScript",
+      "SCSS",
+      "microCMS",
+      "Cloudflare Workers",
+    ],
     siteUrl: "/",
   },
 ];

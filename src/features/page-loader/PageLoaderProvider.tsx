@@ -1,21 +1,23 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useRouterState } from "@tanstack/react-router";
-import {
-  PageLoaderContext,
-  type PageLoaderState,
-} from "./usePageLoader";
+import { PageLoaderContext, type PageLoaderState } from "./usePageLoader";
 
 type InitialPageLoaderState = "entering" | "leaving" | "done";
 type RoutePageLoaderState = "loading" | "leaving-route" | "done";
 
-export function PageLoaderProvider({ children }: { children: ReactNode }) {
+export function PageLoaderProvider({
+  children,
+  isStylesLoading = false,
+}: {
+  children: ReactNode;
+  isStylesLoading?: boolean;
+}) {
   const isRouterLoading = useRouterState({
     select: (routerState) => routerState.isLoading,
   });
   const [initialState, setInitialState] =
     useState<InitialPageLoaderState>("entering");
-  const [routeState, setRouteState] =
-    useState<RoutePageLoaderState>("done");
+  const [routeState, setRouteState] = useState<RoutePageLoaderState>("done");
 
   useEffect(() => {
     const reducedMotion = window.matchMedia(
@@ -77,7 +79,7 @@ export function PageLoaderProvider({ children }: { children: ReactNode }) {
     if (initialState !== "done") return;
 
     const routeStateTimer = setTimeout(() => {
-      if (isRouterLoading) {
+      if (isRouterLoading || isStylesLoading) {
         setRouteState("loading");
         return;
       }
@@ -88,7 +90,7 @@ export function PageLoaderProvider({ children }: { children: ReactNode }) {
     }, 0);
 
     return () => clearTimeout(routeStateTimer);
-  }, [initialState, isRouterLoading]);
+  }, [initialState, isRouterLoading, isStylesLoading]);
 
   useEffect(() => {
     if (routeState !== "leaving-route") return;
@@ -100,8 +102,11 @@ export function PageLoaderProvider({ children }: { children: ReactNode }) {
     return () => clearTimeout(routeLeaveTimer);
   }, [routeState]);
 
-  const state: PageLoaderState =
-    initialState === "done" ? routeState : initialState;
+  const state: PageLoaderState = isStylesLoading
+    ? "loading"
+    : initialState === "done"
+      ? routeState
+      : initialState;
   const value = useMemo(() => ({ state }), [state]);
 
   return (

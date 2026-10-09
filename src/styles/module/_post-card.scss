@@ -1,0 +1,37 @@
+@use "../base/mixin";
+@use "card";
+
+.m-post-card {
+  @include card.styles;
+  &__meta {
+    display: flex;
+    justify-content: flex-end;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 700;
+  }
+  &__date {
+    font-size: 0.75rem;
+    line-height: 1rem;
+    font-weight: 500;
+    color: var(--color-muted);
+  }
+  &__content {
+    margin-top: 2rem;
+  }
+  &__tags {
+    margin-top: 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+  @include mixin.hover {
+    .m-post-card__arrow {
+      transform: scale(1.05);
+    }
+  }
+}

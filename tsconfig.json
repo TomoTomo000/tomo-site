@@ -22,7 +22,6 @@
     "src/**/*.tsx",
     "tests/**/*.ts",
     "vite.config.ts",
-    "tailwind.config.ts",
     "worker-configuration.d.ts"
   ],
   "exclude": ["node_modules", ".output", "dist"]

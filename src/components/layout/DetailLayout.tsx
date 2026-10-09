@@ -15,13 +15,13 @@ export function DetailLayout({ children }: { children: ReactNode }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-background text-ink">
-      <header data-page-header className="pointer-events-none sticky top-0 z-50 px-4 pt-4 lg:hidden">
-        <div className="flex items-start justify-between gap-4">
+    <div className="l-detail">
+      <header data-page-header className="l-detail__header">
+        <div className="l-detail__header-inner">
           <AppLink
             to="/"
             variant="control"
-            className="pointer-events-auto inline-flex h-12 items-center rounded-full bg-background px-5 text-xl font-black text-ink"
+            className="m-navigation__logo"
             aria-label="TOMO トップページへ"
             onClick={() => setIsMenuOpen(false)}
           >
@@ -30,21 +30,25 @@ export function DetailLayout({ children }: { children: ReactNode }) {
 
           <IconButton
             variant="surface"
-            className="pointer-events-auto relative"
+            className="m-navigation__toggle"
             aria-label={isMenuOpen ? "メニューを閉じる" : "メニューを開く"}
             aria-expanded={isMenuOpen}
             aria-controls="mobile-navigation"
             onClick={() => setIsMenuOpen((open) => !open)}
           >
-            <span className="sr-only">Menu</span>
+            <span className="m-navigation__label">Menu</span>
             <span
-              className={`absolute h-0.5 w-6 bg-ink transition-transform duration-200 ${
-                isMenuOpen ? "rotate-45" : "-translate-y-1"
+              className={`m-navigation__bar ${
+                isMenuOpen
+                  ? "m-navigation__bar--open-top"
+                  : "m-navigation__bar--top"
               }`}
             />
             <span
-              className={`absolute h-0.5 w-6 bg-ink transition-transform duration-200 ${
-                isMenuOpen ? "-rotate-45" : "translate-y-1"
+              className={`m-navigation__bar ${
+                isMenuOpen
+                  ? "m-navigation__bar--open-bottom"
+                  : "m-navigation__bar--bottom"
               }`}
             />
           </IconButton>
@@ -52,16 +56,16 @@ export function DetailLayout({ children }: { children: ReactNode }) {
       </header>
 
       <div
-        className={`fixed inset-0 z-40 lg:hidden ${
-          isMenuOpen ? "pointer-events-auto" : "pointer-events-none"
+        className={`m-navigation__overlay l-detail__menu ${
+          isMenuOpen ? "m-navigation__overlay--open" : ""
         }`}
         aria-hidden={!isMenuOpen}
         inert={!isMenuOpen}
       >
         <button
           type="button"
-          className={`absolute inset-0 cursor-pointer bg-ink/60 transition-opacity duration-200 ${
-            isMenuOpen ? "opacity-100" : "opacity-0"
+          className={`m-navigation__backdrop ${
+            isMenuOpen ? "m-navigation__backdrop--open" : ""
           }`}
           aria-label="メニューを閉じる"
           onClick={() => setIsMenuOpen(false)}
@@ -69,19 +73,23 @@ export function DetailLayout({ children }: { children: ReactNode }) {
 
         <nav
           id="mobile-navigation"
-          className={`relative rounded-b-3xl bg-background px-6 pb-6 pt-20 text-ink transition-transform duration-200 ease-out ${
-            isMenuOpen ? "translate-y-0" : "-translate-y-full"
+          className={`m-navigation__panel ${
+            isMenuOpen ? "m-navigation__panel--open" : ""
           }`}
           aria-label="モバイルナビゲーション"
         >
-          <ul className="space-y-2">
+          <ul className="m-navigation__list">
             {navItems.map((item) => (
               <li key={item.section}>
                 <Link
                   to={item.to}
-                  search={item.section === "blog" ? { page: 1, query: "", tag: "" } : undefined}
+                  search={
+                    item.section === "blog"
+                      ? { page: 1, query: "", tag: "" }
+                      : undefined
+                  }
                   activeOptions={{ includeSearch: false }}
-                  className="block rounded-2xl px-4 py-3 text-lg font-black uppercase text-ink transition-colors hover:bg-canvas hover:text-background"
+                  className="m-navigation__link"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {item.label}
@@ -92,26 +100,33 @@ export function DetailLayout({ children }: { children: ReactNode }) {
         </nav>
       </div>
 
-      <header data-page-header className="pointer-events-none sticky top-0 z-50 hidden px-9 pt-9 lg:block">
-        <div className="flex items-start justify-between gap-4">
+      <header
+        data-page-header
+        className="l-detail__header l-detail__header--desktop"
+      >
+        <div className="l-detail__header-inner">
           <AppLink
             to="/"
             variant="control"
-            className="pointer-events-auto inline-flex h-12 items-center rounded-full bg-background px-5 text-xl font-black text-ink"
+            className="m-navigation__logo"
             aria-label="TOMO トップページへ"
           >
             TOMO.
           </AppLink>
 
           <nav aria-label="ページナビゲーション">
-            <ul className="flex items-center gap-2">
+            <ul className="m-navigation__desktop-list">
               {navItems.map((item) => (
                 <li key={item.section}>
                   <Link
                     to={item.to}
-                    search={item.section === "blog" ? { page: 1, query: "", tag: "" } : undefined}
+                    search={
+                      item.section === "blog"
+                        ? { page: 1, query: "", tag: "" }
+                        : undefined
+                    }
                     activeOptions={{ includeSearch: false }}
-                    className="pointer-events-auto inline-flex h-12 items-center rounded-full bg-background px-5 text-sm font-black uppercase transition-colors hover:bg-canvas hover:text-background"
+                    className="m-navigation__desktop-link"
                   >
                     {item.label}
                   </Link>
@@ -124,10 +139,10 @@ export function DetailLayout({ children }: { children: ReactNode }) {
 
       {children}
 
-      <footer className="border-t border-ink/10 py-14">
-        <PageContainer className="flex flex-col items-center gap-4 text-center">
-          <p className="text-4xl font-black">TOMO.</p>
-          <p className="text-xs text-muted">
+      <footer className="l-footer">
+        <PageContainer className="l-footer__inner">
+          <p className="l-footer__logo">TOMO.</p>
+          <p className="l-footer__copyright">
             © 2026 TOMO. All Rights Reserved.
           </p>
         </PageContainer>

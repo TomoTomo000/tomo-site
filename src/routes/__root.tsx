@@ -8,11 +8,11 @@ import {
 } from "@tanstack/react-router";
 import figtreeCss from "@fontsource-variable/figtree/wght.css?url";
 import notoSansJpCss from "@fontsource-variable/noto-sans-jp/wght.css?url";
-import appCss from "../styles.css?url";
 import { NotFoundPage } from "@/components/elements/NotFoundPage";
 import { PageLoader } from "@/features/page-loader/PageLoader";
 import { PageLoaderProvider } from "@/features/page-loader/PageLoaderProvider";
 import { SITE_DESCRIPTION, SITE_TITLE } from "@/lib/seo";
+import { usePageStylesheet } from "@/components/layout/usePageStylesheet";
 
 export const Route = createRootRoute({
   head: () => ({
@@ -31,9 +31,13 @@ export const Route = createRootRoute({
     links: [
       { rel: "stylesheet", href: figtreeCss },
       { rel: "stylesheet", href: notoSansJpCss },
-      { rel: "stylesheet", href: appCss },
       { rel: "icon", href: "/favicon.ico" },
-      { rel: "alternate", type: "application/rss+xml", title: "TOMO BLOG", href: "/feed.xml" },
+      {
+        rel: "alternate",
+        type: "application/rss+xml",
+        title: "TOMO BLOG",
+        href: "/feed.xml",
+      },
     ],
   }),
   component: RootComponent,
@@ -41,23 +45,45 @@ export const Route = createRootRoute({
 });
 
 function RootComponent() {
+  const stylesheet = usePageStylesheet();
+
   return (
-    <RootDocument>
-      <PageLoaderProvider>
+    <RootDocument styles={stylesheet.links}>
+      <PageLoaderProvider isStylesLoading={stylesheet.pending}>
         <PageLoader />
-        <Outlet />
+        {stylesheet.failed ? (
+          <div className="m-page-loader" role="alert">
+            <div className="m-page-loader__content">
+              <p className="m-page-loader__title">
+                ページを表示できませんでした。
+              </p>
+              <button
+                className="m-page-loader__retry"
+                onClick={() => window.location.reload()}
+              >
+                再読み込み
+              </button>
+            </div>
+          </div>
+        ) : (
+          <Outlet />
+        )}
       </PageLoaderProvider>
     </RootDocument>
   );
 }
 
-function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
+function RootDocument({
+  children,
+  styles,
+}: Readonly<{ children: ReactNode; styles: ReactNode }>) {
   return (
-    <html lang="ja" className="h-full antialiased">
+    <html lang="ja">
       <head>
         <HeadContent />
+        {styles}
       </head>
-      <body className="flex min-h-full flex-col font-sans font-medium">
+      <body>
         {children}
         <Toaster
           position="bottom-left"

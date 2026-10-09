@@ -1,0 +1,60 @@
+@use "../base/reset";
+@use "../base/base";
+@use "../module/page-loader";
+@use "../layout/error";
+@use "../base/mixin";
+@use "../layout/detail";
+@use "../layout/page";
+@use "../module/page-heading";
+@use "../component/link";
+
+.l-privacy {
+  @include page.spacing;
+  &__body {
+    margin: 3.5rem auto 0;
+    max-width: 48rem;
+    font-size: 0.875rem;
+    line-height: 2rem;
+    > :not(:last-child) {
+      margin-bottom: 2.5rem;
+    }
+    @include mixin.mq(sm) {
+      font-size: 1rem;
+    }
+  }
+  &__heading {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    font-weight: 700;
+    @include mixin.mq(sm) {
+      font-size: 1.5rem;
+      line-height: 2rem;
+    }
+  }
+  &__paragraph {
+    margin-top: 1rem;
+  }
+  &__services {
+    margin-top: 1rem;
+    list-style: disc;
+    padding-left: 1.25rem;
+    > :not(:last-child) {
+      margin-bottom: 1rem;
+    }
+  }
+  &__service-name {
+    font-weight: 700;
+  }
+  &__service-links {
+    display: block;
+  }
+  &__date {
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: var(--color-muted);
+    @include mixin.mq(sm) {
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+    }
+  }
+}

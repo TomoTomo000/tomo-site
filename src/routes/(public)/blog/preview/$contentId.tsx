@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 import { BlogArticlePage } from "@/features/blog/components/BlogArticlePage";
 import { getPreviewPostPageData } from "@/features/blog/server/post.functions";
+import pageCss from "@/styles/pages/blog-preview.scss?url";
 
 const previewSearchSchema = z.object({
   draftKey: z.string().max(200).catch(""),
@@ -9,6 +10,7 @@ const previewSearchSchema = z.object({
 });
 
 export const Route = createFileRoute("/(public)/blog/preview/$contentId")({
+  staticData: { pageStylesheet: pageCss },
   validateSearch: previewSearchSchema,
   loaderDeps: ({ search }) => search,
   loader: ({ params, deps }) =>
@@ -31,8 +33,8 @@ export const Route = createFileRoute("/(public)/blog/preview/$contentId")({
 function PreviewRoute() {
   const { post } = Route.useLoaderData();
   return (
-    <div className="overflow-hidden bg-background">
-      <p className="bg-amber-100 px-5 py-3 text-center text-sm font-bold text-amber-950">
+    <div className="l-blog-preview">
+      <p className="l-blog-preview__notice">
         プレビューです。公開中の内容とは異なる場合があります。
       </p>
       <BlogArticlePage post={post} />

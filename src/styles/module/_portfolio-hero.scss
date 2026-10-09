@@ -1,0 +1,70 @@
+@use "../base/mixin";
+
+.m-portfolio-hero {
+  position: relative;
+  display: flex;
+  min-height: 100svh;
+  scroll-margin-top: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1.5rem;
+  background: var(--color-background);
+  padding: 7rem 1.5rem;
+  text-align: center;
+  @include mixin.mq(sm) {
+    min-height: calc(100svh - 1rem);
+    padding-inline: 2.5rem;
+  }
+
+  &__title {
+    font-weight: 900;
+    line-height: 1;
+  }
+  &__name {
+    display: block;
+    font-size: 3rem;
+    line-height: 1;
+    @include mixin.mq(sm) {
+      font-size: 3.75rem;
+    }
+  }
+  &__role {
+    margin-top: 1rem;
+    display: block;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    @include mixin.mq(sm) {
+      font-size: 1rem;
+      line-height: 1.5rem;
+    }
+  }
+  &__scroll {
+    position: absolute;
+    inset-inline: 0;
+    bottom: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    font-weight: 700;
+    color: var(--color-ink);
+    animation: scroll-cue 2.4s ease-in-out infinite;
+  }
+  &__arrow {
+    width: 1rem;
+    height: 1rem;
+  }
+}
+
+@keyframes scroll-cue {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}

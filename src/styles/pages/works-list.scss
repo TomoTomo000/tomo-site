@@ -1,0 +1,21 @@
+@use "../base/reset";
+@use "../base/base";
+@use "../module/page-loader";
+@use "../layout/error";
+@use "../base/mixin";
+@use "../layout/detail";
+@use "../layout/page";
+@use "../module/page-heading";
+@use "../module/work-card";
+
+.l-works-list {
+  @include page.spacing;
+  &__cards {
+    margin-top: 3.5rem;
+    display: grid;
+    gap: 1.5rem;
+    @include mixin.mq(sm) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+}

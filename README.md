@@ -5,7 +5,7 @@
 ## 構成
 
 - TanStack Start / React / Vite
-- Tailwind CSS
+- SCSS（Dart Sass / sass-embedded）
 - microCMS（記事・タグ・画像）
 - Cloudflare Workers（WEBアプリの配信）
 - Resend（お問い合わせ通知メール）

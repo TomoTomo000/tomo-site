@@ -1,0 +1,12 @@
+.m-empty-state {
+  margin-top: 3rem;
+  border-radius: 1rem;
+  background: var(--color-surface);
+  padding: 4rem 1.5rem;
+  text-align: center;
+  &__title {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+    font-weight: 700;
+  }
+}

@@ -1,0 +1,8 @@
+@use "../base/mixin";
+
+@mixin spacing {
+  padding: 3rem 0 5rem;
+  @include mixin.mq(sm) {
+    padding-bottom: 7rem;
+  }
+}

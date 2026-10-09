@@ -12,27 +12,24 @@ export function BlogArticlePage({ post }: { post: PostDetail }) {
   const hasTableOfContents = post.tableOfContents.length >= 2;
 
   return (
-    <main ref={articleRef} className="py-12">
+    <main ref={articleRef} className="l-blog-detail">
       <BlogContainer>
-        <nav
-          className="mb-8 text-xs text-muted"
-          aria-label="パンくずリスト"
-        >
-          <ol className="flex min-w-0 items-center gap-2">
-            <li className="shrink-0">
+        <nav className="m-breadcrumb" aria-label="パンくずリスト">
+          <ol className="m-breadcrumb__list">
+            <li className="m-breadcrumb__item">
               <AppLink
                 to="/blog"
                 search={{ page: 1, query: "", tag: "" }}
-                className="font-bold"
+                className="m-breadcrumb__link"
               >
                 BLOG
               </AppLink>
             </li>
-            <li className="shrink-0 text-muted" aria-hidden="true">
-              <ChevronRightIcon className="size-3.5" />
+            <li className="m-breadcrumb__separator" aria-hidden="true">
+              <ChevronRightIcon className="m-breadcrumb__icon" />
             </li>
             <li
-              className="min-w-0 truncate"
+              className="m-breadcrumb__current"
               aria-current="page"
               title={post.title}
             >
@@ -43,10 +40,8 @@ export function BlogArticlePage({ post }: { post: PostDetail }) {
 
         <article>
           <div>
-            <h1 className="text-4xl font-black leading-tight sm:text-5xl">
-              {post.title}
-            </h1>
-            <div className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-xs text-muted">
+            <h1 className="l-blog-detail__title">{post.title}</h1>
+            <div className="l-blog-detail__meta">
               <time dateTime={post.publishedAt ?? undefined}>
                 公開 {formatPostDate(post.publishedAt)}
               </time>
@@ -56,13 +51,13 @@ export function BlogArticlePage({ post }: { post: PostDetail }) {
               <span>約{post.readingMinutes}分</span>
             </div>
             {post.tags.length ? (
-              <ul className="mt-5 flex flex-wrap gap-2">
+              <ul className="l-blog-detail__tags">
                 {post.tags.map((tag) => (
                   <li key={tag.id}>
                     <AppLink
                       to="/blog"
                       search={{ page: 1, query: "", tag: tag.slug }}
-                      className="inline-flex text-xs font-bold text-ink"
+                      className="l-blog-detail__tag"
                     >
                       #{tag.name}
                     </AppLink>
@@ -78,46 +73,46 @@ export function BlogArticlePage({ post }: { post: PostDetail }) {
               alt={post.cover.altText}
               width={post.cover.width}
               height={post.cover.height}
-              className="mx-auto mt-10 aspect-[1.91/1] w-full max-w-4xl rounded-2xl object-cover"
+              className="l-blog-detail__cover"
             />
           ) : null}
 
-          <div className="mt-12 grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_15rem]">
-            <div className="flex min-w-0 flex-col gap-6">
+          <div className="l-blog-detail__body">
+            <div className="l-blog-detail__content">
               <ArticleBody html={post.contentHtml} />
               <section
-                className="rounded-2xl bg-surface p-5"
+                className="m-article-author"
                 aria-labelledby="article-author-title"
               >
                 <h2
                   id="article-author-title"
-                  className="text-sm font-bold text-ink"
+                  className="m-article-author__title"
                 >
                   この記事を書いた人
                 </h2>
 
-                <div className="mt-4 flex items-center gap-3">
-                  <div className="size-20 shrink-0 overflow-hidden rounded-full bg-canvas">
+                <div className="m-article-author__body">
+                  <div className="m-article-author__portrait">
                     <img
                       src="/img/about-profile.svg"
                       alt="TOMOのプロフィールイラスト"
                       width={349}
                       height={398}
-                      className="size-full object-cover object-top"
+                      className="m-article-author__image"
                     />
                   </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex flex-wrap items-center justify-between gap-3">
-                      <p className="font-black">TOMO</p>
+                  <div className="m-article-author__content">
+                    <div className="m-article-author__heading">
+                      <p className="m-article-author__name">TOMO</p>
                       <ButtonLink
                         to="/about"
                         size="sm"
-                        className="shrink-0"
+                        className="m-article-author__link"
                       >
                         プロフィールを見る
                       </ButtonLink>
                     </div>
-                    <p className="mt-2 text-xs text-muted">
+                    <p className="m-article-author__description">
                       WEB制作・開発会社で、フロントエンドエンジニア・WEBデザイナーとして働いています。
                     </p>
                   </div>
@@ -126,19 +121,16 @@ export function BlogArticlePage({ post }: { post: PostDetail }) {
             </div>
 
             {hasTableOfContents ? (
-              <aside className="order-first lg:order-last lg:sticky lg:top-[calc(var(--article-header-height)+1rem)] lg:max-h-[calc(100dvh-var(--article-header-height)-2rem)] lg:overflow-y-auto">
-                <details
-                  className="group rounded-2xl bg-surface p-5"
-                  open
-                >
-                  <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-sm font-bold text-ink [&::-webkit-details-marker]:hidden">
+              <aside className="l-blog-detail__toc">
+                <details className="m-article-toc" open>
+                  <summary className="m-article-toc__summary">
                     <span>目次</span>
                     <ChevronDownIcon
-                      className="size-5 shrink-0 text-ink group-open:rotate-180"
+                      className="m-article-toc__icon"
                       aria-hidden="true"
                     />
                   </summary>
-                  <ol className="mt-4 space-y-3 text-sm text-muted">
+                  <ol className="m-article-toc__list">
                     {post.tableOfContents.map((item) => (
                       <li
                         key={item.id}
@@ -149,14 +141,20 @@ export function BlogArticlePage({ post }: { post: PostDetail }) {
                         <AnchorLink
                           href={`#${item.id}`}
                           onClick={(event) => {
-                            if (event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+                            if (
+                              event.button === 0 &&
+                              !event.metaKey &&
+                              !event.ctrlKey &&
+                              !event.shiftKey &&
+                              !event.altKey
+                            ) {
                               scrollToHeading();
                             }
                           }}
                           className={
                             item.level === 2
-                              ? "font-bold text-ink"
-                              : "text-xs leading-5 text-muted"
+                              ? "m-article-toc__link m-article-toc__link--heading"
+                              : "m-article-toc__link m-article-toc__link--nested"
                           }
                         >
                           {item.text}

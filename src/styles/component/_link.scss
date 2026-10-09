@@ -1,0 +1,32 @@
+@use "../base/mixin";
+@use "../base/setting";
+
+.c-link {
+  &--text {
+    transition: opacity 150ms setting.$ease-default;
+    @include mixin.hover {
+      opacity: 0.6;
+    }
+  }
+  &--surface {
+    transition:
+      color 150ms setting.$ease-default,
+      background-color 150ms setting.$ease-default;
+    @include mixin.hover {
+      background: color-mix(in oklab, var(--color-ink) 5%, transparent);
+      &[data-selected="true"] {
+        background: var(--color-canvas);
+      }
+    }
+  }
+  &--control {
+    transition: transform 300ms setting.$ease-pop;
+    @include mixin.hover {
+      transform: scale(1.05);
+    }
+  }
+  &--underline {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+}

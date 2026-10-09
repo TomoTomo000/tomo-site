@@ -27,17 +27,17 @@ export function BlogListPage({
   const navigate = useNavigate();
 
   return (
-    <main className="py-12">
+    <main className="l-blog-list">
       <BlogContainer>
-        <div className="text-center">
-          <h1 className="text-3xl font-black sm:text-5xl">BLOG</h1>
-          <p className="mx-auto mt-7 max-w-lg text-sm leading-7 text-ink sm:text-base">
+        <div className="m-page-heading">
+          <h1 className="m-page-heading__title">BLOG</h1>
+          <p className="m-page-heading__description m-page-heading__description--constrained">
             日々の制作で学んだことと、デザイン、コード、好きなものについてのブログです。
           </p>
         </div>
 
         <form
-          className="mt-12 flex gap-3"
+          className="m-blog-search"
           action="/blog"
           method="get"
           role="search"
@@ -53,10 +53,10 @@ export function BlogListPage({
             });
           }}
         >
-          <label className="sr-only" htmlFor="blog-search">
+          <label className="m-blog-search__label" htmlFor="blog-search">
             記事を検索
           </label>
-          <div className="relative min-w-0 flex-1">
+          <div className="m-blog-search__field">
             <input
               ref={searchInputRef}
               id="blog-search"
@@ -65,11 +65,11 @@ export function BlogListPage({
               defaultValue={search.query}
               placeholder="記事を検索"
               maxLength={100}
-              className="blog-search-input peer w-full rounded-full bg-surface py-3.5 pl-5 pr-14 text-sm outline-none ring-ink transition-shadow focus:ring-2"
+              className="m-blog-search__input"
             />
             <IconButton
               size="sm"
-              className="absolute right-2 top-1/2 -translate-y-1/2 peer-placeholder-shown:hidden"
+              className="m-blog-search__clear"
               aria-label="検索語をクリア"
               onClick={() => {
                 if (!searchInputRef.current) return;
@@ -77,20 +77,17 @@ export function BlogListPage({
                 searchInputRef.current.focus();
               }}
             >
-              <CloseIcon className="size-4" />
+              <CloseIcon className="m-blog-search__icon" />
             </IconButton>
           </div>
-          <Button
-            type="submit"
-            size="lg"
-          >
+          <Button type="submit" size="lg">
             検索
           </Button>
         </form>
 
         {tags.length ? (
-          <div className="mt-6 flex flex-wrap items-center gap-2 text-sm">
-            <span className="mr-1 text-xs font-bold text-muted">タグ</span>
+          <div className="l-blog-list__tags">
+            <span className="l-blog-list__tags-label">タグ</span>
             {tags.map((tag) => (
               <AppLink
                 key={tag.id}
@@ -102,7 +99,7 @@ export function BlogListPage({
                 }}
                 variant="surface"
                 data-selected={search.tag === tag.slug ? true : undefined}
-                className={`rounded-full px-4 py-2 font-bold ${search.tag === tag.slug ? "bg-canvas text-background" : "bg-surface"}`}
+                className={`l-blog-list__tag ${search.tag === tag.slug ? "l-blog-list__tag--selected" : ""}`}
               >
                 #{tag.name}
               </AppLink>
@@ -111,15 +108,15 @@ export function BlogListPage({
         ) : null}
 
         {posts.items.length === 0 ? (
-          <div className="mt-12 rounded-2xl bg-surface px-6 py-16 text-center">
-            <p className="text-lg font-bold">
+          <div className="m-empty-state">
+            <p className="m-empty-state__title">
               {search.query || search.tag
                 ? "条件に一致する記事はありません"
                 : "まだ記事はありません"}
             </p>
           </div>
         ) : (
-          <div className="mt-12 grid gap-6 sm:grid-cols-2">
+          <div className="l-blog-list__cards">
             {posts.items.map((post) => (
               <PostCard key={post.id} post={post} />
             ))}
@@ -127,21 +124,18 @@ export function BlogListPage({
         )}
 
         {posts.pageCount > 1 ? (
-          <nav
-            className="mt-12 flex items-center justify-center gap-4"
-            aria-label="ページ送り"
-          >
+          <nav className="m-pagination" aria-label="ページ送り">
             {posts.page > 1 ? (
               <AppLink
                 to="/blog"
                 search={{ ...search, page: posts.page - 1 }}
                 variant="surface"
-                className="rounded-full bg-surface px-5 py-2 text-sm font-bold"
+                className="m-pagination__link"
               >
                 前へ
               </AppLink>
             ) : null}
-            <p className="text-sm text-muted">
+            <p className="m-pagination__count">
               {posts.page} / {posts.pageCount}
             </p>
             {posts.page < posts.pageCount ? (
@@ -149,7 +143,7 @@ export function BlogListPage({
                 to="/blog"
                 search={{ ...search, page: posts.page + 1 }}
                 variant="surface"
-                className="rounded-full bg-surface px-5 py-2 text-sm font-bold"
+                className="m-pagination__link"
               >
                 次へ
               </AppLink>

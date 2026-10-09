@@ -9,7 +9,7 @@ export function PostCard({ post }: { post: PostSummary }) {
       <Link
         to="/blog/$slug"
         params={{ slug: post.slug }}
-        className="group h-full flex cursor-pointer flex-col overflow-hidden rounded-2xl bg-surface text-ink"
+        className="m-post-card"
       >
         {post.cover ? (
           <img
@@ -18,33 +18,30 @@ export function PostCard({ post }: { post: PostSummary }) {
             width={post.cover.width}
             height={post.cover.height}
             loading="lazy"
-            className="aspect-[1.91/1] w-full object-cover"
+            className="m-post-card__image"
           />
         ) : null}
-        <div className="flex flex-1 flex-col px-5 py-6">
-          <div className="flex justify-end text-sm font-bold">
+        <div className="m-post-card__body">
+          <div className="m-post-card__meta">
             <time
               dateTime={post.publishedAt ?? undefined}
-              className="text-xs font-medium text-muted"
+              className="m-post-card__date"
             >
               {formatPostDate(post.publishedAt)}
             </time>
           </div>
-          <div className="mt-8 flex flex-1 flex-col">
-            <h3 className="text-lg font-bold leading-8">{post.title}</h3>
+          <div className="m-post-card__content">
+            <h3 className="m-post-card__title">{post.title}</h3>
             {post.tags.length ? (
-              <ul className="mt-5 flex flex-wrap gap-x-3 gap-y-1 text-xs font-bold text-ink">
+              <ul className="m-post-card__tags">
                 {post.tags.map((tag) => (
                   <li key={tag.id}>#{tag.name}</li>
                 ))}
               </ul>
             ) : null}
           </div>
-          <span
-            className="mt-8 inline-flex size-11 items-center justify-center self-end rounded-full bg-canvas text-background transition-transform duration-300 ease-pop group-hover:scale-105"
-            aria-hidden="true"
-          >
-            <ArrowRightIcon className="size-5" />
+          <span className="m-post-card__arrow" aria-hidden="true">
+            <ArrowRightIcon className="m-post-card__icon" />
           </span>
         </div>
       </Link>
