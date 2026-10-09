@@ -1,0 +1,87 @@
+@use "../base/mixin";
+@use "../base/setting";
+
+.m-page-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: var(--color-canvas);
+  will-change: transform;
+  &.--leaving {
+    pointer-events: none;
+    animation: page-loader-panel-out 750ms setting.$ease-loader forwards;
+  }
+  &.--waiting {
+    cursor: wait;
+  }
+  &__content {
+    text-align: center;
+  }
+  &__retry {
+    margin-top: 1rem;
+    cursor: pointer;
+    color: var(--color-background);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  &__title {
+    color: var(--color-background);
+    font-weight: 900;
+    line-height: 1;
+  }
+  &__text {
+    display: block;
+    white-space: nowrap;
+    font-size: 3rem;
+    line-height: 1;
+    @include mixin.mq(sm) {
+      font-size: 3.75rem;
+    }
+  }
+  &__character {
+    display: inline-block;
+    transform-origin: bottom;
+    will-change: opacity, transform;
+    animation: page-loader-character-cycle 1.4s linear infinite both;
+    @media (prefers-reduced-motion: reduce) {
+      animation: none !important;
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+@keyframes page-loader-panel-out {
+  to {
+    transform: translateY(-100%);
+  }
+}
+@keyframes page-loader-character-cycle {
+  0% {
+    opacity: 0;
+    transform: translateY(0.5em) scale(0.9) rotate(-1deg);
+    animation-timing-function: setting.$ease-pop;
+  }
+  24% {
+    opacity: 1;
+    transform: translateY(-0.04em) scale(1.025) rotate(0.25deg);
+    animation-timing-function: setting.$ease-pop;
+  }
+  34% {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotate(0);
+  }
+  68% {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotate(0);
+    animation-timing-function: setting.$ease-loader;
+  }
+  86%,
+  100% {
+    opacity: 0;
+    transform: translateY(-0.4em) scale(0.97) rotate(-0.25deg);
+  }
+}

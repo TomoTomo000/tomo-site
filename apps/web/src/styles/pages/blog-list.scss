@@ -1,0 +1,51 @@
+@use "../base/reset";
+@use "../base/base";
+@use "../modules/page-loader";
+@use "../layouts/error";
+@use "../base/mixin";
+@use "../layouts/detail";
+@use "../modules/page-heading";
+@use "../modules/blog-search";
+@use "../modules/post-card";
+@use "../modules/empty-state";
+@use "../modules/pagination";
+@use "../components/button";
+@use "../components/link";
+
+.l-blog-list {
+  padding-block: 3rem;
+  &__tags {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+  &__tags-label {
+    margin-right: 0.25rem;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    font-weight: 700;
+    color: var(--color-muted);
+  }
+  &__tag {
+    border-radius: 9999px;
+    padding: 0.5rem 1rem;
+    font-weight: 700;
+    background: var(--color-surface);
+    &--selected {
+      background: var(--color-canvas);
+      color: var(--color-background);
+    }
+  }
+  &__cards {
+    margin-top: 3rem;
+    display: grid;
+    gap: 1.5rem;
+    @include mixin.mq(sm) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+}

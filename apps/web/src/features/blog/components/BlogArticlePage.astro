@@ -1,0 +1,158 @@
+---
+import { blogUrl } from "@/lib/urls";
+import ChevronDownIcon from "@/components/ui/icons/ChevronDownIcon.astro";
+import ChevronRightIcon from "@/components/ui/icons/ChevronRightIcon.astro";
+import ButtonLink from "@/components/ui/ButtonLink.astro";
+import AnchorLink from "@/components/ui/Link.astro";
+import AppLink from "@/components/ui/Link.astro";
+import type { PostDetail } from "../types/post.types";
+import ArticleBody from "./ArticleBody.astro";
+import BlogContainer from "@/components/layout/PageContainer.astro";
+import { formatPostDate } from "./date";
+
+type Props = { post: PostDetail };
+const { post } = Astro.props;
+const hasTableOfContents = post.tableOfContents.length >= 2;
+---
+
+<main class="l-blog-detail js-blogDetail">
+  <BlogContainer>
+    <nav class="m-breadcrumb" aria-label="パンくずリスト">
+      <ol class="m-breadcrumb__list">
+        <li class="m-breadcrumb__item">
+          <AppLink
+            href={blogUrl({ page: 1, query: "", tag: "" })}
+            class="m-breadcrumb__link"
+          >
+            BLOG
+          </AppLink>
+        </li>
+        <li class="m-breadcrumb__separator" aria-hidden="true">
+          <ChevronRightIcon class="m-breadcrumb__icon" />
+        </li>
+        <li
+          class="m-breadcrumb__current"
+          aria-current="page"
+          title={post.title}
+        >
+          {post.title}
+        </li>
+      </ol>
+    </nav>
+
+    <article>
+      <div>
+        <h1 class="l-blog-detail__title">{post.title}</h1>
+        <div class="l-blog-detail__meta">
+          <time datetime={post.publishedAt ?? undefined}>
+            公開 {formatPostDate(post.publishedAt)}
+          </time>
+          <time datetime={post.updatedAt}>
+            更新 {formatPostDate(post.updatedAt)}
+          </time>
+          <span>約{post.readingMinutes}分</span>
+        </div>
+        {post.tags.length ? (
+          <ul class="l-blog-detail__tags">
+            {post.tags.map((tag) => (
+              <li>
+                <AppLink
+                  href={blogUrl({ page: 1, query: "", tag: tag.slug })}
+                  class="l-blog-detail__tag"
+                >
+                  #{tag.name}
+                </AppLink>
+              </li>
+            ))}
+          </ul>
+        ) : null}
+      </div>
+
+      {post.cover ? (
+        <img
+          src={post.cover.displayUrl}
+          alt={post.cover.altText}
+          width={post.cover.width}
+          height={post.cover.height}
+          class="l-blog-detail__cover"
+        />
+      ) : null}
+
+      <div class="l-blog-detail__body">
+        <div class="l-blog-detail__content">
+          <ArticleBody html={post.contentHtml} />
+          <section
+            class="m-article-author"
+            aria-labelledby="article-author-title"
+          >
+            <h2 id="article-author-title" class="m-article-author__title">
+              この記事を書いた人
+            </h2>
+
+            <div class="m-article-author__body">
+              <div class="m-article-author__portrait">
+                <img
+                  src="/img/about-profile.svg"
+                  alt="TOMOのプロフィールイラスト"
+                  width={349}
+                  height={398}
+                  class="m-article-author__image"
+                />
+              </div>
+              <div class="m-article-author__content">
+                <div class="m-article-author__heading">
+                  <p class="m-article-author__name">TOMO</p>
+                  <ButtonLink
+                    href="/about"
+                    size="sm"
+                    class="m-article-author__link"
+                  >
+                    プロフィールを見る
+                  </ButtonLink>
+                </div>
+                <p class="m-article-author__description">
+                  大阪のWEB制作・開発会社で、フロントエンドエンジニア・WEBデザイナーとして働いています。
+                </p>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        {hasTableOfContents ? (
+          <aside class="l-blog-detail__toc">
+            <details class="m-article-toc js-articleToc" open>
+              <summary class="m-article-toc__summary">
+                <span>目次</span>
+                <ChevronDownIcon
+                  class="m-article-toc__icon"
+                  aria-hidden="true"
+                />
+              </summary>
+              <ol class="m-article-toc__list">
+                {post.tableOfContents.map((item) => (
+                  <li
+                    style={{
+                      paddingLeft: `${(item.level - 2) * 12}px`,
+                    }}
+                  >
+                    <AnchorLink
+                      href={`#${item.id}`}
+
+                      class={
+                        item.level === 2
+                          ? "m-article-toc__link m-article-toc__link--heading"
+                          : "m-article-toc__link m-article-toc__link--nested"
+                      }
+                    >
+                      {item.text}
+                    </AnchorLink>
+                  </li>
+                ))}
+              </ol>
+            </details>
+          </aside>
+        ) : null}
+      </div>
+    </article>
+  </BlogContainer>
+</main>

@@ -4,7 +4,8 @@
 
 ## 構成
 
-- TanStack Start / React / Vite
+- Astro（公開サイト） / React（お問い合わせフォーム）
+- Bun workspaces（モノレポ）
 - SCSS（Dart Sass / sass-embedded）
 - microCMS（記事・タグ・画像）
 - Cloudflare Workers（WEBアプリの配信）
@@ -24,3 +25,5 @@ bun run cf-typegen
 ```
 
 検証後のデプロイは `bun run deploy` で行います。
+
+開発サーバーは `http://127.0.0.1:4321` で起動します。

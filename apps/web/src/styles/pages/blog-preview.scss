@@ -1,0 +1,19 @@
+@use "../base/reset";
+@use "../base/base";
+@use "../modules/page-loader";
+@use "../layouts/error";
+@use "blog-detail";
+
+.l-blog-preview {
+  overflow: hidden;
+  background: var(--color-background);
+  &__notice {
+    background: var(--color-notice-background);
+    padding: 0.75rem 1.25rem;
+    text-align: center;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 700;
+    color: var(--color-notice-text);
+  }
+}

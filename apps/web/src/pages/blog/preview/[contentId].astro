@@ -1,0 +1,58 @@
+---
+import Document from "@/layouts/Document.astro";
+import DetailLayout from "@/components/layout/DetailLayout.astro";
+import Page from "@/features/blog/components/BlogArticlePage.astro";
+import ErrorPage from "@/features/blog/components/BlogErrorPage.astro";
+import NotFoundPage from "@/components/elements/NotFoundPage.astro";
+import { findMicroCmsPostById } from "@/features/blog/server/microcms.repository.server";
+import { isBlogDataError } from "@/features/blog/server/blog-data.error";
+import { validatePreview } from "@/features/blog/server/preview";
+import { getCloudflareEnv } from "@/lib/cloudflare/env.server";
+import css from "@/styles/pages/blog-preview.scss?url";
+import errorCss from "@/styles/pages/blog-error.scss?url";
+import notFoundCss from "@/styles/pages/not-found.scss?url";
+const input = await validatePreview(
+  Astro.params.contentId!,
+  Astro.url.searchParams,
+  getCloudflareEnv().MICROCMS_PREVIEW_SECRET,
+);
+let post;
+let failed = false;
+if (input) {
+  try {
+    post = await findMicroCmsPostById({
+      contentId: input.contentId,
+      draftKey: input.draftKey || undefined,
+    });
+  } catch (error) {
+    failed = true;
+    Astro.response.status = isBlogDataError(error) ? error.status : 503;
+  }
+}
+if (!failed && !post) Astro.response.status = 404;
+---
+
+<Document
+  css={failed ? errorCss : post ? css : notFoundCss}
+  title="プレビュー | TOMO"
+  preview
+  noindex
+>
+  {failed ? (
+    <ErrorPage />
+  ) : post ? (
+    <DetailLayout>
+      <div class="l-blog-preview">
+        <p class="l-blog-preview__notice">
+          プレビューです。公開中の内容とは異なる場合があります。
+        </p>
+        <Page post={post} />
+      </div>
+    </DetailLayout>
+  ) : (
+    <NotFoundPage />
+  )}
+  <script>
+    import "@/scripts/pages/blog-preview";
+  </script>
+</Document>

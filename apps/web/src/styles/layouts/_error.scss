@@ -1,0 +1,41 @@
+@use "../base/mixin";
+@use "../components/button";
+
+.l-error {
+  display: grid;
+  min-height: 100dvh;
+  place-items: center;
+  background: var(--color-background);
+  text-align: center;
+  color: var(--color-ink);
+  &__code {
+    font-size: 2.25rem;
+    font-weight: 900;
+    line-height: 1;
+    @include mixin.mq(sm) {
+      font-size: 3rem;
+    }
+    @include mixin.mq(lg) {
+      font-size: 3.75rem;
+    }
+  }
+  &__title {
+    margin-top: 1.5rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    font-weight: 700;
+  }
+  &__description {
+    margin-top: 1.5rem;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: var(--color-muted);
+  }
+  &__actions {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+}

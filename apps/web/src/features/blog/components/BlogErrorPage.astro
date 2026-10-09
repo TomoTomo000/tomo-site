@@ -1,0 +1,26 @@
+---
+import { blogUrl } from "@/lib/urls";
+import Button from "@/components/ui/Button.astro";
+import ButtonLink from "@/components/ui/ButtonLink.astro";
+---
+
+<main class="l-error">
+  <div>
+    <p class="l-error__code">TEMPORARY ERROR</p>
+    <h1 class="l-error__title">記事を読み込めませんでした</h1>
+    <p class="l-error__description">
+      一時的に通信できない可能性があります。
+      <br />
+      時間をおいて、もう一度お試しください。
+    </p>
+    <div class="l-error__actions">
+      <Button class="js-reload">もう一度読み込む</Button>
+      <ButtonLink
+        href={blogUrl({ page: 1, query: "", tag: "" })}
+        variant="secondary"
+      >
+        記事一覧を見る
+      </ButtonLink>
+    </div>
+  </div>
+</main>

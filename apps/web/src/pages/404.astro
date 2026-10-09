@@ -1,0 +1,13 @@
+---
+import Document from "@/layouts/Document.astro";
+import Page from "@/components/elements/NotFoundPage.astro";
+import css from "@/styles/pages/not-found.scss?url";
+Astro.response.status = 404;
+---
+
+<Document css={css} noindex>
+  <Page />
+  <script>
+    import "@/scripts/pages/not-found";
+  </script>
+</Document>

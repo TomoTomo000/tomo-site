@@ -1,0 +1,29 @@
+---
+import Document from "@/layouts/Document.astro";
+import Page from "@/features/portfolio/PortfolioPage.astro";
+import { listLatestMicroCmsPosts } from "@/features/blog/server/microcms.repository.server";
+import { isBlogDataError } from "@/features/blog/server/blog-data.error";
+import { getSiteUrl } from "@/lib/site-url.server";
+import { serializeJsonLd, SITE_DESCRIPTION } from "@/lib/seo";
+import css from "@/styles/pages/portfolio.scss?url";
+const siteUrl = getSiteUrl(Astro.request);
+const blogPosts = await listLatestMicroCmsPosts(4).catch((error) => {
+  if (isBlogDataError(error)) return [];
+  throw error;
+});
+const structuredData = serializeJsonLd({
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "TOMO",
+  url: siteUrl + "/",
+  inLanguage: "ja",
+  description: SITE_DESCRIPTION,
+});
+---
+
+<Document css={css} siteUrl={siteUrl} structuredData={structuredData}>
+  <Page blogPosts={blogPosts} />
+  <script>
+    import "@/scripts/pages/portfolio";
+  </script>
+</Document>

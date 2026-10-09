@@ -1,0 +1,116 @@
+---
+import IconButton from "@/components/ui/IconButton.astro";
+import AppLink from "@/components/ui/Link.astro";
+import PageContainer from "./PageContainer.astro";
+const navItems = [
+  { section: "about", label: "ABOUT", to: "/about" },
+  { section: "works", label: "WORKS", to: "/works" },
+  { section: "blog", label: "BLOG", to: "/blog" },
+  { section: "contact", label: "CONTACT", to: "/contact" },
+] as const;
+---
+
+<div class="l-detail">
+  <header class="js-pageHeader l-detail__header">
+    <div class="l-detail__header-inner">
+      <AppLink
+        href="/"
+        variant="control"
+        class="m-navigation__logo js-navigationLogo"
+        aria-label="TOMO トップページへ"
+      >
+        TOMO.
+      </AppLink>
+
+      <IconButton
+        variant="surface"
+        class="m-navigation__toggle js-navigationToggle"
+        aria-label="メニューを開く"
+        aria-expanded="false"
+        aria-controls="mobile-navigation"
+      >
+        <span class="m-navigation__label">Menu</span>
+        <span class="m-navigation__bar m-navigation__bar--top" />
+        <span class="m-navigation__bar m-navigation__bar--bottom" />
+      </IconButton>
+    </div>
+  </header>
+
+  <div class="m-navigation__overlay l-detail__menu js-navigationOverlay" aria-hidden="true" inert>
+    <button
+      type="button"
+      class="m-navigation__backdrop js-navigationBackdrop"
+      aria-label="メニューを閉じる"
+    />
+
+    <nav
+      id="mobile-navigation"
+      class="m-navigation__panel js-navigationPanel"
+      aria-label="モバイルナビゲーション"
+    >
+      <ul class="m-navigation__list">
+        {navItems.map((item) => (
+          <li>
+            <a
+              href={item.to}
+              data-status={
+                Astro.url.pathname === item.to ||
+                Astro.url.pathname.startsWith(item.to + "/")
+                  ? "active"
+                  : undefined
+              }
+
+              class="m-navigation__link"
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+
+  <header class="js-pageHeader l-detail__header l-detail__header--desktop">
+    <div class="l-detail__header-inner">
+      <AppLink
+        href="/"
+        variant="control"
+        class="m-navigation__logo js-navigationLogo"
+        aria-label="TOMO トップページへ"
+      >
+        TOMO.
+      </AppLink>
+
+      <nav aria-label="ページナビゲーション">
+        <ul class="m-navigation__desktop-list">
+          {navItems.map((item) => (
+            <li>
+              <a
+                href={item.to}
+                data-status={
+                  Astro.url.pathname === item.to ||
+                  Astro.url.pathname.startsWith(item.to + "/")
+                    ? "active"
+                    : undefined
+                }
+
+                class="m-navigation__desktop-link"
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <slot />
+
+  <footer class="l-footer">
+    <PageContainer class="l-footer__inner">
+      <p class="l-footer__logo">TOMO.</p>
+      <p class="l-footer__copyright">© 2026 TOMO. All Rights Reserved.</p>
+    </PageContainer>
+  </footer>
+</div>

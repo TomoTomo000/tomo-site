@@ -1,0 +1,16 @@
+@use "../base/reset";
+@use "../base/base";
+@use "../modules/page-loader";
+@use "../layouts/error";
+@use "../base/mixin";
+@use "../layouts/detail";
+@use "../layouts/page";
+@use "../modules/page-heading";
+@use "../components/button";
+@use "../components/form-field";
+@use "../components/link";
+@use "../modules/contact-form";
+
+.l-contact {
+  @include page.spacing;
+}
