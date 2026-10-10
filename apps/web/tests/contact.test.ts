@@ -42,6 +42,36 @@ function createRequest(body: unknown = validInput): Request {
 
 describe("contact API", () => {
   test.each([
+    { hostname: "feature-setup.example.workers.dev", status: 200 },
+    { hostname: "tomo-site.page", status: 403 },
+  ])("verifies Preview hostname $hostname", async ({ hostname, status }) => {
+    const environment = { ...createEnvironment(), APP_ENV: "preview" };
+    delete environment.SITE_URL;
+    const request = new Request(
+      "https://feature-setup.example.workers.dev/api/contact",
+      createRequest(),
+    );
+    let emailRequests = 0;
+    const response = await handleContactRequest(
+      request,
+      environment,
+      async (url) => {
+        if (String(url).includes("siteverify")) {
+          return Response.json({
+            success: true,
+            hostname,
+            action: "contact_submit",
+          });
+        }
+        emailRequests += 1;
+        return Response.json({ id: "test-email" });
+      },
+    );
+    expect(response.status).toBe(status);
+    expect(emailRequests).toBe(status === 200 ? 1 : 0);
+  });
+
+  test.each([
     {
       label: "local development",
       appEnv: "development",

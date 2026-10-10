@@ -1,7 +1,7 @@
 import { env } from "cloudflare:workers";
 
 export type AppEnv = Omit<Cloudflare.Env, "APP_ENV"> & {
-  APP_ENV: "development" | "production" | "test";
+  APP_ENV: "development" | "production" | "preview" | "test";
   SITE_URL?: string;
   MICROCMS_SERVICE_DOMAIN?: string;
   MICROCMS_API_KEY?: string;
