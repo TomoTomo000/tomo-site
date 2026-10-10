@@ -1,0 +1,22 @@
+---
+import DetailLayout from "@/components/layout/DetailLayout.astro";
+import PageContainer from "@/components/layout/PageContainer.astro";
+import WorkCard from "./WorkCard.astro";
+import { works } from "./works";
+---
+
+<DetailLayout>
+  <main class="l-works-list">
+    <PageContainer>
+      <header class="m-page-heading">
+        <h1 class="m-page-heading__title">WORKS</h1>
+        <p class="m-page-heading__description">これまでに制作したもの</p>
+      </header>
+      <div class="l-works-list__cards">
+        {works.map((work) => (
+          <WorkCard work={work} heading="h2" />
+        ))}
+      </div>
+    </PageContainer>
+  </main>
+</DetailLayout>

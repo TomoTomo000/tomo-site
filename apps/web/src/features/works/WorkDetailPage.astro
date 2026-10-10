@@ -1,0 +1,73 @@
+---
+import DetailLayout from "@/components/layout/DetailLayout.astro";
+import PageContainer from "@/components/layout/PageContainer.astro";
+import AnchorLink from "@/components/ui/Link.astro";
+import type { Work } from "./works";
+import WorkScreenshot from "./WorkScreenshot.astro";
+
+type Props = { work: Work };
+const { work } = Astro.props;
+---
+
+<DetailLayout>
+  <main class="l-works-detail">
+    <PageContainer>
+      <header class="m-page-heading">
+        <p class="m-page-heading__title">WORKS</p>
+        <h1 class="l-works-detail__title">{work.title}</h1>
+        <p class="l-works-detail__description">{work.description}</p>
+      </header>
+
+      <figure class="l-works-detail__figure">
+        {work.siteUrl ? (
+          <AnchorLink
+            href={work.siteUrl}
+            class="l-works-detail__screenshot-link"
+            aria-label={`${work.title}のサイトを見る`}
+          >
+            <WorkScreenshot work={work} />
+          </AnchorLink>
+        ) : (
+          <WorkScreenshot work={work} />
+        )}
+      </figure>
+
+      <div class="l-works-detail__body">
+        <section
+          class="l-works-detail__section"
+          aria-labelledby="overview-title"
+        >
+          <h2 id="overview-title" class="l-works-detail__section-title">
+            OVERVIEW
+          </h2>
+          <p class="l-works-detail__section-description">制作について</p>
+          <div class="l-works-detail__overview">
+            {work.overview.map((paragraph) => (
+              <p>{paragraph}</p>
+            ))}
+          </div>
+          <dl class="l-works-detail__details">
+            {work.details.map((detail) => (
+              <div class="l-works-detail__detail">
+                <dt class="l-works-detail__label">{detail.label}</dt>
+                <dd>{detail.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+
+        <section class="l-works-detail__section" aria-labelledby="stack-title">
+          <h2 id="stack-title" class="l-works-detail__section-title">
+            TECH STACK
+          </h2>
+          <p class="l-works-detail__section-description">使用技術</p>
+          <ul class="l-works-detail__technologies">
+            {work.technologies.map((technology) => (
+              <li class="l-works-detail__technology">{technology}</li>
+            ))}
+          </ul>
+        </section>
+      </div>
+    </PageContainer>
+  </main>
+</DetailLayout>

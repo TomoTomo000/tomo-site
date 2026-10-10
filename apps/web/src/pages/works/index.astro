@@ -1,0 +1,17 @@
+---
+import Document from "@/layouts/Document.astro";
+import Page from "@/features/works/WorksListPage.astro";
+import css from "@/styles/pages/works-list.scss?url";
+export const prerender = true;
+---
+
+<Document
+  css={css}
+  title="TOMO | フロントエンドエンジニア・WEBデザイナー | WORKS"
+  description="TOMOの制作実績一覧。制作したWEBサイト・アプリケーションと、デザイン・実装で工夫した点などを紹介します。"
+>
+  <Page />
+  <script>
+    import "@/scripts/pages/works-list";
+  </script>
+</Document>

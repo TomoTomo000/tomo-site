@@ -1,0 +1,17 @@
+---
+import Document from "@/layouts/Document.astro";
+import Page from "@/features/about/AboutPage.astro";
+import css from "@/styles/pages/about.scss?url";
+export const prerender = true;
+---
+
+<Document
+  css={css}
+  title="TOMO | フロントエンドエンジニア・WEBデザイナー | ABOUT"
+  description="フロントエンドエンジニア・WEBデザイナーTOMOのプロフィール。使用する技術、制作で大切にしていることや好きなものを紹介します。"
+>
+  <Page />
+  <script>
+    import "@/scripts/pages/about";
+  </script>
+</Document>

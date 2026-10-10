@@ -1,0 +1,41 @@
+@use "../base/mixin";
+
+.m-like-card {
+  border-radius: 1rem;
+  background: var(--color-surface);
+  padding: 1.5rem;
+  @include mixin.mq(sm) {
+    padding: 2rem;
+  }
+  &__picture {
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: center;
+  }
+  &__image {
+    display: flex;
+    height: 7rem;
+    width: 10.5rem;
+    align-items: center;
+    justify-content: center;
+  }
+  &__title {
+    text-align: center;
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+    font-weight: 700;
+    @include mixin.mq(sm) {
+      font-size: 1.25rem;
+    }
+  }
+  &__description {
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    line-height: 2rem;
+  }
+  &__illustration {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+  }
+}

@@ -1,0 +1,56 @@
+:root {
+  color-scheme: light;
+  --color-background: #f7f0e7;
+  --color-canvas: #2a1915;
+  --color-ink: #2a1915;
+  --color-surface: #fffdf9;
+  --color-muted: #68544c;
+  --color-footer-muted: #bca79d;
+  --color-important: #e74c3c;
+  --color-article-muted: #806a60;
+  --color-table-heading: #f4f1ed;
+  --color-notice-background: oklch(96.2% 0.059 95.617);
+  --color-notice-text: oklch(27.9% 0.077 45.635);
+  --font-sans:
+    "Figtree Variable", "Noto Sans JP Variable", Arial, "Helvetica Neue",
+    "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif;
+}
+
+html {
+  height: 100%;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-weight: 500;
+}
+
+::selection {
+  background: var(--color-canvas);
+  color: var(--color-background);
+}
+button,
+a,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

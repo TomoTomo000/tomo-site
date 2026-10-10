@@ -1,0 +1,273 @@
+---
+import { blogUrl } from "@/lib/urls";
+
+import ButtonLink from "@/components/ui/ButtonLink.astro";
+import IconButton from "@/components/ui/IconButton.astro";
+import ArrowDownIcon from "@/components/ui/icons/ArrowDownIcon.astro";
+import AppLink from "@/components/ui/Link.astro";
+import type { PostSummary } from "@/features/blog/types/post.types";
+import PostCard from "@/features/blog/components/PostCard.astro";
+import WorkCard from "@/features/works/WorkCard.astro";
+import { works } from "@/features/works/works";
+const navItems = [
+  { label: "About", href: "#about" },
+  { label: "Works", href: "#works" },
+  { label: "Blog", href: "#blog" },
+  { label: "Contact", href: "#contact" },
+];
+type Props = { blogPosts: PostSummary[] };
+const { blogPosts } = Astro.props;
+---
+
+<div class="l-portfolio">
+  <header class="l-portfolio__header">
+    <div class="l-portfolio__header-inner">
+      <AppLink
+        href="/"
+
+        variant="control"
+        class="m-navigation__logo js-navigationLogo"
+        aria-label="TOMO ホーム"
+      >
+        TOMO.
+      </AppLink>
+
+      <IconButton
+        variant="surface"
+        class="m-navigation__toggle js-navigationToggle"
+        aria-label="メニューを開く"
+        aria-expanded="false"
+        aria-controls="mobile-navigation"
+      >
+        <span class="m-navigation__label">Menu</span>
+        <span class="m-navigation__bar m-navigation__bar--top" />
+        <span class="m-navigation__bar m-navigation__bar--bottom" />
+      </IconButton>
+    </div>
+  </header>
+
+  <div class="m-navigation__overlay l-portfolio__menu js-navigationOverlay" aria-hidden="true" inert>
+    <button
+      type="button"
+      class="m-navigation__backdrop js-navigationBackdrop"
+      aria-label="メニューを閉じる"
+    />
+
+    <nav
+      id="mobile-navigation"
+      class="m-navigation__panel m-navigation__panel--dark js-navigationPanel"
+      aria-label="モバイルナビゲーション"
+    >
+      <ul class="m-navigation__list">
+        {navItems.map((item) => (
+          <li>
+            <a
+              href={item.href}
+
+              class="m-navigation__link m-navigation__link--dark"
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+
+  <div class="l-portfolio__body">
+    <aside class="l-portfolio__illustration">
+      <AppLink
+        href="/"
+
+        variant="control"
+        class="l-portfolio__illustration-logo"
+        aria-label="TOMO ホーム"
+      >
+        TOMO.
+      </AppLink>
+      <picture class="l-portfolio__picture">
+        <source
+          media="(prefers-reduced-motion: reduce)"
+          srcset="/img/hero-designer-static.svg"
+        />
+        <img
+          src="/img/hero-designer.svg"
+          alt="ノートパソコンで制作するTOMOのイラスト"
+          width={1536}
+          height={1024}
+          class="l-portfolio__image"
+        />
+      </picture>
+    </aside>
+
+    <main class="l-portfolio__main js-portfolioMain" aria-label="メインコンテンツ">
+      <section class="m-portfolio-hero" aria-labelledby="hero-title">
+        <div>
+          <h1 id="hero-title" class="m-portfolio-hero__title">
+            <span class="m-portfolio-hero__name">TOMO.</span>
+            <span class="m-portfolio-hero__role">
+              FRONTEND ENGINEER &amp; WEB DESIGNER
+            </span>
+          </h1>
+        </div>
+
+        <p class="m-portfolio-hero__scroll">
+          <span>SCROLL DOWN</span>
+          <ArrowDownIcon class="m-portfolio-hero__arrow" />
+        </p>
+      </section>
+
+      <section
+        id="about"
+        class="l-portfolio__section"
+        aria-labelledby="about-title"
+      >
+        <div class="l-portfolio__section-heading">
+          <h2 id="about-title" class="l-portfolio__section-title">
+            ABOUT
+          </h2>
+          <p class="l-portfolio__section-description">私について</p>
+        </div>
+
+        <div class="l-portfolio__profile">
+          <div class="m-profile__portrait">
+            <img
+              src="/img/about-profile.svg"
+              alt="TOMOのプロフィールイラスト"
+              width={1223}
+              height={1286}
+              class="m-profile__image"
+            />
+          </div>
+          <div>
+            <p class="m-profile__name">TOMO</p>
+            <div class="m-profile__text">
+              <p>約3年半フレンチレストランに勤務したのち、WEB業界へ転職。</p>
+              <p>
+                現在は大阪のWEB制作・開発会社で、フロントエンドエンジニア・WEBデザイナーとして働いています。
+              </p>
+              <p>
+                実装するだけではなく、長く運用できる設計や、全体を見据えたスケジューリング、クライアントの想いを整理するデザインを大切にしながら制作しています。
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="l-portfolio__section-action">
+          <ButtonLink href="/about">詳しく見る</ButtonLink>
+        </div>
+      </section>
+
+      <section
+        id="works"
+        class="l-portfolio__section"
+        aria-labelledby="works-title"
+      >
+        <div class="l-portfolio__section-heading">
+          <h2 id="works-title" class="l-portfolio__section-title">
+            WORKS
+          </h2>
+          <p class="l-portfolio__section-description">これまでに制作したもの</p>
+        </div>
+        <div class="l-portfolio__cards">
+          {works.slice(0, 3).map((work) => (
+            <WorkCard work={work} />
+          ))}
+        </div>
+        <div class="l-portfolio__section-action">
+          <ButtonLink href="/works">制作実績一覧を見る</ButtonLink>
+        </div>
+      </section>
+
+      <section
+        id="blog"
+        class="l-portfolio__section"
+        aria-labelledby="blog-title"
+      >
+        <div class="l-portfolio__section-heading">
+          <h2 id="blog-title" class="l-portfolio__section-title">
+            BLOG
+          </h2>
+          <p class="l-portfolio__section-description">
+            日々の制作で学んだことと、デザイン、コード、好きなものについてのブログです。
+          </p>
+        </div>
+
+        {blogPosts.length === 0 ? (
+          <div class="m-empty-state">
+            <p class="m-empty-state__title">まだ記事はありません</p>
+          </div>
+        ) : (
+          <>
+            <div class="l-portfolio__cards">
+              {blogPosts.map((post) => (
+                <PostCard post={post} />
+              ))}
+            </div>
+            <div class="l-portfolio__section-action">
+              <ButtonLink
+                href={blogUrl({
+                  page: 1,
+                  query: "",
+                  tag: "",
+                })}
+              >
+                記事一覧を見る
+              </ButtonLink>
+            </div>
+          </>
+        )}
+      </section>
+
+      <section
+        id="contact"
+        class="l-portfolio__section"
+        aria-labelledby="contact-title"
+      >
+        <div class="l-portfolio__section-heading">
+          <h2 id="contact-title" class="l-portfolio__section-title">
+            CONTACT
+          </h2>
+          <p class="l-portfolio__section-description">
+            ご相談・お仕事のご依頼など、お気軽にお問い合わせください。内容を確認後、2〜3営業日以内にご返信します。
+          </p>
+        </div>
+
+        <div class="l-portfolio__section-action">
+          <ButtonLink href="/contact">お問い合わせ</ButtonLink>
+        </div>
+      </section>
+
+      <footer class="l-portfolio__footer">
+        <div class="l-footer__inner">
+          <p class="l-footer__logo">TOMO.</p>
+          <p class="l-portfolio__copyright">
+            © 2026 TOMO. All Rights Reserved.
+          </p>
+        </div>
+      </footer>
+    </main>
+
+    <aside class="l-portfolio__sidebar">
+      <AppLink
+        href="/"
+
+        variant="control"
+        class="l-portfolio__sidebar-logo"
+        aria-label="TOMO ホーム"
+      >
+        TOMO.
+      </AppLink>
+      <nav aria-label="メインナビゲーション">
+        <ul class="l-portfolio__sidebar-list">
+          {navItems.map((item) => (
+            <li>
+              <a href={item.href} class="l-portfolio__sidebar-link">
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </aside>
+  </div>
+</div>

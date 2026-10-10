@@ -1,47 +1,32 @@
 import js from "@eslint/js";
 import reactHooks from "eslint-plugin-react-hooks";
-import reactRefresh from "eslint-plugin-react-refresh";
 import globals from "globals";
 import tseslint from "typescript-eslint";
-
+import astro from "eslint-plugin-astro";
 export default tseslint.config(
   {
     ignores: [
-      ".output/**",
-      ".wrangler/**",
-      "dist/**",
-      "node_modules/**",
-      "src/routeTree.gen.ts",
-      "worker-configuration.d.ts",
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/.astro/**",
+      "**/.wrangler/**",
+      "**/worker-configuration.d.ts",
     ],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,
+  ...astro.configs["flat/recommended"],
   {
-    files: ["**/*.{ts,tsx}"],
-    languageOptions: {
-      ecmaVersion: 2022,
-      globals: {
-        ...globals.browser,
-        ...globals.node,
-      },
-    },
-    plugins: {
-      "react-hooks": reactHooks,
-      "react-refresh": reactRefresh,
-    },
-    rules: {
-      ...reactHooks.configs.flat.recommended.rules,
-      "react-refresh/only-export-components": [
-        "warn",
-        { allowConstantExport: true },
-      ],
-    },
+    files: ["**/*.{ts,tsx,js,mjs,astro}"],
+    languageOptions: { globals: { ...globals.browser, ...globals.node } },
   },
   {
-    files: ["src/routes/**/*.{ts,tsx}"],
-    rules: {
-      "react-refresh/only-export-components": "off",
-    },
+    files: ["**/*.tsx"],
+    plugins: { "react-hooks": reactHooks },
+    rules: { ...reactHooks.configs.flat.recommended.rules },
+  },
+  {
+    files: ["**/*.astro"],
+    languageOptions: { parserOptions: { parser: tseslint.parser } },
   },
 );

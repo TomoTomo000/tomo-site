@@ -1,0 +1,25 @@
+---
+const characters = Array.from("LOADING...");
+---
+
+<div
+  class="m-page-loader js-pageLoader --waiting"
+  role="status"
+  aria-label="ページを読み込んでいます"
+  hidden
+>
+  <div class="m-page-loader__content">
+    <p class="m-page-loader__title">
+      <span class="m-page-loader__text" aria-hidden="true">
+        {characters.map((character, index) => (
+          <span
+            class="m-page-loader__character"
+            style={{ animationDelay: index * 25 + "ms" }}
+          >
+            {character}
+          </span>
+        ))}
+      </span>
+    </p>
+  </div>
+</div>

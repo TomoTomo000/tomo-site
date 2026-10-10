@@ -1,0 +1,32 @@
+.m-breadcrumb {
+  margin-bottom: 2rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--color-muted);
+  &__list {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  &__item {
+    flex-shrink: 0;
+  }
+  &__link {
+    font-weight: 700;
+  }
+  &__separator {
+    flex-shrink: 0;
+    color: var(--color-muted);
+  }
+  &__icon {
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+  &__current {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

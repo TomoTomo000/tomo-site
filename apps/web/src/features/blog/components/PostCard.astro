@@ -1,0 +1,46 @@
+---
+import ArrowRightIcon from "@/components/ui/icons/ArrowRightIcon.astro";
+import type { PostSummary } from "../types/post.types";
+import { formatPostDate } from "./date";
+
+type Props = { post: PostSummary };
+const { post } = Astro.props;
+---
+
+<article>
+  <a href={`/blog/${encodeURIComponent(post.slug)}`} class="m-post-card">
+    {post.cover ? (
+      <img
+        src={post.cover.displayUrl}
+        alt={post.cover.altText}
+        width={post.cover.width}
+        height={post.cover.height}
+        loading="lazy"
+        class="m-post-card__image"
+      />
+    ) : null}
+    <div class="m-post-card__body">
+      <div class="m-post-card__meta">
+        <time
+          datetime={post.publishedAt ?? undefined}
+          class="m-post-card__date"
+        >
+          {formatPostDate(post.publishedAt)}
+        </time>
+      </div>
+      <div class="m-post-card__content">
+        <h3 class="m-post-card__title">{post.title}</h3>
+        {post.tags.length ? (
+          <ul class="m-post-card__tags">
+            {post.tags.map((tag) => (
+              <li>#{tag.name}</li>
+            ))}
+          </ul>
+        ) : null}
+      </div>
+      <span class="m-post-card__arrow" aria-hidden="true">
+        <ArrowRightIcon class="m-post-card__icon" />
+      </span>
+    </div>
+  </a>
+</article>

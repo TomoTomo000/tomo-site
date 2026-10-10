@@ -1,0 +1,15 @@
+---
+import type { Work } from "./works";
+interface Props {
+  work: Work;
+}
+const { work } = Astro.props;
+---
+
+<img
+  src={work.image.src}
+  alt={work.image.alt}
+  width={work.image.width}
+  height={work.image.height}
+  class="l-works-detail__screenshot"
+/>

@@ -1,0 +1,33 @@
+---
+import ArrowRightIcon from "@/components/ui/icons/ArrowRightIcon.astro";
+import type { Work } from "./works";
+type WorkCardProps = {
+  work: Work;
+  heading?: "h2" | "h3";
+};
+type Props = WorkCardProps;
+const { work, heading: Heading = "h3" } = Astro.props;
+---
+
+<article>
+  <a href={`/works/${encodeURIComponent(work.slug)}`} class="m-work-card">
+    <img
+      src={work.image.src}
+      alt={work.image.alt}
+      width={work.image.width}
+      height={work.image.height}
+      loading="lazy"
+      class="m-work-card__image"
+    />
+    <div class="m-work-card__body">
+      <div class="m-work-card__content">
+        <Heading class="m-work-card__title">{work.title}</Heading>
+        <p class="m-work-card__description">{work.description}</p>
+      </div>
+      <span class="m-work-card__label">制作詳細を見る</span>
+      <span class="m-work-card__arrow" aria-hidden="true">
+        <ArrowRightIcon class="m-work-card__icon" />
+      </span>
+    </div>
+  </a>
+</article>

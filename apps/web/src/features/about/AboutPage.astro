@@ -1,0 +1,160 @@
+---
+import DetailLayout from "@/components/layout/DetailLayout.astro";
+import PageContainer from "@/components/layout/PageContainer.astro";
+const careers = [
+  {
+    label: "約3年半",
+    title: "大阪のフレンチレストランで勤務",
+    description:
+      "WEB業界に入る前は、約3年半フレンチレストランで働いていました。",
+  },
+  {
+    label: "現在",
+    title: "大阪のWEB制作・開発会社へ",
+    description:
+      "WEB業界へ転職し、現在は大阪のWEB制作・開発会社で、フロントエンドエンジニア・WEBデザイナーとして開発・デザインに携わっています。",
+  },
+];
+const skills = [
+  { name: "HTML", logo: "html" },
+  { name: "CSS", logo: "css" },
+  { name: "JavaScript", logo: "javascript" },
+  { name: "TypeScript", logo: "typescript" },
+  { name: "Next.js", logo: "nextjs" },
+  { name: "React", logo: "react" },
+  { name: "Astro", logo: "astro" },
+  { name: "TanStack Start", logo: "tanstack-start" },
+];
+const likes = [
+  {
+    name: "古着",
+    description:
+      "ヴィンテージの古着を着たり、集めることが好きです。古着の雰囲気や、独特の素材感に惹かれます。ヨーロッパのヴィンテージ古着が特に好きです。",
+    image: "/img/about-like-used-clothes.svg",
+    imageAlt: "古着のイラスト",
+  },
+  {
+    name: "料理・食べること",
+    description:
+      "料理を作ったり、食べることが好きです。最近では、洋食プレートを自作で作ることにハマっています。食べることも好きで、休日はよく外食を楽しんでいます。",
+    image: "/img/about-like-cooking.svg",
+    imageAlt: "料理のイラスト",
+  },
+];
+---
+
+<DetailLayout>
+  <main class="l-about">
+    <PageContainer>
+      <div class="m-page-heading">
+        <h1 class="m-page-heading__title">ABOUT</h1>
+        <p class="m-page-heading__description">私について</p>
+      </div>
+
+      <section class="l-about__profile" aria-labelledby="profile-title">
+        <div class="m-profile__portrait l-about__portrait">
+          <img
+            src="/img/about-profile.svg"
+            alt="TOMOのプロフィールイラスト"
+            width={1223}
+            height={1286}
+            class="m-profile__image"
+          />
+        </div>
+        <div>
+          <h2 id="profile-title" class="l-about__section-title">
+            TOMO
+          </h2>
+          <div class="m-profile__text">
+            <p>約3年半フレンチレストランに勤務したのち、WEB業界へ転職。</p>
+            <p>
+              現在は大阪のWEB制作・開発会社で、フロントエンドエンジニア・WEBデザイナーとして働いています。
+            </p>
+            <p>
+              実装するだけではなく、長く運用できる設計や、全体を見据えたスケジューリング、クライアントの想いを整理するデザインを大切にしながら制作しています。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="l-about__section" aria-labelledby="career-title">
+        <h2 id="career-title" class="l-about__section-title">
+          CAREER
+        </h2>
+        <p class="l-about__section-description">これまでのこと</p>
+        <ol class="m-career">
+          {careers.map((career, index) => (
+            <li class="m-career__item">
+              <div aria-hidden="true" class="m-career__marker">
+                <span class="m-career__line" />
+                <span class="m-career__dot" />
+              </div>
+              <div
+                class={
+                  index < careers.length - 1
+                    ? "m-career__body m-career__body--spaced"
+                    : "m-career__body"
+                }
+              >
+                <p class="m-career__label">{career.label}</p>
+                <h3 class="m-career__title">{career.title}</h3>
+                <p class="m-career__description">{career.description}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <section class="l-about__section" aria-labelledby="skills-title">
+        <h2 id="skills-title" class="l-about__section-title">
+          SKILLS
+        </h2>
+        <p class="l-about__section-description">使用する言語・技術</p>
+        <ul class="l-about__skills">
+          {skills.map((skill) => (
+            <li class="m-skill-card">
+              <div class="m-skill-card__image" aria-hidden="true">
+                <img
+                  src={`/img/skills/${skill.logo}.svg`}
+                  alt=""
+                  width={96}
+                  height={64}
+                  loading="lazy"
+                  class="m-skill-card__logo"
+                />
+              </div>
+              {skill.name}
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section class="l-about__section" aria-labelledby="likes-title">
+        <h2 id="likes-title" class="l-about__section-title">
+          LIKES
+        </h2>
+        <p class="l-about__section-description">好きなもの</p>
+        <div class="l-about__likes">
+          {likes.map((like) => (
+            <div class="m-like-card">
+              <div class="m-like-card__picture">
+                <div class="m-like-card__image">
+                  <img
+                    src={like.image}
+                    alt={like.imageAlt}
+                    width={168}
+                    height={112}
+                    loading="lazy"
+                    class="m-like-card__illustration"
+                  />
+                </div>
+              </div>
+              <h3 class="m-like-card__title">{like.name}</h3>
+              <p class="m-like-card__description">{like.description}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+    </PageContainer>
+  </main>
+</DetailLayout>

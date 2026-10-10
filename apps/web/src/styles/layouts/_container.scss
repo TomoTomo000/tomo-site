@@ -1,0 +1,11 @@
+@use "../base/mixin";
+
+.l-container {
+  width: 100%;
+  max-width: 72rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+  @include mixin.mq(sm) {
+    padding-inline: 2rem;
+  }
+}

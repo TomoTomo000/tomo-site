@@ -1,0 +1,31 @@
+---
+import Document from "@/layouts/Document.astro";
+import Page from "@/features/works/WorkDetailPage.astro";
+import { works } from "@/features/works/works";
+import css from "@/styles/pages/works-detail.scss?url";
+export const prerender = true;
+export function getStaticPaths() {
+  return works.map((work) => ({
+    params: { slug: work.slug },
+    props: { work },
+  }));
+}
+const { work } = Astro.props;
+---
+
+<Document
+  css={css}
+  title={work.title + " | WORKS | TOMO"}
+  description={work.description}
+  image={{
+    url: work.image.src,
+    alt: work.image.alt,
+    width: work.image.width,
+    height: work.image.height,
+  }}
+>
+  <Page work={work} />
+  <script>
+    import "@/scripts/pages/works-detail";
+  </script>
+</Document>

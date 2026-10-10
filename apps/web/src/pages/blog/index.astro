@@ -1,0 +1,73 @@
+---
+import Document from "@/layouts/Document.astro";
+import DetailLayout from "@/components/layout/DetailLayout.astro";
+import Page from "@/features/blog/components/BlogListPage.astro";
+import ErrorPage from "@/features/blog/components/BlogErrorPage.astro";
+import {
+  listMicroCmsPosts,
+  listMicroCmsTags,
+} from "@/features/blog/server/microcms.repository.server";
+import { isBlogDataError } from "@/features/blog/server/blog-data.error";
+import { getSiteUrl } from "@/lib/site-url.server";
+import { parseBlogSearch } from "@/lib/blog-search";
+import { blogUrl } from "@/lib/urls";
+import css from "@/styles/pages/blog-list.scss?url";
+import errorCss from "@/styles/pages/blog-error.scss?url";
+const search = parseBlogSearch(Astro.url.searchParams);
+const path = blogUrl(search);
+if (Astro.url.pathname + Astro.url.search !== path)
+  return Astro.redirect(path, 302);
+let data;
+try {
+  const [posts, tags] = await Promise.all([
+    listMicroCmsPosts({ ...search, pageSize: 10 }),
+    listMicroCmsTags(),
+  ]);
+  data = { posts, tags };
+} catch (error) {
+  Astro.response.status = isBlogDataError(error) ? error.status : 503;
+  Astro.response.headers.set("Cache-Control", "no-store");
+}
+if (data) {
+  if (search.tag && !data.tags.some((tag) => tag.slug === search.tag))
+    return Astro.redirect(blogUrl({ ...search, page: 1, tag: "" }), 302);
+  if (search.page > data.posts.pageCount)
+    return Astro.redirect(
+      blogUrl({ ...search, page: data.posts.pageCount }),
+      302,
+    );
+}
+const prefix = search.query
+  ? "「" + search.query + "」の検索結果 | "
+  : search.tag
+    ? (data?.tags.find((tag) => tag.slug === search.tag)?.name ?? search.tag) +
+      " | "
+    : "";
+const title =
+  prefix +
+  "TOMO | フロントエンドエンジニア・WEBデザイナー | BLOG" +
+  (search.page > 1 ? " - " + search.page + "ページ目" : "");
+const description =
+  "フロントエンドエンジニア・WEBデザイナーTOMOのブログ。日々の制作で学んだことと、デザイン、コード、好きなものについてのブログです。" +
+  (search.page > 1 ? "一覧の" + search.page + "ページ目です。" : "");
+---
+
+<Document
+  css={data ? css : errorCss}
+  siteUrl={getSiteUrl(Astro.request)}
+  path={path}
+  title={title}
+  description={description}
+  noindex={!data || Boolean(search.query || search.tag)}
+>
+  {data ? (
+    <DetailLayout>
+      <Page posts={data.posts} tags={data.tags} search={search} />
+    </DetailLayout>
+  ) : (
+    <ErrorPage />
+  )}
+  <script>
+    import "@/scripts/pages/blog-list";
+  </script>
+</Document>

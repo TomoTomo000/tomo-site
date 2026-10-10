@@ -1,0 +1,79 @@
+---
+import Document from "@/layouts/Document.astro";
+import DetailLayout from "@/components/layout/DetailLayout.astro";
+import Page from "@/features/blog/components/BlogArticlePage.astro";
+import ErrorPage from "@/features/blog/components/BlogErrorPage.astro";
+import NotFoundPage from "@/components/elements/NotFoundPage.astro";
+import { findMicroCmsPostById } from "@/features/blog/server/microcms.repository.server";
+import { isBlogDataError } from "@/features/blog/server/blog-data.error";
+import { getSiteUrl } from "@/lib/site-url.server";
+import { serializeJsonLd, SITE_DESCRIPTION } from "@/lib/seo";
+import {
+  BLOG_OG_HEIGHT,
+  BLOG_OG_WIDTH,
+  getBlogOgImagePath,
+} from "@/features/blog/og-image";
+import css from "@/styles/pages/blog-detail.scss?url";
+import errorCss from "@/styles/pages/blog-error.scss?url";
+import notFoundCss from "@/styles/pages/not-found.scss?url";
+let post;
+let failed = false;
+try {
+  post = await findMicroCmsPostById({ contentId: Astro.params.slug! });
+} catch (error) {
+  failed = true;
+  Astro.response.status = isBlogDataError(error) ? error.status : 503;
+  Astro.response.headers.set("Cache-Control", "no-store");
+}
+if (!failed && !post) Astro.response.status = 404;
+const siteUrl = getSiteUrl(Astro.request);
+const image = post
+  ? {
+      url: new URL(getBlogOgImagePath(post.slug, post.updatedAt), siteUrl).href,
+      alt: post.title,
+      width: BLOG_OG_WIDTH,
+      height: BLOG_OG_HEIGHT,
+    }
+  : undefined;
+const structuredData = post
+  ? serializeJsonLd({
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      headline: post.title,
+      description: post.description || SITE_DESCRIPTION,
+      image: image?.url,
+      datePublished: post.publishedAt ?? undefined,
+      dateModified: post.updatedAt,
+      mainEntityOfPage: siteUrl + "/blog/" + encodeURIComponent(post.slug),
+      author: { "@type": "Person", name: "TOMO", url: siteUrl + "/about" },
+      publisher: { "@type": "Person", name: "TOMO" },
+      inLanguage: "ja",
+    })
+  : undefined;
+---
+
+<Document
+  css={failed ? errorCss : post ? css : notFoundCss}
+  siteUrl={siteUrl}
+  title={post?.title}
+  description={post?.description}
+  type={post ? "article" : "website"}
+  image={image}
+  noindex={!post}
+  structuredData={structuredData}
+  publishedAt={post?.publishedAt}
+  updatedAt={post?.updatedAt}
+>
+  {failed ? (
+    <ErrorPage />
+  ) : post ? (
+    <DetailLayout>
+      <Page post={post} />
+    </DetailLayout>
+  ) : (
+    <NotFoundPage />
+  )}
+  <script>
+    import "@/scripts/pages/blog-detail";
+  </script>
+</Document>

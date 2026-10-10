@@ -1,0 +1,27 @@
+@use "../base/mixin";
+
+.m-page-heading {
+  text-align: center;
+  &__title {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+    font-weight: 900;
+    @include mixin.mq(sm) {
+      font-size: 3rem;
+      line-height: 1;
+    }
+  }
+  &__description {
+    margin-top: 1.75rem;
+    font-size: 0.875rem;
+    line-height: 1.75rem;
+    @include mixin.mq(sm) {
+      font-size: 1rem;
+    }
+    &--constrained {
+      max-width: 32rem;
+      margin-inline: auto;
+      color: var(--color-ink);
+    }
+  }
+}

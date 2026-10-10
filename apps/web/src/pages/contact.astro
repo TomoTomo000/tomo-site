@@ -1,0 +1,31 @@
+---
+import Document from "@/layouts/Document.astro";
+import DetailLayout from "@/components/layout/DetailLayout.astro";
+import PageContainer from "@/components/layout/PageContainer.astro";
+import { ContactForm } from "@/features/contact/ContactForm";
+import css from "@/styles/pages/contact.scss?url";
+export const prerender = true;
+---
+
+<Document
+  css={css}
+  title="TOMO | フロントエンドエンジニア・WEBデザイナー | CONTACT"
+  description="フロントエンドエンジニア・WEBデザイナーTOMOへのお問い合わせ。WEB制作・デザインのご相談やお仕事のご依頼を受け付けています。"
+>
+  <DetailLayout>
+    <main class="l-contact">
+      <PageContainer>
+        <div class="m-page-heading">
+          <h1 class="m-page-heading__title">CONTACT</h1>
+          <p class="m-page-heading__description m-page-heading__description--constrained">
+            ご相談・お仕事のご依頼など、お気軽にお問い合わせください。内容を確認後、2〜3営業日以内にご返信します。
+          </p>
+        </div>
+        <ContactForm client:load />
+      </PageContainer>
+    </main>
+  </DetailLayout>
+  <script>
+    import "@/scripts/pages/contact";
+  </script>
+</Document>

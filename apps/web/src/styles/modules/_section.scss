@@ -1,0 +1,28 @@
+@use "../base/mixin";
+
+@mixin spacing {
+  margin-top: 5rem;
+  border-top: 1px solid color-mix(in oklab, var(--color-ink) 10%, transparent);
+  padding-top: 3.5rem;
+  @include mixin.mq(sm) {
+    margin-top: 7rem;
+    padding-top: 5rem;
+  }
+}
+
+@mixin title {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 900;
+  @include mixin.mq(sm) {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+  }
+}
+
+@mixin description {
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--color-muted);
+}

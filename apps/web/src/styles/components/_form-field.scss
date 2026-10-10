@@ -1,0 +1,83 @@
+@use "../base/mixin";
+@use "../base/setting";
+
+.c-form-field {
+  display: grid;
+  gap: 0.5rem;
+
+  &--responsive {
+    @include mixin.mq(md) {
+      grid-template-columns: 12rem minmax(0, 1fr);
+      column-gap: 2rem;
+    }
+  }
+  &__label {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 700;
+  }
+  &__required {
+    margin-left: 0.25rem;
+    color: var(--color-important);
+  }
+  &__body {
+    min-width: 0;
+  }
+  &__control {
+    width: 100%;
+    border: 0;
+    border-radius: 0.75rem;
+    background: var(--color-background);
+    padding: 0.875rem 1.25rem;
+    color: var(--color-ink);
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    outline: none;
+    transition: box-shadow 150ms setting.$ease-default;
+    &::placeholder {
+      color: color-mix(in oklab, var(--color-muted) 50%, transparent);
+    }
+    &:focus {
+      box-shadow: 0 0 0 2px var(--color-ink);
+    }
+    &--select {
+      appearance: none;
+      padding-right: 3rem;
+    }
+    &--textarea {
+      min-height: 8rem;
+      resize: vertical;
+      line-height: 1.75rem;
+    }
+  }
+  &__select {
+    position: relative;
+  }
+  &__chevron {
+    pointer-events: none;
+    position: absolute;
+    right: 1.25rem;
+    top: 50%;
+    width: 1rem;
+    height: 1rem;
+    transform: translateY(-50%);
+    color: var(--color-muted);
+  }
+  &__error {
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: var(--color-ink);
+  }
+  &__count {
+    margin-top: 0.5rem;
+    text-align: left;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-muted);
+    &--invalid {
+      color: var(--color-important);
+    }
+  }
+}
