@@ -177,7 +177,12 @@ export async function handleContactRequest(
     return json(false, 415);
   }
 
-  const configuration = getConfiguration(environment);
+  // Preview URLs vary by branch; verify Turnstile against the URL serving this request.
+  const configuration = getConfiguration(
+    environment.APP_ENV === "preview"
+      ? { ...environment, SITE_URL: new URL(request.url).origin }
+      : environment,
+  );
   if (!configuration) {
     console.error("Contact service is not configured");
     return json(false, 500);
