@@ -5,7 +5,6 @@ export function pageLoader() {
     return;
   }
   const previous = document.documentElement.style.overflow;
-  loader.hidden = false;
   document.documentElement.style.overflow = "hidden";
   const finish = () => {
     loader.remove();
