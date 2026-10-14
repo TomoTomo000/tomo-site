@@ -8,6 +8,7 @@
     "packages/*"
   ],
   "scripts": {
+    "crosspost:preview": "bun run --filter @tomo/web crosspost:preview",
     "dev": "bun run --filter @tomo/web dev",
     "build": "bun run --filter @tomo/web build",
     "preview": "bun run --filter @tomo/web preview",
@@ -16,7 +17,10 @@
     "cf-typegen": "bun run --filter @tomo/web cf-typegen",
     "lint": "eslint .",
     "test": "bun run --filter @tomo/web test",
-    "typecheck": "bun run --filter @tomo/web typecheck"
+    "typecheck": "bun run --filter @tomo/web typecheck",
+    "crosspost:status": "bun run --filter @tomo/web crosspost:status",
+    "crosspost:retry": "bun run --filter @tomo/web crosspost:retry",
+    "crosspost:stop-zenn": "bun run --filter @tomo/web crosspost:stop-zenn"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

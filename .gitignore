@@ -5,6 +5,7 @@
 
 # テスト
 **/coverage/
+**/.crosspost-preview/
 
 # ビルド成果物
 **/dist/
