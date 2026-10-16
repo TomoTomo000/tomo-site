@@ -3,6 +3,20 @@
   "name": "tomo-site",
   "main": "./src/worker.ts",
   "triggers": { "crons": ["*/5 * * * *"] },
+  "queues": {
+    "producers": [
+      { "binding": "CROSSPOST_QUEUE", "queue": "tomo-site-crosspost" },
+    ],
+    "consumers": [
+      {
+        "queue": "tomo-site-crosspost",
+        "max_batch_size": 1,
+        "max_batch_timeout": 0,
+        "max_concurrency": 1,
+        "max_retries": 5,
+      },
+    ],
+  },
   "d1_databases": [
     {
       "binding": "CROSSPOST_DB",

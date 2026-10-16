@@ -12,9 +12,10 @@ export async function processJob(
   options: {
     now?: () => Date;
     sleep?: (milliseconds: number) => Promise<void>;
+    contentId?: string;
   } = {},
 ) {
-  const job = await jobs.claim(provider);
+  const job = await jobs.claim(provider, options.contentId);
   if (!job) return null;
   const now = options.now ?? (() => new Date());
   let retryAt: string | undefined;

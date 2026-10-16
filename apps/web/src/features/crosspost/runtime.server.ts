@@ -1,6 +1,6 @@
 import { jobStore } from "./job-store";
 import { microCmsWebhook } from "./microcms-webhook";
-import { microCmsSource } from "./microcms-source";
+import { microCmsSource, microCmsContentId } from "./microcms-source";
 import { processJob } from "./process-job";
 import { publicationStore, type CrosspostDatabase } from "./publication-store";
 import { qiitaPublisher } from "./publishers/qiita";
@@ -16,6 +16,7 @@ export type CrosspostEnv = {
   APP_ENV?: string;
   CROSSPOST_ENABLED?: string;
   CROSSPOST_DB?: CrosspostDatabase;
+  CROSSPOST_QUEUE?: { send(body: { contentId: string }): Promise<void> };
   MICROCMS_SERVICE_DOMAIN?: string;
   MICROCMS_API_KEY?: string;
   CROSSPOST_WEBHOOK_SECRET?: string;
@@ -61,7 +62,18 @@ export async function receiveCrosspost(
         service: required(env.MICROCMS_SERVICE_DOMAIN),
         secret: required(env.CROSSPOST_WEBHOOK_SECRET),
       },
-      (id) => jobs.enqueue("microcms", id),
+      async (id) => {
+        await jobs.enqueue("microcms", id);
+        try {
+          if (!env.CROSSPOST_QUEUE) throw new Error("Queue未設定");
+          await env.CROSSPOST_QUEUE.send({ contentId: id });
+        } catch {
+          // 保存済みなので受理する。Queue障害時はCronが処理を引き継ぐ。
+          console.error(
+            "Crosspost queue unavailable; saved job will be processed by cron.",
+          );
+        }
+      },
     )(request);
   } catch {
     return Response.json(
@@ -70,13 +82,14 @@ export async function receiveCrosspost(
     );
   }
 }
-/** 定期実行1回につき1記事。遅延・未処理の通知は次の実行へ残す。 */
-export async function scheduledCrosspost(
+/** Queueは通知された記事、Cronは実行可能な最古のジョブを処理する。 */
+async function runCrosspost(
   env: CrosspostEnv,
   http: HttpClient,
+  contentId?: string,
 ): Promise<void> {
   if (!enabled(env)) return;
-  // DB接続の失敗はCronエラー。記事取得・投稿先の失敗はジョブ側で記録する。
+  // DB接続の失敗は呼び出し元へ返す。記事取得・投稿先の失敗はジョブ側で記録する。
   try {
     if (!env.CROSSPOST_DB) throw new Error("DB未設定");
     const source = async (id: string) => {
@@ -118,10 +131,66 @@ export async function scheduledCrosspost(
       source,
       publicationStore(env.CROSSPOST_DB),
       publishers,
+      { contentId },
     );
   } catch {
     throw new Error(
-      "クロスポストの定期処理に失敗しました。設定とDBを確認してください。",
+      "クロスポストの処理に失敗しました。設定とDBを確認してください。",
     );
+  }
+}
+
+export async function scheduledCrosspost(
+  env: CrosspostEnv,
+  http: HttpClient,
+): Promise<void> {
+  await runCrosspost(env, http);
+}
+
+/** 重複配信でもDBの処理権を取得できた場合だけ投稿する。 */
+export async function queuedCrosspost(
+  batch: MessageBatch<unknown>,
+  env: CrosspostEnv,
+  http: HttpClient,
+): Promise<void> {
+  for (const message of batch.messages) {
+    if (!enabled(env)) {
+      message.ack();
+      continue;
+    }
+    const body = message.body;
+    const id = microCmsContentId.safeParse(
+      body && typeof body === "object" && "contentId" in body
+        ? body.contentId
+        : undefined,
+    );
+    if (!id.success) {
+      console.error("Invalid crosspost queue message.");
+      message.ack();
+      continue;
+    }
+    try {
+      await runCrosspost(env, http, id.data);
+      const job = await jobStore(env.CROSSPOST_DB!).get("microcms", id.data);
+      // 実行中の更新通知も、元の処理完了後に取り直す。ロックは解除しない。
+      if (job?.status === "running" || job?.status === "pending") {
+        const delaySeconds =
+          job.status === "running"
+            ? 5
+            : Math.min(
+                43200,
+                Math.max(
+                  0,
+                  Math.ceil((Date.parse(job.availableAt) - Date.now()) / 1000),
+                ),
+              );
+        message.retry({ delaySeconds });
+      } else {
+        message.ack();
+      }
+    } catch {
+      console.error("Crosspost queue processing failed; retry scheduled.");
+      message.retry({ delaySeconds: 60 });
+    }
   }
 }

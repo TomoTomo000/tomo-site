@@ -62,8 +62,12 @@ export function jobStore(db: CrosspostDatabase, now = () => new Date()) {
         .bind(provider, contentId, time, time)
         .first();
     },
-    async claim(provider: string): Promise<CrosspostJob | null> {
+    async claim(
+      provider: string,
+      contentId?: string,
+    ): Promise<CrosspostJob | null> {
       identifier.parse(provider);
+      if (contentId !== undefined) identifier.parse(contentId);
       const time = now().toISOString();
       // 選択と更新を1文にまとめ、並列ワーカーでも同じ記事を取得させない。
       return db
@@ -73,10 +77,19 @@ export function jobStore(db: CrosspostDatabase, now = () => new Date()) {
         WHERE provider = ? AND content_id = (
           SELECT content_id FROM crosspost_jobs
           WHERE provider = ? AND status = 'pending' AND available_at <= ?
+          AND (? IS NULL OR content_id = ?)
           ORDER BY available_at, content_id LIMIT 1
         ) AND status = 'pending' RETURNING ${columns}`,
         )
-        .bind(crypto.randomUUID(), time, provider, provider, time)
+        .bind(
+          crypto.randomUUID(),
+          time,
+          provider,
+          provider,
+          time,
+          contentId ?? null,
+          contentId ?? null,
+        )
         .first<CrosspostJob>();
     },
     async finish(job: CrosspostJob, result: Completion): Promise<CrosspostJob> {
