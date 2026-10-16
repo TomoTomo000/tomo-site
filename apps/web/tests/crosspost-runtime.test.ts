@@ -3,6 +3,7 @@ import { rejects } from "node:assert/strict";
 import { createHmac } from "node:crypto";
 import {
   receiveCrosspost,
+  queuedCrosspost,
   scheduledCrosspost,
   type CrosspostEnv,
 } from "../src/features/crosspost/runtime.server";
@@ -16,6 +17,7 @@ beforeEach(() => {
     APP_ENV: "production",
     CROSSPOST_ENABLED: "true",
     CROSSPOST_DB: context.adapter,
+    CROSSPOST_QUEUE: { send: async () => {} },
     MICROCMS_SERVICE_DOMAIN: "example",
     MICROCMS_API_KEY: "cms-secret",
     SITE_URL: "https://example.com",
@@ -29,6 +31,35 @@ beforeEach(() => {
   };
 });
 afterEach(() => context.database.close());
+function queueDelivery(body: unknown = { contentId: "post-id" }) {
+  let acknowledgements = 0;
+  const retries: (QueueRetryOptions | undefined)[] = [];
+  const message = {
+    id: "message-id",
+    timestamp: new Date(),
+    attempts: 1,
+    body,
+    ack: () => {
+      acknowledgements++;
+    },
+    retry: (options?: QueueRetryOptions) => {
+      retries.push(options);
+    },
+  };
+  return {
+    batch: {
+      queue: "tomo-site-crosspost",
+      metadata: { metrics: { backlogCount: 0, backlogBytes: 0 } },
+      messages: [message],
+      ackAll() {},
+      retryAll() {},
+    },
+    get acknowledgements() {
+      return acknowledgements;
+    },
+    retries,
+  };
+}
 function notification() {
   const body = JSON.stringify({
     service: "example",
@@ -119,8 +150,7 @@ test("設定不足なら受信503・定期実行失敗となり、ジョブは�
       throw new Error("禁止");
     }),
     {
-      message:
-        "クロスポストの定期処理に失敗しました。設定とDBを確認してください。",
+      message: "クロスポストの処理に失敗しました。設定とDBを確認してください。",
     },
   );
   expect(calls).toBe(0);
@@ -233,5 +263,135 @@ test("CMS設定不足もジョブに理由を残す", async () => {
   );
   expect((await context.jobs.get("microcms", "post-id"))?.status).toBe(
     "review",
+  );
+});
+
+test("署名検証・DB保存後に記事IDだけをQueueへ送り、投稿完了は待たない", async () => {
+  const messages: unknown[] = [];
+  env.CROSSPOST_QUEUE = {
+    send: async (body) => {
+      expect((await context.jobs.get("microcms", "post-id"))?.status).toBe(
+        "pending",
+      );
+      messages.push(body);
+    },
+  };
+  expect((await receiveCrosspost(notification(), env)).status).toBe(202);
+  expect(messages).toEqual([{ contentId: "post-id" }]);
+  const invalid = notification();
+  invalid.headers.set("x-microcms-signature", "0".repeat(64));
+  expect((await receiveCrosspost(invalid, env)).status).toBe(401);
+  expect(messages).toHaveLength(1);
+});
+
+test("Queue送信失敗でも保存した通知をCronで回収できる", async () => {
+  env.CROSSPOST_QUEUE = {
+    send: async () => {
+      throw Error("secret detail");
+    },
+  };
+  expect((await receiveCrosspost(notification(), env)).status).toBe(202);
+  expect((await context.jobs.get("microcms", "post-id"))?.status).toBe(
+    "pending",
+  );
+  await scheduledCrosspost(
+    env,
+    async () => new Response(null, { status: 404 }),
+  );
+  expect((await context.jobs.get("microcms", "post-id"))?.status).toBe("done");
+});
+
+test("Queueは通知対象だけを即時処理し、重複配信で再投稿しない", async () => {
+  await context.jobs.enqueue("microcms", "older-id");
+  await receiveCrosspost(notification(), env);
+  let reads = 0;
+  let posts = 0;
+  const http = async (url: string) => {
+    if (url.startsWith("https://example.microcms.io/")) {
+      expect(url).toContain("/post-id");
+      reads++;
+      return Response.json({
+        id: "post-id",
+        title: "記事",
+        content: "<p>本文</p>",
+        tags: [{ id: "ts", name: "typescript" }],
+        publishedAt: "2026-10-12T00:00:00Z",
+        updatedAt: "2026-10-12T00:00:00Z",
+        syncQiita: true,
+      });
+    }
+    posts++;
+    return Response.json({
+      id: "abcdef0123456789abcd",
+      url: "https://qiita.com/me/items/abcdef0123456789abcd",
+    });
+  };
+  const delivery = queueDelivery();
+  await queuedCrosspost(delivery.batch, env, http);
+  await queuedCrosspost(queueDelivery().batch, env, http);
+  expect(reads).toBe(1);
+  expect(posts).toBe(1);
+  expect(delivery.acknowledgements).toBe(1);
+  expect((await context.jobs.get("microcms", "older-id"))?.status).toBe(
+    "pending",
+  );
+});
+
+test("処理中の編集通知は元の処理終了後に再配信する", async () => {
+  await context.jobs.enqueue("microcms", "post-id");
+  const delivery = queueDelivery();
+  await queuedCrosspost(delivery.batch, env, async () => {
+    await context.jobs.enqueue("microcms", "post-id");
+    return new Response(null, { status: 404 });
+  });
+  expect(delivery.acknowledgements).toBe(0);
+  expect(delivery.retries).toEqual([{ delaySeconds: 0 }]);
+  expect((await context.jobs.get("microcms", "post-id"))?.status).toBe(
+    "pending",
+  );
+});
+
+test("別実行が処理中の場合にロックを解除せず再配信する", async () => {
+  await context.jobs.enqueue("microcms", "post-id");
+  const claimed = await context.jobs.claim("microcms");
+  const delivery = queueDelivery();
+  await queuedCrosspost(delivery.batch, env, async () => {
+    throw Error("通信禁止");
+  });
+  expect(delivery.retries).toEqual([{ delaySeconds: 5 }]);
+  expect((await context.jobs.get("microcms", "post-id"))?.token).toBe(
+    claimed?.token,
+  );
+});
+
+test("未到来の再試行日時をQueueで早めない", async () => {
+  await context.jobs.enqueue("microcms", "post-id");
+  const job = (await context.jobs.claim("microcms"))!;
+  await context.jobs.finish(job, {
+    status: "pending",
+    retryAt: new Date(Date.now() + 60000).toISOString(),
+  });
+  const delivery = queueDelivery();
+  await queuedCrosspost(delivery.batch, env, async () => {
+    throw Error("通信禁止");
+  });
+  expect(delivery.retries[0]?.delaySeconds).toBeGreaterThan(55);
+  expect(delivery.acknowledgements).toBe(0);
+});
+
+test("不正なQueue本文とプレビュー環境では記事を処理しない", async () => {
+  await context.jobs.enqueue("microcms", "post-id");
+  for (const [body, settings] of [
+    [{ contentId: "../bad" }, env],
+    [{ contentId: "post-id" }, { ...env, APP_ENV: "preview" }],
+  ] as const) {
+    const delivery = queueDelivery(body);
+    await queuedCrosspost(delivery.batch, settings, async () => {
+      throw Error("通信禁止");
+    });
+    expect(delivery.acknowledgements).toBe(1);
+  }
+  expect((await context.jobs.get("microcms", "post-id"))?.status).toBe(
+    "pending",
   );
 });
