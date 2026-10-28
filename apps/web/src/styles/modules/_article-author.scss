@@ -1,3 +1,5 @@
+@use "../components/social-links";
+
 .m-article-author {
   border-radius: 1rem;
   background: var(--color-surface);
@@ -50,5 +52,8 @@
     font-size: 0.75rem;
     line-height: 1rem;
     color: var(--color-muted);
+  }
+  &__social {
+    margin-top: 0.75rem;
   }
 }

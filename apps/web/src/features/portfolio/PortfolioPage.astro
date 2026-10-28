@@ -1,5 +1,6 @@
 ---
 import { blogUrl } from "@/lib/urls";
+import SocialLinks from "@/components/ui/SocialLinks.astro";
 
 import ButtonLink from "@/components/ui/ButtonLink.astro";
 import IconButton from "@/components/ui/IconButton.astro";
@@ -240,6 +241,7 @@ const { blogPosts } = Astro.props;
       <footer class="l-portfolio__footer">
         <div class="l-footer__inner">
           <p class="l-footer__logo">TOMO.</p>
+          <SocialLinks class="c-social-links--inverse" />
           <p class="l-portfolio__copyright">
             © 2026 TOMO. All Rights Reserved.
           </p>

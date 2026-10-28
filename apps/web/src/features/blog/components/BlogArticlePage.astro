@@ -1,5 +1,6 @@
 ---
 import { blogUrl } from "@/lib/urls";
+import SocialLinks from "@/components/ui/SocialLinks.astro";
 import ChevronDownIcon from "@/components/ui/icons/ChevronDownIcon.astro";
 import ChevronRightIcon from "@/components/ui/icons/ChevronRightIcon.astro";
 import ButtonLink from "@/components/ui/ButtonLink.astro";
@@ -113,6 +114,7 @@ const hasTableOfContents = post.tableOfContents.length >= 2;
                 <p class="m-article-author__description">
                   大阪のWEB制作・開発会社で、フロントエンドエンジニア・WEBデザイナーとして働いています。
                 </p>
+                <SocialLinks class="m-article-author__social" />
               </div>
             </div>
           </section>
