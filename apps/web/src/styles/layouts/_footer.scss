@@ -1,3 +1,5 @@
+@use "../components/social-links";
+
 .l-footer {
   padding-block: 3.5rem;
   border-top: 1px solid color-mix(in oklab, var(--color-ink) 10%, transparent);

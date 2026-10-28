@@ -2,6 +2,7 @@
 import IconButton from "@/components/ui/IconButton.astro";
 import AppLink from "@/components/ui/Link.astro";
 import PageContainer from "./PageContainer.astro";
+import SocialLinks from "@/components/ui/SocialLinks.astro";
 const navItems = [
   { section: "about", label: "ABOUT", to: "/about" },
   { section: "works", label: "WORKS", to: "/works" },
@@ -110,6 +111,7 @@ const navItems = [
   <footer class="l-footer">
     <PageContainer class="l-footer__inner">
       <p class="l-footer__logo">TOMO.</p>
+      <SocialLinks />
       <p class="l-footer__copyright">© 2026 TOMO. All Rights Reserved.</p>
     </PageContainer>
   </footer>

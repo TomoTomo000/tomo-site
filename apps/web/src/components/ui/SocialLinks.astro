@@ -1,0 +1,41 @@
+---
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+// Official assets: github.com/logos, help.qiita.com/ja/articles/others-brand-guideline,
+// zenn.dev/mediakit. Display in the site's monochrome palette via CSS.
+const links = [
+  {
+    name: "GitHub",
+    href: "https://github.com/TomoTomo000",
+    icon: "github.svg",
+  },
+  { name: "Qiita", href: "https://qiita.com/tomotomo000", icon: "qiita.svg" },
+  { name: "Zenn", href: "https://zenn.dev/tomotomo000", icon: "zenn.svg" },
+];
+---
+
+<ul
+  class:list={["c-social-links", className]}
+  aria-label="TOMOの外部プロフィール"
+>
+  {links.map(({ name, href, icon }) => (
+    <li class="c-social-links__item">
+      <a
+        class="c-social-links__link c-link--control"
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`${name}のプロフィール（新しいタブで開きます）`}
+        title={`${name}（新しいタブで開きます）`}
+      >
+        <span
+          class="c-social-links__icon"
+          style={`mask-image: url('/img/social/${icon}')`}
+          aria-hidden="true"
+        />
+      </a>
+    </li>
+  ))}
+</ul>
